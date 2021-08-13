@@ -1,9 +1,9 @@
 "use strict";
-const ParkingmanMainAbl = require("../../abl/parkingman-main-abl.js");
+const InitAbl = require("../../abl/parkingman/init.js");
 
 class ParkingmanMainController {
   init(ucEnv) {
-    return ParkingmanMainAbl.init(ucEnv.getUri(), ucEnv.getDtoIn(), ucEnv.getSession());
+    return InitAbl.init(ucEnv.getUri(), ucEnv.getDtoIn(), ucEnv.getSession());
   }
 }
 

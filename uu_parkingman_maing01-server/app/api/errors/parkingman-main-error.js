@@ -4,6 +4,14 @@ const ParkingmanMainUseCaseError = require("./parkingman-main-use-case-error.js"
 const Init = {
   UC_CODE: `${ParkingmanMainUseCaseError.ERROR_PREFIX}init/`,
 
+  ParkingManAlreadyInitialized: class extends ParkingmanMainUseCaseError {
+    constructor() {
+      super(...arguments);
+      this.code = `${Init.UC_CODE}parkingManAlreadyInitialized`;
+      this.message = "ParkingMan already initialized.";
+    }
+  },
+
   InvalidDtoIn: class extends ParkingmanMainUseCaseError {
     constructor() {
       super(...arguments);
