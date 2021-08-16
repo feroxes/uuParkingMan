@@ -30,6 +30,12 @@ const Create = {
   },
 };
 
+const List = {
+  UC_CODE: `${USER_ERROR_PREFIX}list/`,
+  
+};
+
 module.exports = {
+  List,
   Create,
 };

@@ -1,7 +1,7 @@
 const Errors = require("../../api/errors/user-error.js");
 
 const Warnings = {
-  initUnsupportedKeys: {
+  createUnsupportedKeys: {
     code: `${Errors.Create.UC_CODE}unsupportedKeys`,
   },
 };

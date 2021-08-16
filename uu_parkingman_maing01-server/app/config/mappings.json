@@ -20,6 +20,11 @@
         "realization": "api/controllers/UserController.create",
         "httpMethod": "POST",
         "type": "CMD"
+      },
+      "user/list": {
+        "realization": "api/controllers/UserController.list",
+        "httpMethod": "GET",
+        "type": "CMD"
       }
     }
   }

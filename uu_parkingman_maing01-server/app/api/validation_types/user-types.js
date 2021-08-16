@@ -8,3 +8,5 @@ const userCreateDtoInType = shape({
     number: uu5String(10).isRequired(),
   }).isRequired()
 });
+
+const userListDtoInType = shape({});

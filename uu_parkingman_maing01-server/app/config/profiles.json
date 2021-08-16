@@ -19,7 +19,11 @@
       },
       "user/create": {
         "sysStateList": ["active"],
-        "profileList": ["Authorities", "Users"]
+        "profileList": ["Authorities","Users"]
+      },
+      "user/list": {
+        "sysStateList": ["active"],
+        "profileList": ["Authorities"]
       }
     }
   }
