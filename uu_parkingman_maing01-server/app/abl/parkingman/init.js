@@ -2,7 +2,7 @@
 const { Validator } = require("uu_appg01_server").Validation;
 const { DaoFactory } = require("uu_appg01_server").ObjectStore;
 const { ValidationHelper } = require("uu_appg01_server").AppServer;
-const Errors = require("../../api/errors/parkingman-main-error.js");
+const Errors = require("../../api/errors/parkingman-main-error.js").Init;
 const Warnings = require("../../api/warnings/parkingman-warnings.js");
 const { Schemas, States } = require("../constants.js");
 
@@ -18,7 +18,7 @@ class InitAbl {
     const uuParkingMan = await this.dao.getByAwid(awid);
     if (uuParkingMan && uuParkingMan.state === States.ACTIVE) {
       // 1.2
-      throw new Errors.Init.ParkingManAlreadyInitialized({ uuAppErrorMap });
+      throw new Errors.ParkingManAlreadyInitialized({ uuAppErrorMap });
     }
 
     // HDS 2, 2.2, 2.2.1, 2.3, 2.3.1
@@ -27,7 +27,7 @@ class InitAbl {
       dtoIn,
       validationResult,
       Warnings.initUnsupportedKeys.code,
-      Errors.Init.InvalidDtoIn
+      Errors.InvalidDtoIn
     );
 
     // HDS 2
@@ -36,7 +36,7 @@ class InitAbl {
         return await DaoFactory.getDao(schema).createSchema();
       } catch (e) {
         // 2.1
-        throw new Errors.Init.SchemaDaoCreateSchemaFailed({ uuAppErrorMap }, { schema }, e);
+        throw new Errors.SchemaDaoCreateSchemaFailed({ uuAppErrorMap }, { schema }, e);
       }
     });
     await Promise.all(schemaCreateResults);
@@ -47,7 +47,15 @@ class InitAbl {
       state: States.ACTIVE,
       ...dtoIn,
     };
-    const parkingman = await this.dao.create(parkingmanCreateDtoIn);
+
+    let parkingman = {};
+    // 3.1
+    try {
+      parkingman = await this.dao.create(parkingmanCreateDtoIn);
+    } catch (e) {
+      // 3.1.1
+      throw new Errors.ParkingManCreateFailed({ uuAppErrorMap }, e);
+    }
 
     // HDS 4
     return {

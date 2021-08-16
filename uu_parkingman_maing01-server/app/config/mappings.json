@@ -25,6 +25,11 @@
         "realization": "api/controllers/UserController.list",
         "httpMethod": "GET",
         "type": "CMD"
+      },
+      "parkingPlace/create": {
+        "realization": "api/controllers/ParkingPlaceController.create",
+        "httpMethod": "POST",
+        "type": "CMD"
       }
     }
   }

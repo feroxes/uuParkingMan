@@ -13,11 +13,11 @@ const Create = {
     }
   },
 
-  UserAlreadyExists: class extends ParkingmanMainUseCaseError {
+  UserAlreadyCreated: class extends ParkingmanMainUseCaseError {
     constructor() {
       super(...arguments);
-      this.code = `${Create.UC_CODE}userAlreadyExists`;
-      this.message = "User already exists.";
+      this.code = `${Create.UC_CODE}userAlreadyCreated`;
+      this.message = "User already created.";
     }
   },
 
@@ -32,7 +32,14 @@ const Create = {
 
 const List = {
   UC_CODE: `${USER_ERROR_PREFIX}list/`,
-  
+
+  InvalidDtoIn: class extends ParkingmanMainUseCaseError {
+    constructor() {
+      super(...arguments);
+      this.code = `${List.UC_CODE}invalidDtoIn`;
+      this.message = "DtoIn is not valid.";
+    }
+  },
 };
 
 module.exports = {

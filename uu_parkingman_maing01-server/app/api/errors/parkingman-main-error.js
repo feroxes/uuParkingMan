@@ -29,19 +29,12 @@ const Init = {
     }
   },
 
-  SetProfileFailed: class extends ParkingmanMainUseCaseError {
+  ParkingManCreateFailed: class extends ParkingmanMainUseCaseError {
     constructor() {
       super(...arguments);
-      this.code = `${Init.UC_CODE}sys/setProfileFailed`;
-      this.message = "Set profile failed.";
-    }
-  },
-
-  CreateAwscFailed: class extends ParkingmanMainUseCaseError {
-    constructor() {
-      super(...arguments);
-      this.code = `${Init.UC_CODE}createAwscFailed`;
-      this.message = "Create uuAwsc failed.";
+      this.status = 500;
+      this.code = `${Init.UC_CODE}parkingManCreateFailed`;
+      this.message = "ParkingMan create failed.";
     }
   },
 };

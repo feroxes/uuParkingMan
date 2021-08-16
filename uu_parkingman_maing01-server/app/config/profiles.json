@@ -24,6 +24,10 @@
       "user/list": {
         "sysStateList": ["active"],
         "profileList": ["Authorities"]
+      },
+      "parkingPlace/create": {
+        "sysStateList": ["active"],
+        "profileList": ["Authorities"]
       }
     }
   }

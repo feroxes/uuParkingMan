@@ -11,6 +11,10 @@
         "user": {
           "realization": "dao/UserMongo",
           "maxNoi": 1000
+        },
+        "parkingPlace": {
+          "realization": "dao/ParkingPlaceMongo",
+          "maxNoi": 1000
         }
       }
     }
