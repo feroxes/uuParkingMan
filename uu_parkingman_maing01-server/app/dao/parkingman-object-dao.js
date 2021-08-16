@@ -119,6 +119,17 @@ class ParkingmanObjectDao extends UuObjectDao {
   }
 
   /**
+   * The function find and return object by uuIdentity.
+   * @async
+   * @param awid
+   * @param uuIdentity
+   * @returns {Promise<*>}
+   */
+  async getByUuIdentity(awid, uuIdentity) {
+    return await super.findOne({ awid, uuIdentity });
+  }
+
+  /**
    * The function find and return objects on page by pageInfo
    * @async
    * @param awid

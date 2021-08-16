@@ -7,6 +7,10 @@
         "parkingmanMain": {
           "realization": "dao/ParkingmanMainMongo",
           "maxNoi": 1
+        },
+        "user": {
+          "realization": "dao/UserMongo",
+          "maxNoi": 1000
         }
       }
     }

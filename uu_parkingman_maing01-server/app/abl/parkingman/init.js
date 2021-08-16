@@ -2,7 +2,6 @@
 const { Validator } = require("uu_appg01_server").Validation;
 const { DaoFactory } = require("uu_appg01_server").ObjectStore;
 const { ValidationHelper } = require("uu_appg01_server").AppServer;
-const { UuAppWorkspace } = require("uu_appg01_server").Workspace;
 const Errors = require("../../api/errors/parkingman-main-error.js");
 const Warnings = require("../../api/warnings/parkingman-warnings.js");
 const { Schemas, States } = require("../constants.js");
@@ -43,10 +42,16 @@ class InitAbl {
     await Promise.all(schemaCreateResults);
 
     // HDS 3
-    const workspace = UuAppWorkspace.get(awid);
+    const parkingmanCreateDtoIn = {
+      awid,
+      state: States.ACTIVE,
+      ...dtoIn,
+    };
+    const parkingman = await this.dao.create(parkingmanCreateDtoIn);
 
+    // HDS 4
     return {
-      ...workspace,
+      ...parkingman,
       uuAppErrorMap,
     };
   }
