@@ -30,6 +30,19 @@ const Create = {
   },
 };
 
+const List = {
+  UC_CODE: `${PARKING_PLACE_ERROR_PREFIX}list/`,
+
+  InvalidDtoIn: class extends ParkingmanMainUseCaseError {
+    constructor() {
+      super(...arguments);
+      this.code = `${List.UC_CODE}invalidDtoIn`;
+      this.message = "DtoIn is not valid.";
+    }
+  },
+};
+
 module.exports = {
+  List,
   Create,
 };

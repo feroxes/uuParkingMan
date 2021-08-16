@@ -19,7 +19,7 @@
       },
       "user/create": {
         "sysStateList": ["active"],
-        "profileList": ["Authorities","Users"]
+        "profileList": ["Authorities"]
       },
       "user/list": {
         "sysStateList": ["active"],
@@ -28,6 +28,10 @@
       "parkingPlace/create": {
         "sysStateList": ["active"],
         "profileList": ["Authorities"]
+      },
+      "parkingPlace/list": {
+        "sysStateList": ["active"],
+        "profileList": ["Users", "Authorities"]
       }
     }
   }
