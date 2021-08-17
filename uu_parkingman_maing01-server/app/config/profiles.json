@@ -31,7 +31,11 @@
       },
       "parkingPlace/list": {
         "sysStateList": ["active"],
-        "profileList": ["Users", "Authorities"]
+        "profileList": ["Users","Authorities"]
+      },
+      "reservation/create": {
+        "sysStateList": ["active"],
+        "profileList": ["Users","Authorities"]
       }
     }
   }

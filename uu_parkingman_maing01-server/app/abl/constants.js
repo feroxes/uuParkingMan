@@ -3,6 +3,7 @@ const Constants = {
     PARKINGMAN: "parkingmanMain",
     USER: "user",
     PARKING_PLACE: "parkingPlace",
+    RESERVATION: "reservation",
   },
   States: {
     ACTIVE: "active",
@@ -14,6 +15,10 @@ const Constants = {
         CAR: "car",
       },
     },
+  },
+
+  Reservation: {
+    MAX_RESERVATION_DAYS: 5,
   },
 };
 

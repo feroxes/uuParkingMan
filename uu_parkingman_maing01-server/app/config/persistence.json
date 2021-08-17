@@ -15,6 +15,10 @@
         "parkingPlace": {
           "realization": "dao/ParkingPlaceMongo",
           "maxNoi": 1000
+        },
+        "reservation": {
+          "realization": "dao/ReservationMongo",
+          "maxNoi": 1000000
         }
       }
     }
