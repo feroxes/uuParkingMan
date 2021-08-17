@@ -1,9 +1,15 @@
 const moment = require("moment");
 const Constants = require("../constants.js");
 
+const DEFAULT_DATE_FORMAT = "YYYY-MM-DD";
+
 const DayTimeHelper = {
-  now() {
-    return moment();
+  now(format = DEFAULT_DATE_FORMAT) {
+    return moment().format(format);
+  },
+
+  getDefaultDateFormat() {
+    return DEFAULT_DATE_FORMAT;
   },
 
   isDateInPast(date) {

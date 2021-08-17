@@ -41,11 +41,13 @@ class CreateAbl {
 
     // HDS 4
     if (DayTimeHelper.isDateInPast(dtoIn.dayFrom) || DayTimeHelper.isDateInPast(dtoIn.dayTo)) {
+      // 4.1
       throw new Errors.DateCouldNotBeInPast({ uuAppErrorMap }, { daysRange: `${dtoIn.dayFrom} - ${dtoIn.dayTo}` });
     }
 
     // HDS 5
     if (DayTimeHelper.getDateRage(dtoIn.dayFrom, dtoIn.dayTo) < 0) {
+      // 5.1
       throw new Errors.DateToCouldNotBeLessThenDayFrom(
         { uuAppErrorMap },
         { dayFrom: dtoIn.dayFrom, dayTo: dtoIn.dayTo }

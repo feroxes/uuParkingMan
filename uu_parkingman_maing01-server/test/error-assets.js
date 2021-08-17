@@ -20,6 +20,33 @@ const ErrorAssets = {
   parkingPlaceAlreadyCreated(cmd) {
     return { code: `${cmd}/parkingPlaceAlreadyCreated`, message: "Parking place already created." };
   },
+
+  userDoesNotExist(cmd) {
+    return { code: `${cmd}/userDoesNotExist`, message: "User does not exist." };
+  },
+
+  parkingPlaceDoesNotExist(cmd) {
+    return { code: `${cmd}/parkingPlaceDoesNotExist`, message: "Parking place does not exist." };
+  },
+
+  dateCouldNotBeInPast(cmd) {
+    return { code: `${cmd}/dateCouldNotBeInPast`, message: "Date could not be in past." };
+  },
+
+  dateToCouldNotBeLessThenDayFrom(cmd) {
+    return { code: `${cmd}/dateToCouldNotBeLessThenDayFrom`, message: "DayTo could not be less then dayFrom." };
+  },
+
+  reservationLimitExceeded(cmd) {
+    return {
+      code: `${cmd}/reservationLimitExceeded`,
+      message: "Maximum number of days of reservation has been exceeded.",
+    };
+  },
+
+  parkingPlaceAlreadyReserved(cmd) {
+    return { code: `${cmd}/parkingPlaceAlreadyReserved`, message: "Parking place already reserved." };
+  },
 };
 
 module.exports = ErrorAssets;
