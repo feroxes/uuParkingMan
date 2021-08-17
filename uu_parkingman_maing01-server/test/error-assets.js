@@ -16,6 +16,10 @@ const ErrorAssets = {
   userAlreadyCreated(cmd) {
     return { code: `${cmd}/userAlreadyCreated`, message: "User already created." };
   },
+
+  parkingPlaceAlreadyCreated(cmd) {
+    return { code: `${cmd}/parkingPlaceAlreadyCreated`, message: "Parking place already created." };
+  },
 };
 
 module.exports = ErrorAssets;

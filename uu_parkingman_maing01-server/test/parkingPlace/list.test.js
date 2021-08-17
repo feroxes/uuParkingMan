@@ -2,10 +2,10 @@ const { Helper, Workspace, Server } = require("../utils/parkingman-main-test-hel
 const ValidateHelper = require("../utils/validate-helper");
 const DefaultDtoIn = require("../default-dto-in");
 const ErrorAssets = require("../error-assets");
-const UserTestHelper = require("../utils/user-test-helper");
-const ValidateUser = require("../utils/validate-structures/user");
+const ParkingPlaceTestHelper = require("../utils/parking-place-test-helper");
+const ValidateParkingPlace = require("../utils/validate-structures/parking-place");
 
-const CMD = "user/list";
+const CMD = "parkingPlace/list";
 
 beforeAll(async () => {
   await Server.start();
@@ -28,21 +28,22 @@ afterAll(async () => {
 });
 
 function expectedHds(response, expectedOutput = {}) {
-  ValidateUser.validateListObject(response, expectedOutput);
+  ValidateParkingPlace.validateListObject(response, expectedOutput);
 }
 
-describe("Testing the user/list uuCmd...", () => {
+describe("Testing the parkingPlace/list uuCmd...", () => {
   test("HDS", async () => {
-    await UserTestHelper.userCreate();
-    const response = await UserTestHelper.userList();
+    await ParkingPlaceTestHelper.parkingPlaceCreate();
+    const response = await ParkingPlaceTestHelper.parkingPlaceList();
 
     ValidateHelper.validateBaseHds(response);
     expectedHds(response);
   });
 
   test("Test 1.2.1 - unsupportedKeys", async () => {
-    await UserTestHelper.userCreate();
-    const response = await UserTestHelper.userList(DefaultDtoIn.unsupportedKeys);
+    await ParkingPlaceTestHelper.parkingPlaceCreate();
+    const response = await ParkingPlaceTestHelper.parkingPlaceList(DefaultDtoIn.unsupportedKeys);
+    console.log('----->response<-----', response);
     const expectedWarning = ErrorAssets.unsupportedKeys(CMD);
 
     ValidateHelper.validateUnsupportedKeysWarning(response, expectedWarning);

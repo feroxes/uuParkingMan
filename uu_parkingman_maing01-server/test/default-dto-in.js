@@ -18,6 +18,13 @@ const DefaultDtoIn = {
     },
   },
 
+  ParkingPlace: {
+    Create: {
+      number: 1,
+      type: "underground",
+    },
+  },
+
   unsupportedKeys: {
     extraAttribute: "",
   },

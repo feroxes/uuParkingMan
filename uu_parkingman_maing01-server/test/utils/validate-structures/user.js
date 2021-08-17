@@ -1,6 +1,7 @@
 "use strict";
 const ValidateHelper = require("../validate-helper");
-const validateCategory = {
+
+const ValidateUser = {
   validateObject(response, dtoIn) {
     expect(response.uuIdentity).toBeDefined();
     expect(response.id).toBeDefined();
@@ -26,4 +27,4 @@ const validateCategory = {
   },
 };
 
-module.exports = validateCategory;
+module.exports = ValidateUser;
