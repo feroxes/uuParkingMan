@@ -4,6 +4,10 @@ const Warnings = {
   createUnsupportedKeys: {
     code: `${Errors.Create.UC_CODE}unsupportedKeys`,
   },
+
+  updateUnsupportedKeys: {
+    code: `${Errors.Create.UC_CODE}unsupportedKeys`,
+  },
 };
 
 module.exports = Warnings;

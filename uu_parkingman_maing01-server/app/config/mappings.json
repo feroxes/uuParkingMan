@@ -40,6 +40,11 @@
         "realization": "api/controllers/ReservationController.create",
         "httpMethod": "POST",
         "type": "CMD"
+      },
+      "reservation/update": {
+        "realization": "api/controllers/ReservationController.update",
+        "httpMethod": "POST",
+        "type": "CMD"
       }
     }
   }
