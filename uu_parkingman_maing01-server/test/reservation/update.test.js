@@ -272,4 +272,6 @@ describe("Testing the reservation/update uuCmd...", () => {
       ValidateHelper.validateError(e, expectedError);
     }
   });
+
+  // HDS 10.1 - could not be simulated
 });

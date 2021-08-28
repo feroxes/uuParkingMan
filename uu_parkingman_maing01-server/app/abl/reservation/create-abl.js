@@ -21,6 +21,7 @@ class CreateAbl {
     uuAppErrorMap = ValidationHelper.processValidationResult(
       dtoIn,
       validationResult,
+      Warnings.createUnsupportedKeys.code,
       Errors.InvalidDtoIn
     );
 
@@ -68,14 +69,17 @@ class CreateAbl {
 
     // 7.1
     if (reservations.itemList.length) {
-      const reservation = reservations.itemList.find((res) =>
-        DayTimeHelper.isBetween(dtoIn.dayFrom, res.dayFrom, res.dayTo)
+      const blockingReservation = reservations.itemList.find((res) =>
+        DayTimeHelper.isRangeOverlapping(dtoIn.dayFrom, dtoIn.dayTo, res.dayFrom, res.dayTo)
       );
-      if (reservation) {
+      if (blockingReservation) {
         // 7.2
         throw new Errors.ParkingPlaceAlreadyReserved(
           { uuAppErrorMap },
-          { reservedFrom: reservation.dayFrom, reservedTo: reservation.dayTo }
+          {
+            reservedFrom: blockingReservation.dayFrom,
+            reservedTo: blockingReservation.dayTo,
+          }
         );
       }
     }

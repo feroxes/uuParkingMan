@@ -103,8 +103,6 @@ class UpdateAbl {
           {
             reservedFrom: blockingReservation.dayFrom,
             reservedTo: blockingReservation.dayTo,
-            blockingReservation: blockingReservation,
-            dtoIn: dtoIn,
           }
         );
       }
