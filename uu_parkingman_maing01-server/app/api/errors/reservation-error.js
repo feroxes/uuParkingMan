@@ -82,10 +82,10 @@ const Update = {
     }
   },
 
-  ReservationWasNotFound: class extends ParkingmanMainUseCaseError {
+  ReservationDoesNotExist: class extends ParkingmanMainUseCaseError {
     constructor() {
       super(...arguments);
-      this.code = `${Create.UC_CODE}userDoesNotExist`;
+      this.code = `${Update.UC_CODE}reservationDoesNotExist`;
       this.message = "Reservation does not exist.";
     }
   },
@@ -93,7 +93,7 @@ const Update = {
   UserDoesNotExist: class extends ParkingmanMainUseCaseError {
     constructor() {
       super(...arguments);
-      this.code = `${Create.UC_CODE}userDoesNotExist`;
+      this.code = `${Update.UC_CODE}userDoesNotExist`;
       this.message = "User does not exist.";
     }
   },
@@ -101,7 +101,7 @@ const Update = {
   ParkingPlaceDoesNotExist: class extends ParkingmanMainUseCaseError {
     constructor() {
       super(...arguments);
-      this.code = `${Create.UC_CODE}parkingPlaceDoesNotExist`;
+      this.code = `${Update.UC_CODE}parkingPlaceDoesNotExist`;
       this.message = "Parking place does not exist.";
     }
   },
@@ -109,7 +109,7 @@ const Update = {
   DateCouldNotBeInPast: class extends ParkingmanMainUseCaseError {
     constructor() {
       super(...arguments);
-      this.code = `${Create.UC_CODE}dateCouldNotBeInPast`;
+      this.code = `${Update.UC_CODE}dateCouldNotBeInPast`;
       this.message = "Date could not be in the past.";
     }
   },
@@ -117,7 +117,7 @@ const Update = {
   DateToCouldNotBeLessThenDayFrom: class extends ParkingmanMainUseCaseError {
     constructor() {
       super(...arguments);
-      this.code = `${Create.UC_CODE}dateToCouldNotBeLessThenDayFrom`;
+      this.code = `${Update.UC_CODE}dateToCouldNotBeLessThenDayFrom`;
       this.message = "DateTo could not be less then dateFrom.";
     }
   },
@@ -125,7 +125,7 @@ const Update = {
   ReservationLimitExceeded: class extends ParkingmanMainUseCaseError {
     constructor() {
       super(...arguments);
-      this.code = `${Create.UC_CODE}reservationLimitExceeded`;
+      this.code = `${Update.UC_CODE}reservationLimitExceeded`;
       this.message = "Maximum number of days of reservation has been exceeded.";
     }
   },
@@ -133,7 +133,7 @@ const Update = {
   ParkingPlaceAlreadyReserved: class extends ParkingmanMainUseCaseError {
     constructor() {
       super(...arguments);
-      this.code = `${Create.UC_CODE}parkingPlaceAlreadyReserved`;
+      this.code = `${Update.UC_CODE}parkingPlaceAlreadyReserved`;
       this.message = "Parking place already reserved.";
     }
   },
@@ -141,7 +141,7 @@ const Update = {
   ReservationUpdateFailed: class extends ParkingmanMainUseCaseError {
     constructor() {
       super(...arguments);
-      this.code = `${Create.UC_CODE}reservationUpdateFailed`;
+      this.code = `${Update.UC_CODE}reservationUpdateFailed`;
       this.message = "Failed to update reservation.";
     }
   },

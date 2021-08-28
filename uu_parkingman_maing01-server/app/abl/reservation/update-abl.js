@@ -29,7 +29,7 @@ class UpdateAbl {
     // HDS 2
     let reservation = await this.reservationDao.get(awid, dtoIn.reservationId);
     // 2.1
-    if (!reservation) throw new Errors.ReservationWasNotFound({ uuAppErrorMap }, { reservation: dtoIn.reservationId });
+    if (!reservation) throw new Errors.ReservationDoesNotExist({ uuAppErrorMap }, { reservation: dtoIn.reservationId });
 
     // HDS 3
     const sys = reservation.sys;

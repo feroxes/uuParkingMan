@@ -47,6 +47,10 @@ const ErrorAssets = {
   parkingPlaceAlreadyReserved(cmd) {
     return { code: `${cmd}/parkingPlaceAlreadyReserved`, message: "Parking place already reserved." };
   },
+
+  reservationDoesNotExist(cmd) {
+    return { code: `${cmd}/reservationDoesNotExist`, message: "Reservation does not exist." };
+  },
 };
 
 module.exports = ErrorAssets;

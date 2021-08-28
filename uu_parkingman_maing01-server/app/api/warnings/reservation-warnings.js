@@ -6,7 +6,7 @@ const Warnings = {
   },
 
   updateUnsupportedKeys: {
-    code: `${Errors.Create.UC_CODE}unsupportedKeys`,
+    code: `${Errors.Update.UC_CODE}unsupportedKeys`,
   },
 };
 

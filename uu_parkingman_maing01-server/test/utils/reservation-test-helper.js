@@ -13,6 +13,12 @@ const ReservationTestHelper = {
     return await TestHelper.executePostCommand("reservation/create", _dtoIn);
   },
 
+  async reservationUpdate(dtoIn = {}) {
+    let _dtoIn = { ...dtoIn };
+    await TestHelper.login("Authorities");
+    return await TestHelper.executePostCommand("reservation/update", _dtoIn);
+  },
+
   async dbUpdateKey(uuObject, id) {
     let change = { ...uuObject };
     return await TestHelper.executeDbScript(
