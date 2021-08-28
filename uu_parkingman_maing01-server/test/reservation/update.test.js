@@ -59,8 +59,8 @@ describe("Testing the reservation/update uuCmd...", () => {
         .format(DateTimeHelper.getDefaultDateFormat()),
       revision: reservation.sys.rev,
     };
-    const response = await ReservationTestHelper.reservationUpdate(dtoIn);
 
+    const response = await ReservationTestHelper.reservationUpdate(dtoIn);
     ValidateHelper.validateBaseHds(response);
     expectedHds(response, dtoIn);
   });
@@ -125,6 +125,146 @@ describe("Testing the reservation/update uuCmd...", () => {
     };
     const expectedError = ErrorAssets.reservationDoesNotExist(CMD);
 
+    expect.assertions(ValidateHelper.assertionsCount.error);
+    try {
+      await ReservationTestHelper.reservationUpdate(dtoIn);
+    } catch (e) {
+      ValidateHelper.validateError(e, expectedError);
+    }
+  });
+
+  test("Test 4.1 - userDoesNotExist", async () => {
+    const reservation = await prepareBasic(Constants.defaulDuration);
+    const dtoIn = {
+      reservationId: reservation.id,
+      userId: Constants.wrongId,
+      dayTo: moment()
+        .add(Constants.defaulDuration + 1, "days")
+        .format(DateTimeHelper.getDefaultDateFormat()),
+      revision: reservation.sys.rev,
+    };
+    const expectedError = ErrorAssets.userDoesNotExist(CMD);
+    expect.assertions(ValidateHelper.assertionsCount.error);
+    try {
+      await ReservationTestHelper.reservationUpdate(dtoIn);
+    } catch (e) {
+      ValidateHelper.validateError(e, expectedError);
+    }
+  });
+
+  test("Test 5.1 - parkingPlaceDoesNotExist", async () => {
+    const reservation = await prepareBasic(Constants.defaulDuration);
+    const dtoIn = {
+      reservationId: reservation.id,
+      parkingPlaceId: Constants.wrongId,
+      dayTo: moment()
+        .add(Constants.defaulDuration + 1, "days")
+        .format(DateTimeHelper.getDefaultDateFormat()),
+      revision: reservation.sys.rev,
+    };
+    const expectedError = ErrorAssets.parkingPlaceDoesNotExist(CMD);
+
+    expect.assertions(ValidateHelper.assertionsCount.error);
+    try {
+      await ReservationTestHelper.reservationUpdate(dtoIn);
+    } catch (e) {
+      ValidateHelper.validateError(e, expectedError);
+    }
+  });
+
+  test("Test 6.1 - dateCouldNotBeInPast (dayFrom)", async () => {
+    const reservation = await prepareBasic(Constants.defaulDuration);
+    const dtoIn = {
+      reservationId: reservation.id,
+      dayFrom: Constants.dayInPast,
+      revision: reservation.sys.rev,
+    };
+    const expectedError = ErrorAssets.dateCouldNotBeInPast(CMD);
+
+    expect.assertions(ValidateHelper.assertionsCount.error);
+    try {
+      await ReservationTestHelper.reservationUpdate(dtoIn);
+    } catch (e) {
+      ValidateHelper.validateError(e, expectedError);
+    }
+  });
+
+  test("Test 6.1 - dateCouldNotBeInPast (dayTo)", async () => {
+    const reservation = await prepareBasic(Constants.defaulDuration);
+    const dtoIn = {
+      reservationId: reservation.id,
+      dayTo: Constants.dayInPast,
+      revision: reservation.sys.rev,
+    };
+    const expectedError = ErrorAssets.dateCouldNotBeInPast(CMD);
+
+    expect.assertions(ValidateHelper.assertionsCount.error);
+    try {
+      await ReservationTestHelper.reservationUpdate(dtoIn);
+    } catch (e) {
+      ValidateHelper.validateError(e, expectedError);
+    }
+  });
+
+  test("Test 7.1 - dateToCouldNotBeLessThenDayFrom", async () => {
+    const reservation = await prepareBasic(Constants.defaulDuration);
+    const dtoIn = {
+      reservationId: reservation.id,
+      dayFrom: moment().add(5, "days").format(DateTimeHelper.getDefaultDateFormat()),
+      revision: reservation.sys.rev,
+    };
+    const expectedError = ErrorAssets.dateToCouldNotBeLessThenDayFrom(CMD);
+
+    expect.assertions(ValidateHelper.assertionsCount.error);
+    try {
+      await ReservationTestHelper.reservationUpdate(dtoIn);
+    } catch (e) {
+      ValidateHelper.validateError(e, expectedError);
+    }
+  });
+
+  test("Test 8.1 - reservationLimitExceeded", async () => {
+    const reservation = await prepareBasic(Constants.defaulDuration);
+    const dtoIn = {
+      reservationId: reservation.id,
+      dayTo: moment().add(7, "days").format(DateTimeHelper.getDefaultDateFormat()),
+      revision: reservation.sys.rev,
+    };
+    const expectedError = ErrorAssets.reservationLimitExceeded(CMD);
+
+    expect.assertions(ValidateHelper.assertionsCount.error);
+    try {
+      await ReservationTestHelper.reservationUpdate(dtoIn);
+    } catch (e) {
+      ValidateHelper.validateError(e, expectedError);
+    }
+  });
+
+  test("Test 9.2 - parkingPlaceAlreadyReserved", async () => {
+    const user = await UserTestHelper.userCreate();
+    const parkingPlace = await ParkingPlaceHelper.parkingPlaceCreate();
+
+    const reservationCreateDtoIn = {
+      userId: user.id,
+      parkingPlaceId: parkingPlace.id,
+      dayFrom: DateTimeHelper.now(),
+      dayTo: moment().add(Constants.defaulDuration, "days").format(DateTimeHelper.getDefaultDateFormat()),
+    };
+    const reservation = await ReservationTestHelper.reservationCreate(reservationCreateDtoIn);
+
+    reservationCreateDtoIn.dayFrom = moment().add(10, "days").format(DateTimeHelper.getDefaultDateFormat());
+    reservationCreateDtoIn.dayTo = moment()
+      .add(10 + Constants.defaulDuration, "days")
+      .format(DateTimeHelper.getDefaultDateFormat());
+    const reservation2 = await ReservationTestHelper.reservationCreate(reservationCreateDtoIn);
+
+    const dtoIn = {
+      reservationId: reservation.id,
+      dayFrom: reservation2.dayFrom,
+      dayTo: reservation2.dayTo,
+      revision: reservation.sys.rev,
+    };
+    const expectedError = ErrorAssets.parkingPlaceAlreadyReserved(CMD);
     expect.assertions(ValidateHelper.assertionsCount.error);
     try {
       await ReservationTestHelper.reservationUpdate(dtoIn);

@@ -81,20 +81,31 @@ class UpdateAbl {
       );
     }
 
-    // HDS 9
-    let reservations = await this.dao.listByParkingPlaceId(awid, dtoIn.parkingPlaceId);
+    //TODO in create & update: check if user has another reservation in these dates
 
+    // HDS 9
+    let reservations = await this.dao.listByParkingPlaceId(awid, dtoIn.parkingPlaceId || reservation.parkingPlaceId);
     // 9.1
     if (reservations.itemList.length) {
       const blockingReservation = reservations.itemList.find(
-        (res) =>
-          DayTimeHelper.isBetween(dtoIn.dayFrom, res.dayFrom, res.dayTo) && res.reservationId !== dtoIn.reservationId
+        res =>
+          DayTimeHelper.isRangeOverlapping(
+            dtoIn.dayFrom || reservation.dayFrom,
+            dtoIn.dayTo || reservation.dayTo,
+            res.dayFrom,
+            res.dayTo
+          ) && res.id.toString() !== dtoIn.reservationId
       );
       if (blockingReservation) {
         // 9.2
         throw new Errors.ParkingPlaceAlreadyReserved(
           { uuAppErrorMap },
-          { reservedFrom: blockingReservation.dayFrom, reservedTo: blockingReservation.dayTo }
+          {
+            reservedFrom: blockingReservation.dayFrom,
+            reservedTo: blockingReservation.dayTo,
+            blockingReservation: blockingReservation,
+            dtoIn: dtoIn,
+          }
         );
       }
     }

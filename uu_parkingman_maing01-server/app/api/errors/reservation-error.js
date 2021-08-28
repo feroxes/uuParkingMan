@@ -42,7 +42,7 @@ const Create = {
     constructor() {
       super(...arguments);
       this.code = `${Create.UC_CODE}dateToCouldNotBeLessThenDayFrom`;
-      this.message = "DateTo could not be less then dateFrom.";
+      this.message = "DayTo could not be less then dayFrom.";
     }
   },
 
@@ -118,7 +118,7 @@ const Update = {
     constructor() {
       super(...arguments);
       this.code = `${Update.UC_CODE}dateToCouldNotBeLessThenDayFrom`;
-      this.message = "DateTo could not be less then dateFrom.";
+      this.message = "DayTo could not be less then dayFrom.";
     }
   },
 

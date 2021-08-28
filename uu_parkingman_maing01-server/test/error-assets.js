@@ -30,7 +30,7 @@ const ErrorAssets = {
   },
 
   dateCouldNotBeInPast(cmd) {
-    return { code: `${cmd}/dateCouldNotBeInPast`, message: "Date could not be in past." };
+    return { code: `${cmd}/dateCouldNotBeInPast`, message: "Date could not be in the past." };
   },
 
   dateToCouldNotBeLessThenDayFrom(cmd) {
