@@ -40,6 +40,11 @@
         "realization": "api/controllers/ReservationController.create",
         "httpMethod": "POST",
         "type": "CMD"
+      },
+      "reservation/listByCriteria": {
+        "realization": "api/controllers/ReservationController.listByCriteria",
+        "httpMethod": "GET",
+        "type": "CMD"
       }
     }
   }

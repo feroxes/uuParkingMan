@@ -12,6 +12,15 @@ class ReservationMongo extends ParkingmanObjectDao {
   async listByParkingPlaceId(awid, parkingPlaceId, pageInfo = {}) {
     return super.find({ awid, parkingPlaceId }, pageInfo);
   }
+
+  async listByCriteria(awid, filterMap, pageInfo = {}) {
+    const filter = { ...filterMap };
+    if (filterMap.dayFrom) {
+      filter.dayFrom = { $gte: filterMap.dayFrom };
+      filter.dayTo = { $lte: filterMap.dayTo };
+    }
+    return super.find({ awid, ...filter }, pageInfo);
+  }
 }
 
 module.exports = ReservationMongo;

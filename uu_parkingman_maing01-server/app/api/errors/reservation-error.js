@@ -71,6 +71,35 @@ const Create = {
   },
 };
 
+const ListByCriteria = {
+  UC_CODE: `${RESERVATION_ERROR_PREFIX}listByCriteria/`,
+
+  InvalidDtoIn: class extends ParkingmanMainUseCaseError {
+    constructor() {
+      super(...arguments);
+      this.code = `${ListByCriteria.UC_CODE}invalidDtoIn`;
+      this.message = "DtoIn is not valid.";
+    }
+  },
+
+  DayToParameterIsRequired: class extends ParkingmanMainUseCaseError {
+    constructor() {
+      super(...arguments);
+      this.code = `${ListByCriteria.UC_CODE}dayToParameterIsRequired`;
+      this.message = "DayTo parameter is required if there is dayFrom in dtoIn.";
+    }
+  },
+
+  DayFromParameterIsRequired: class extends ParkingmanMainUseCaseError {
+    constructor() {
+      super(...arguments);
+      this.code = `${ListByCriteria.UC_CODE}dayFromParameterIsRequired`;
+      this.message = "DayFrom parameter is required if there is dayTo in dtoIn.";
+    }
+  },
+};
+
 module.exports = {
+  ListByCriteria,
   Create,
 };
