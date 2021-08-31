@@ -67,6 +67,7 @@ describe("Testing the reservation/update uuCmd...", () => {
 
   test("HDS", async () => {
     const reservation = await prepareBasic(Constants.defaulDuration);
+    //fixme uuIdentity move to constants
     const user2 = await UserTestHelper.userCreate({ uuIdentity: "12-1350-1" });
     const parkingPlace2 = await ParkingPlaceHelper.parkingPlaceCreate({ number: 9 });
 

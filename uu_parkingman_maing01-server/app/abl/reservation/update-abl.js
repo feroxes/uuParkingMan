@@ -29,6 +29,7 @@ class UpdateAbl {
     // HDS 2
     let reservation = await this.reservationDao.get(awid, dtoIn.reservationId);
     // 2.1
+    //fixme {reservationId: dtoIn.id}
     if (!reservation) throw new Errors.ReservationDoesNotExist({ uuAppErrorMap }, { reservation: dtoIn.reservationId });
 
     // HDS 3
@@ -45,6 +46,9 @@ class UpdateAbl {
         throw new Errors.UserDoesNotExist({ uuAppErrorMap }, { userId: dtoIn.userId });
       }
     }
+    //fixme I think we need to add one more additional check. If the user who invokes the command is not Authorities and
+    // reservation.userId !== dtoIn.userId, he couldn't update reservation.
+    // otherwise, for example I, will be able to update your reservation.
 
     // HDS 5
     if (dtoIn.parkingPlaceId) {
@@ -55,6 +59,9 @@ class UpdateAbl {
         throw new Errors.ParkingPlaceDoesNotExist({ uuAppErrorMap }, { parkingPlaceId: dtoIn.parkingPlaceId });
       }
     }
+
+    //TODO HDS 6,7,8 could be moved to separate server component. I think we will check isDateInPast, getDateRage, checkMaxReservationRange
+    // in a lot off places.
 
     // HDS 6
     if (DayTimeHelper.isDateInPast(dtoIn.dayFrom) || DayTimeHelper.isDateInPast(dtoIn.dayTo)) {
@@ -87,8 +94,9 @@ class UpdateAbl {
     let reservations = await this.dao.listByParkingPlaceId(awid, dtoIn.parkingPlaceId || reservation.parkingPlaceId);
     // 9.1
     if (reservations.itemList.length) {
+      //TODO need to discuss this step
       const blockingReservation = reservations.itemList.find(
-        res =>
+        (res) =>
           DayTimeHelper.isRangeOverlapping(
             dtoIn.dayFrom || reservation.dayFrom,
             dtoIn.dayTo || reservation.dayTo,
