@@ -53,7 +53,7 @@ describe("Testing the reservation/update uuCmd...", () => {
   test("HDS", async () => {
     const reservation = await prepareBasic(Constants.defaulDuration);
     const dtoIn = {
-      reservationId: reservation.id,
+      id: reservation.id,
       dayTo: moment()
         .add(Constants.defaulDuration + 1, "days")
         .format(DateTimeHelper.getDefaultDateFormat()),
@@ -67,12 +67,11 @@ describe("Testing the reservation/update uuCmd...", () => {
 
   test("HDS", async () => {
     const reservation = await prepareBasic(Constants.defaulDuration);
-    //fixme uuIdentity move to constants
-    const user2 = await UserTestHelper.userCreate({ uuIdentity: "12-1350-1" });
+    const user2 = await UserTestHelper.userCreate({ uuIdentity: Constants.uuIdentity2 });
     const parkingPlace2 = await ParkingPlaceHelper.parkingPlaceCreate({ number: 9 });
 
     const dtoIn = {
-      reservationId: reservation.id,
+      id: reservation.id,
       userId: user2.id,
       parkingPlaceId: parkingPlace2.id,
       dayFrom: moment()
@@ -92,7 +91,7 @@ describe("Testing the reservation/update uuCmd...", () => {
   test("Test 1.2.1 - unsupportedKeys", async () => {
     const reservation = await prepareBasic(Constants.defaulDuration);
     const dtoIn = {
-      reservationId: reservation.id,
+      id: reservation.id,
       dayTo: moment()
         .add(Constants.defaulDuration + 1, "days")
         .format(DateTimeHelper.getDefaultDateFormat()),
@@ -118,7 +117,7 @@ describe("Testing the reservation/update uuCmd...", () => {
   test("Test 2.1 - reservationDoesNotExist", async () => {
     const reservation = await prepareBasic(Constants.defaulDuration);
     const dtoIn = {
-      reservationId: Constants.wrongId,
+      id: Constants.wrongId,
       dayTo: moment()
         .add(Constants.defaulDuration + 1, "days")
         .format(DateTimeHelper.getDefaultDateFormat()),
@@ -134,10 +133,13 @@ describe("Testing the reservation/update uuCmd...", () => {
     }
   });
 
-  test("Test 4.1 - userDoesNotExist", async () => {
+  //TODO Ask Yarik how to better manage multiple profiles in tests (not beforeAll?)
+  //TODO add tests 3.2, 3.3
+
+  test("Test 5.1 - userDoesNotExist", async () => {
     const reservation = await prepareBasic(Constants.defaulDuration);
     const dtoIn = {
-      reservationId: reservation.id,
+      id: reservation.id,
       userId: Constants.wrongId,
       dayTo: moment()
         .add(Constants.defaulDuration + 1, "days")
@@ -153,10 +155,10 @@ describe("Testing the reservation/update uuCmd...", () => {
     }
   });
 
-  test("Test 5.1 - parkingPlaceDoesNotExist", async () => {
+  test("Test 6.1 - parkingPlaceDoesNotExist", async () => {
     const reservation = await prepareBasic(Constants.defaulDuration);
     const dtoIn = {
-      reservationId: reservation.id,
+      id: reservation.id,
       parkingPlaceId: Constants.wrongId,
       dayTo: moment()
         .add(Constants.defaulDuration + 1, "days")
@@ -173,10 +175,10 @@ describe("Testing the reservation/update uuCmd...", () => {
     }
   });
 
-  test("Test 6.1 - dateCouldNotBeInPast (dayFrom)", async () => {
+  test("Test 7.1 - dateCouldNotBeInPast (dayFrom)", async () => {
     const reservation = await prepareBasic(Constants.defaulDuration);
     const dtoIn = {
-      reservationId: reservation.id,
+      id: reservation.id,
       dayFrom: Constants.dayInPast,
       revision: reservation.sys.rev,
     };
@@ -190,10 +192,10 @@ describe("Testing the reservation/update uuCmd...", () => {
     }
   });
 
-  test("Test 6.1 - dateCouldNotBeInPast (dayTo)", async () => {
+  test("Test 7.1 - dateCouldNotBeInPast (dayTo)", async () => {
     const reservation = await prepareBasic(Constants.defaulDuration);
     const dtoIn = {
-      reservationId: reservation.id,
+      id: reservation.id,
       dayTo: Constants.dayInPast,
       revision: reservation.sys.rev,
     };
@@ -207,10 +209,10 @@ describe("Testing the reservation/update uuCmd...", () => {
     }
   });
 
-  test("Test 7.1 - dateToCouldNotBeLessThenDayFrom", async () => {
+  test("Test 8.1 - dateToCouldNotBeLessThenDayFrom", async () => {
     const reservation = await prepareBasic(Constants.defaulDuration);
     const dtoIn = {
-      reservationId: reservation.id,
+      id: reservation.id,
       dayFrom: moment().add(5, "days").format(DateTimeHelper.getDefaultDateFormat()),
       revision: reservation.sys.rev,
     };
@@ -224,10 +226,10 @@ describe("Testing the reservation/update uuCmd...", () => {
     }
   });
 
-  test("Test 8.1 - reservationLimitExceeded", async () => {
+  test("Test 9.1 - reservationLimitExceeded", async () => {
     const reservation = await prepareBasic(Constants.defaulDuration);
     const dtoIn = {
-      reservationId: reservation.id,
+      id: reservation.id,
       dayTo: moment().add(7, "days").format(DateTimeHelper.getDefaultDateFormat()),
       revision: reservation.sys.rev,
     };
@@ -241,7 +243,7 @@ describe("Testing the reservation/update uuCmd...", () => {
     }
   });
 
-  test("Test 9.2 - parkingPlaceAlreadyReserved", async () => {
+  test("Test 10.2 - parkingPlaceAlreadyReserved", async () => {
     const user = await UserTestHelper.userCreate();
     const parkingPlace = await ParkingPlaceHelper.parkingPlaceCreate();
 
@@ -260,7 +262,7 @@ describe("Testing the reservation/update uuCmd...", () => {
     const reservation2 = await ReservationTestHelper.reservationCreate(reservationCreateDtoIn);
 
     const dtoIn = {
-      reservationId: reservation.id,
+      id: reservation.id,
       dayFrom: reservation2.dayFrom,
       dayTo: reservation2.dayTo,
       revision: reservation.sys.rev,

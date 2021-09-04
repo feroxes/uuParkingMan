@@ -7,7 +7,11 @@ class ReservationController {
     return CreateAbl.create(ucEnv.getUri().getAwid(), ucEnv.getDtoIn());
   }
   update(ucEnv) {
-    return UpdateAbl.update(ucEnv.getUri().getAwid(), ucEnv.getDtoIn());
+    return UpdateAbl.update(
+      ucEnv.getUri().getAwid(),
+      ucEnv.getDtoIn(),
+      ucEnv.getAuthorizationResult()
+    );
   }
 }
 

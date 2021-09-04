@@ -16,7 +16,9 @@ class UpdateAbl {
     this.parkingPlaceDao = DaoFactory.getDao(Constants.Schemas.PARKING_PLACE);
   }
 
-  async update(awid, dtoIn, uuAppErrorMap = {}) {
+  async update(awid, dtoIn, authorizationResult, uuAppErrorMap = {}) {
+    console.log("<<<MY uuId>>>");
+    console.log();
     // HDS 1, 1.2, 1.2.1, 1.3, 1.3.1
     const validationResult = this.validator.validate("reservationUpdateDtoInType", dtoIn);
     uuAppErrorMap = ValidationHelper.processValidationResult(
@@ -27,60 +29,83 @@ class UpdateAbl {
     );
 
     // HDS 2
-    let reservation = await this.reservationDao.get(awid, dtoIn.reservationId);
+    let reservation = await this.reservationDao.get(awid, dtoIn.id);
     // 2.1
-    //fixme {reservationId: dtoIn.id}
-    if (!reservation) throw new Errors.ReservationDoesNotExist({ uuAppErrorMap }, { reservation: dtoIn.reservationId });
+    if (!reservation) throw new Errors.ReservationDoesNotExist({ uuAppErrorMap }, { reservation: dtoIn.id });
 
     // HDS 3
+    if (!authorizationResult.getAuthorizedProfiles().includes("Authorities")) {
+
+      //HDS 3.1
+      const currentReservationUser = await this.userDao.get(awid, reservation.userId);
+
+      //HDS 3.2
+      if (authorizationResult.getUuIdentity() !== currentReservationUser?.uuIdentity) {
+        throw new Errors.ReservationBelongsToDifferentUser(
+          { uuAppErrorMap },
+          { currentReservationUser: currentReservationUser.uuIdentity }
+        );
+      }
+
+      //HDS 3.3
+      if (dtoIn.userId && currentReservationUser?.userId !== dtoIn.userId) {
+        throw new Errors.NotAllowedToChangeUser(
+          { uuAppErrorMap },
+          { currentReservationUser: currentReservationUser.uuIdentity }
+        );
+      }
+
+      //TODO add logic to limit update of past reservations by non-Authorities; maybe (reservation.DayTo >= today && dtoIn.DayTo >= today) ?
+    }
+
+    // HDS 4
     const sys = reservation.sys;
     sys.rev = dtoIn.revision;
     delete dtoIn.revision;
+    dtoIn.dayFrom = dtoIn.dayFrom || reservation.dayFrom;
+    dtoIn.dayTo = dtoIn.dayTo || reservation.dayTo;
 
-    // HDS 4
+    // HDS 5
     if (dtoIn.userId) {
-      // 4.1
+      // 5.1
       const user = await this.userDao.get(awid, dtoIn.userId);
-      // 4.2
+      // 5.2
       if (!user) {
         throw new Errors.UserDoesNotExist({ uuAppErrorMap }, { userId: dtoIn.userId });
       }
     }
-    //fixme I think we need to add one more additional check. If the user who invokes the command is not Authorities and
-    // reservation.userId !== dtoIn.userId, he couldn't update reservation.
-    // otherwise, for example I, will be able to update your reservation.
 
-    // HDS 5
+    // HDS 6
     if (dtoIn.parkingPlaceId) {
-      // 5.1
+      // 6.1
       const parkingPlace = await this.parkingPlaceDao.get(awid, dtoIn.parkingPlaceId);
-      // 5.2
+      // 6.2
       if (!parkingPlace) {
         throw new Errors.ParkingPlaceDoesNotExist({ uuAppErrorMap }, { parkingPlaceId: dtoIn.parkingPlaceId });
       }
     }
 
-    //TODO HDS 6,7,8 could be moved to separate server component. I think we will check isDateInPast, getDateRage, checkMaxReservationRange
+    //TODO HDS 7,8,9 could be moved to separate server component. I think we will check isDateInPast, getDateRage, checkMaxReservationRange
     // in a lot off places.
 
-    // HDS 6
+    // HDS 7
     if (DayTimeHelper.isDateInPast(dtoIn.dayFrom) || DayTimeHelper.isDateInPast(dtoIn.dayTo)) {
-      // 6.1
+      // 7.1
       throw new Errors.DateCouldNotBeInPast({ uuAppErrorMap }, { daysRange: `${dtoIn.dayFrom} - ${dtoIn.dayTo}` });
     }
 
-    // HDS 7
+    // HDS 8
     if (DayTimeHelper.getDateRage(dtoIn.dayFrom, dtoIn.dayTo) < 0) {
-      // 7.1
+      // 8.1
       throw new Errors.DateToCouldNotBeLessThenDayFrom(
         { uuAppErrorMap },
         { dayFrom: dtoIn.dayFrom, dayTo: dtoIn.dayTo }
       );
     }
 
-    // HDS 8
+    // HDS 9
     const isRangeMoreThanLimit = DayTimeHelper.checkMaxReservationRange(dtoIn.dayFrom, dtoIn.dayTo);
-    // 8.1
+    // 9.1
     if (isRangeMoreThanLimit) {
       throw new Errors.ReservationLimitExceeded(
         { uuAppErrorMap },
@@ -90,22 +115,18 @@ class UpdateAbl {
 
     //TODO in create & update: check if user has another reservation in these dates
 
-    // HDS 9
+    // HDS 10
     let reservations = await this.dao.listByParkingPlaceId(awid, dtoIn.parkingPlaceId || reservation.parkingPlaceId);
-    // 9.1
+    // 10.1
     if (reservations.itemList.length) {
       //TODO need to discuss this step
       const blockingReservation = reservations.itemList.find(
         (res) =>
-          DayTimeHelper.isRangeOverlapping(
-            dtoIn.dayFrom || reservation.dayFrom,
-            dtoIn.dayTo || reservation.dayTo,
-            res.dayFrom,
-            res.dayTo
-          ) && res.id.toString() !== dtoIn.reservationId
+          DayTimeHelper.isRangeOverlapping(dtoIn.dayFrom, dtoIn.dayTo, res.dayFrom, res.dayTo) &&
+          res.id.toString() !== dtoIn.id
       );
       if (blockingReservation) {
-        // 9.2
+        // 10.2
         throw new Errors.ParkingPlaceAlreadyReserved(
           { uuAppErrorMap },
           {
@@ -116,15 +137,15 @@ class UpdateAbl {
       }
     }
 
-    // HDS 10
+    // HDS 11
     try {
-      reservation = await this.dao.update(awid, dtoIn.reservationId, { sys, ...dtoIn });
+      reservation = await this.dao.update(awid, dtoIn.id, { sys, ...dtoIn });
     } catch (e) {
-      // 10.1
+      // 11.1
       throw new Errors.ReservationUpdateFailed({ uuAppErrorMap }, e);
     }
 
-    // HDS 11
+    // HDS 12
     return {
       ...reservation,
       uuAppErrorMap,
