@@ -40,6 +40,11 @@
         "realization": "api/controllers/ReservationController.create",
         "httpMethod": "POST",
         "type": "CMD"
+      },
+      "reservation/delete": {
+        "realization": "api/controllers/ReservationController.delete",
+        "httpMethod": "POST",
+        "type": "CMD"
       }
     }
   }

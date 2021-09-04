@@ -36,6 +36,10 @@
       "reservation/create": {
         "sysStateList": ["active"],
         "profileList": ["Users","Authorities"]
+      },
+      "reservation/delete": {
+        "sysStateList": ["active"],
+        "profileList": ["Users","Authorities"]
       }
     }
   }

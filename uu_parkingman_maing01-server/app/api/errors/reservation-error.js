@@ -71,6 +71,35 @@ const Create = {
   },
 };
 
+const Delete = {
+  UC_CODE: `${RESERVATION_ERROR_PREFIX}delete/`,
+
+  InvalidDtoIn: class extends ParkingmanMainUseCaseError {
+    constructor() {
+      super(...arguments);
+      this.code = `${Delete.UC_CODE}invalidDtoIn`;
+      this.message = "DtoIn is not valid.";
+    }
+  },
+
+  ReservationDoesNotExist: class extends ParkingmanMainUseCaseError {
+    constructor() {
+      super(...arguments);
+      this.code = `${Delete.UC_CODE}reservationDoesNotExist`;
+      this.message = "Reservation does not exist.";
+    }
+  },
+
+  ReservationDeleteFailed: class extends ParkingmanMainUseCaseError {
+    constructor() {
+      super(...arguments);
+      this.code = `${Delete.UC_CODE}reservationDeleteFailed`;
+      this.message = "Failed to delete reservation.";
+    }
+  },
+};
+
 module.exports = {
   Create,
+  Delete,
 };
