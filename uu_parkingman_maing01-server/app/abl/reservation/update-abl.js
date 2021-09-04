@@ -17,8 +17,6 @@ class UpdateAbl {
   }
 
   async update(awid, dtoIn, authorizationResult, uuAppErrorMap = {}) {
-    console.log("<<<MY uuId>>>");
-    console.log();
     // HDS 1, 1.2, 1.2.1, 1.3, 1.3.1
     const validationResult = this.validator.validate("reservationUpdateDtoInType", dtoIn);
     uuAppErrorMap = ValidationHelper.processValidationResult(
