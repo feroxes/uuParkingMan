@@ -65,20 +65,18 @@ class CreateAbl {
     }
 
     // HDS 7
-    let reservations = await this.dao.listByParkingPlaceId(awid, dtoIn.parkingPlaceId);
+    let reservations = await this.dao.listByOverlappingDates(awid, {
+      parkingPlaceId: dtoIn.parkingPlaceId,
+      dayFrom: dtoIn.dayTo,
+      dayTo: dtoIn.dayFrom,
+    });
 
     // 7.1
     if (reservations.itemList.length) {
-      const reservation = reservations.itemList.find((res) =>
-        DayTimeHelper.isBetween(dtoIn.dayFrom, res.dayFrom, res.dayTo)
+      throw new Errors.ParkingPlaceAlreadyReserved(
+        { uuAppErrorMap },
+        { reservedFrom: reservations.itemList[0].dayFrom, reservedTo: reservations.itemList[0].dayTo }
       );
-      if (reservation) {
-        // 7.2
-        throw new Errors.ParkingPlaceAlreadyReserved(
-          { uuAppErrorMap },
-          { reservedFrom: reservation.dayFrom, reservedTo: reservation.dayTo }
-        );
-      }
     }
 
     // HDS 8
