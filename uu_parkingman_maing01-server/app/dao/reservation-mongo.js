@@ -13,7 +13,6 @@ class ReservationMongo extends ParkingmanObjectDao {
     return super.find({ awid, parkingPlaceId }, pageInfo);
   }
 
-  // unlike listByCriteria, this dao inverses lte / gte for dates, and I doubt we will use this iversion
   async listByOverlappingDates(awid, filterMap, pageInfo = {}) {
     const filter = { ...filterMap };
     if (filterMap.dayFrom) filter.dayFrom = { $lte: filterMap.dayFrom };
