@@ -23,14 +23,12 @@ class ListByCriteriaAbl {
     );
 
     // HDS 2
-    if (dtoIn.filterMap) {
-      if (dtoIn.filterMap.dayFrom && !dtoIn.filterMap.dayTo) {
-        // 2.1
-        throw new Errors.DayToParameterIsRequired({ uuAppErrorMap }, { dtoIn });
-      } else if (dtoIn.filterMap.dayTo && !dtoIn.filterMap.dayFrom) {
-        // 2.2
-        throw new Errors.DayFromParameterIsRequired({ uuAppErrorMap }, { dtoIn });
-      }
+    if (dtoIn.dayFrom && !dtoIn.dayTo) {
+      // 2.1
+      throw new Errors.DayToParameterIsRequired({ uuAppErrorMap }, { dtoIn });
+    } else if (dtoIn.dayTo && !dtoIn.dayFrom) {
+      // 2.2
+      throw new Errors.DayFromParameterIsRequired({ uuAppErrorMap }, { dtoIn });
     }
 
     // HDS 3

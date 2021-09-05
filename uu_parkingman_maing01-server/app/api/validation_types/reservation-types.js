@@ -7,11 +7,11 @@ const reservationCreateDtoInType = shape({
 });
 
 const reservationListByCriteriaDtoInType = shape({
+  dayFrom: date(),
+  dayTo: date(),
   filterMap: shape({
     userId: id(),
-    parkingPlaceId: id(),
-    dayFrom: date(),
-    dayTo: date(),
+    parkingPlaceId: id()
   }),
   pageInfo: shape({
     pageIndex: integer(),
