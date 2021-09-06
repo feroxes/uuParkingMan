@@ -47,6 +47,20 @@ const ErrorAssets = {
   parkingPlaceAlreadyReserved(cmd) {
     return { code: `${cmd}/parkingPlaceAlreadyReserved`, message: "Parking place already reserved." };
   },
+
+  dayToParameterIsRequired(cmd) {
+    return {
+      code: `${cmd}/dayToParameterIsRequired`,
+      message: "DayTo parameter is required if there is dayFrom in dtoIn.",
+    };
+  },
+
+  dayFromParameterIsRequired(cmd) {
+    return {
+      code: `${cmd}/dayFromParameterIsRequired`,
+      message: "DayFrom parameter is required if there is dayTo in dtoIn.",
+    };
+  },
 };
 
 module.exports = ErrorAssets;

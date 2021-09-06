@@ -5,6 +5,7 @@ const { ValidationHelper } = require("uu_appg01_server").AppServer;
 const Errors = require("../../api/errors/reservation-error.js").ListByCriteria;
 const Warnings = require("../../api/warnings/reservation-warnings.js");
 const Constants = require("../constants.js");
+const DayTimeHelper = require("../helpers/day-time-helper.js");
 
 class ListByCriteriaAbl {
   constructor() {
@@ -23,25 +24,38 @@ class ListByCriteriaAbl {
     );
 
     // HDS 2
-    if (dtoIn.dayFrom && !dtoIn.dayTo) {
-      // 2.1
-      throw new Errors.DayToParameterIsRequired({ uuAppErrorMap }, { dtoIn });
-    } else if (dtoIn.dayTo && !dtoIn.dayFrom) {
-      // 2.2
-      throw new Errors.DayFromParameterIsRequired({ uuAppErrorMap }, { dtoIn });
+    if (dtoIn.filterMap) {
+      if (
+        dtoIn.filterMap.dayFrom &&
+        dtoIn.filterMap.dayTo &&
+        DayTimeHelper.getDateRage(dtoIn.filterMap.dayFrom, dtoIn.filterMap.dayTo) < 0
+      ) {
+        // 2.1
+        throw new Errors.DateToCouldNotBeLessThenDayFrom(
+          { uuAppErrorMap },
+          { dayFrom: dtoIn.filterMap.dayFrom, dayTo: dtoIn.filterMap.dayTo }
+        );
+      } else if (dtoIn.filterMap.dayFrom && !dtoIn.filterMap.dayTo) {
+        // 2.2
+        throw new Errors.DayToParameterIsRequired({ uuAppErrorMap }, { dtoIn });
+      } else if (!dtoIn.filterMap.dayFrom && dtoIn.filterMap.dayTo) {
+        // 2.3
+        throw new Errors.DayFromParameterIsRequired({ uuAppErrorMap }, { dtoIn });
+      }
     }
 
-    // HDS 3
-    let reservationList = {};
-    if (dtoIn.filterMap && Object.keys(dtoIn.filterMap).length) {
-      // 3.1
-      reservationList = await this.dao.listByCriteria(awid, dtoIn.filterMap);
-    } else {
-      // 3.2
-      reservationList = await this.dao.list(awid);
-    }
+    //HDS 3
+    const filterMap = {
+      ...dtoIn.filterMap,
+      ...(dtoIn.filterMap && {
+        ...DayTimeHelper.prepareFilterMapByDays(dtoIn.filterMap.dayFrom, dtoIn.filterMap.dayTo),
+      }),
+    };
 
     // HDS 4
+    const reservationList = await this.dao.listByCriteria(awid, filterMap);
+
+    // HDS 5
     return {
       ...reservationList,
       uuAppErrorMap,

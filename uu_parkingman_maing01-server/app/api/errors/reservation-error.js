@@ -82,6 +82,14 @@ const ListByCriteria = {
     }
   },
 
+  DateToCouldNotBeLessThenDayFrom: class extends ParkingmanMainUseCaseError {
+    constructor() {
+      super(...arguments);
+      this.code = `${ListByCriteria.UC_CODE}dateToCouldNotBeLessThenDayFrom`;
+      this.message = "DayTo could not be less then dayFrom.";
+    }
+  },
+
   DayToParameterIsRequired: class extends ParkingmanMainUseCaseError {
     constructor() {
       super(...arguments);

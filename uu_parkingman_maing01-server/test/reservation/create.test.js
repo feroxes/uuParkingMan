@@ -48,7 +48,7 @@ async function prepareBasic(amount = 3) {
   };
 }
 
-describe("Testing the user/create uuCmd...", () => {
+describe("Testing the reservation/create uuCmd...", () => {
   test("HDS", async () => {
     const dtoIn = await prepareBasic();
 
