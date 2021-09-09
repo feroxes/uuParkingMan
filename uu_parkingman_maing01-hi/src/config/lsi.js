@@ -17,16 +17,10 @@ const Lsi = {
 
   about: {
     header: {
-      cs: "O aplikaci uuParkingman",
-      en: "About application uuParkingman",
+      en: "uuParkingman",
     },
     creatorsHeader: {
-      cs: "Tvůrci aplikace",
       en: "Application creators",
-    },
-    termsOfUse: {
-      cs: "Podmínky užívání",
-      en: "Terms of use",
     },
   },
 

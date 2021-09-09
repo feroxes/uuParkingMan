@@ -61,18 +61,14 @@ export const About = createVisualComponent({
     //@@viewOn:private
     const aboutLsi = AboutCfg.about || {};
     const licence = AboutCfg.licence || {};
-    const usedTechnologies = AboutCfg.usedTechnologies || {};
 
     // NOTE Some of these cannot be passed as prop={<UU5.Bricks.Lsi />} therefore we're using useLsi() hook.
     let about = useLsi(aboutLsi);
     let organisation = useLsi(licence.organisation);
     let authorities = useLsi(licence.authorities);
-    let technologies = useLsi(usedTechnologies.technologies);
-    let content = useLsi(usedTechnologies.content);
 
     let header = useLsi(Lsi.about.header);
     let creatorsHeader = useLsi(Lsi.about.creatorsHeader);
-    let termsOfUse = useLsi(Lsi.about.termsOfUse);
     //@@viewOff:private
 
     //@@viewOn:interface
@@ -93,7 +89,6 @@ export const About = createVisualComponent({
       );
     }
     const leadingAuthors = getAuthors(AboutCfg.leadingAuthors);
-    const otherAuthors = getAuthors(AboutCfg.otherAuthors);
     const attrs = UU5.Common.VisualComponent.getAttrs(props, CLASS_NAMES.main());
     return (
       <UU5.Bricks.Section {...attrs}>
@@ -101,13 +96,8 @@ export const About = createVisualComponent({
 
         <Plus4U5.App.About header={header} content={about} />
         <Plus4U5.App.Licence organisation={organisation} authorities={authorities} />
-        <Plus4U5.App.Authors header={creatorsHeader} leadingAuthors={leadingAuthors} otherAuthors={otherAuthors} />
-        <Plus4U5.App.Technologies technologies={technologies} content={content} />
-        {licence.termsOfUse && (
-          <UU5.Bricks.P className={CLASS_NAMES.termsOfUse()}>
-            <UU5.Bricks.Link href={licence.termsOfUse} target="_blank" content={termsOfUse} />
-          </UU5.Bricks.P>
-        )}
+        <Plus4U5.App.Authors header={creatorsHeader} leadingAuthors={leadingAuthors} />
+
         <UU5.Bricks.Div className={CLASS_NAMES.logos()}>
           <UU5.Bricks.Image responsive={false} src="assets/plus4u.svg" />
           <UU5.Bricks.Image responsive={false} src="assets/unicorn.svg" />
