@@ -36,11 +36,15 @@ const CLASS_NAMES = {
   `,
   logos: () => Config.Css.css`
     text-align:center;
-    margin-top: 56px;
 
     .uu5-bricks-image {
       height: 80px;
     }
+  `,
+  authors: () => Config.Css.css`
+    position: relative;
+    bottom: 55px;
+    background: #ffffff;
   `,
   termsOfUse: () => Config.Css.css`
     text-align:center;
@@ -90,11 +94,13 @@ export const About = createVisualComponent({
     return (
       <UU5.Bricks.Section {...attrs}>
         <Plus4U5.App.ArtifactSetter territoryBaseUri="" artifactId="" />
-
         <Plus4U5.App.About header={header} content={about} />
         <Plus4U5.App.Licence organisation={organisation} authorities={authorities} />
-        <Plus4U5.App.Authors header={creatorsHeader} leadingAuthors={leadingAuthors} />
-
+        <Plus4U5.App.Authors
+          className={CLASS_NAMES.authors()}
+          header={creatorsHeader}
+          leadingAuthors={leadingAuthors}
+        />
         <UU5.Bricks.Div className={CLASS_NAMES.logos()}>
           <UU5.Bricks.Image responsive={false} src="assets/plus4u.svg" />
           <UU5.Bricks.Image responsive={false} src="assets/unicorn.svg" />

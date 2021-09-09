@@ -1,16 +1,9 @@
-import UU5 from "uu5g04";
-
 export const About = {
   about: {
     en: "Enjoy 👍",
   },
   licence: {
-    termsOfUse: "https://unicorn.com/tou/your_product",
     organisation: {
-      cs: {
-        name: "Unicorn a.s.",
-        uri: "https://www.unicorn.com/",
-      },
       en: {
         name: "Unicorn a.s.",
         uri: "https://www.unicorn.com/",
