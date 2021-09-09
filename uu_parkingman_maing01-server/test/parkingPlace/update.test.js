@@ -2,11 +2,11 @@ const { Helper, Workspace, Server } = require("../utils/parkingman-main-test-hel
 const ValidateHelper = require("../utils/validate-helper");
 const DefaultDtoIn = require("../default-dto-in");
 const ErrorAssets = require("../error-assets");
-const UserTestHelper = require("../utils/user-test-helper");
-const ValidateUser = require("../utils/validate-structures/user");
+const ParkingPlaceTestHelper = require("../utils/parking-place-test-helper");
+const ValidateParkingPlace = require("../utils/validate-structures/parking-place");
 const Constants = require("../constants.js");
 
-const CMD = "user/update";
+const CMD = "parkingPlace/update";
 
 beforeAll(async () => {
   await Server.start();
@@ -29,25 +29,28 @@ afterAll(async () => {
 });
 
 function expectedHds(response) {
-  ValidateHelper.validateBaseObjectData(response);
-  ValidateUser.validateObject(response, DefaultDtoIn.User.Update);
+  ValidateHelper.validateBaseHds(response);
+  ValidateParkingPlace.validateObject(response, DefaultDtoIn.ParkingPlace.Update);
 }
 
-describe("Testing the user/update uuCmd...", () => {
+describe("Testing the parkingPlace/update uuCmd...", () => {
   test("HDS", async () => {
-    const user = await UserTestHelper.userCreate();
-    const response = await UserTestHelper.userUpdate({ id: user.id });
+    const parkingPlace = await ParkingPlaceTestHelper.parkingPlaceCreate();
+    const response = await ParkingPlaceTestHelper.parkingPlaceUpdate({ id: parkingPlace.id });
+
     ValidateHelper.validateBaseHds(response);
     expectedHds(response);
   });
 
   test("Test 1.2.1 - unsupportedKeys", async () => {
-    const user = await UserTestHelper.userCreate();
-    const response = await UserTestHelper.userUpdate({ id: user.id, ...DefaultDtoIn.unsupportedKeys });
+    const parkingPlace = await ParkingPlaceTestHelper.parkingPlaceCreate();
+    const response = await ParkingPlaceTestHelper.parkingPlaceUpdate({
+      id: parkingPlace.id,
+      ...DefaultDtoIn.unsupportedKeys,
+    });
     const expectedWarning = ErrorAssets.unsupportedKeys(CMD);
 
     ValidateHelper.validateUnsupportedKeysWarning(response, expectedWarning);
-    expectedHds(response);
   });
 
   test("Test 1.3.1 - invalidDtoIn", async () => {
@@ -60,12 +63,12 @@ describe("Testing the user/update uuCmd...", () => {
     }
   });
 
-  test("Test 2.1 - userDoesNotExist", async () => {
-    const expectedError = ErrorAssets.userDoesNotExist(CMD);
+  test("Test 2.1 - parkingPlaceDoesNotExist", async () => {
+    const expectedError = ErrorAssets.parkingPlaceDoesNotExist(CMD);
     expect.assertions(ValidateHelper.assertionsCount.invalidDtoIn);
 
     try {
-      await UserTestHelper.userUpdate({ id: Constants.wrongId });
+      await ParkingPlaceTestHelper.parkingPlaceUpdate({ id: Constants.wrongId });
     } catch (e) {
       ValidateHelper.validateError(e, expectedError);
     }

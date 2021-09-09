@@ -30,6 +30,10 @@ const DefaultDtoIn = {
       number: 1,
       type: "underground",
     },
+    Update: {
+      number: 2,
+      type: "surface",
+    },
   },
 
   unsupportedKeys: {

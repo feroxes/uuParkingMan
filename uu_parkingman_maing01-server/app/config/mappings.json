@@ -50,6 +50,11 @@
         "realization": "api/controllers/UserController.update",
         "httpMethod": "POST",
         "type": "CMD"
+      },
+      "parkingPlace/update": {
+        "realization": "api/controllers/ParkingPlaceController.update",
+        "httpMethod": "POST",
+        "type": "CMD"
       }
     }
   }

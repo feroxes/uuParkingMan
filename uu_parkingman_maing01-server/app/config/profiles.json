@@ -44,6 +44,10 @@
       "user/update": {
         "sysStateList": ["active"],
         "profileList": ["Authorities"]
+      },
+      "parkingPlace/update": {
+        "sysStateList": ["active"],
+        "profileList": ["Authorities"]
       }
     }
   }

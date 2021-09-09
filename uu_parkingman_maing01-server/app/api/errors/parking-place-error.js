@@ -42,7 +42,36 @@ const List = {
   },
 };
 
+const Update = {
+  UC_CODE: `${PARKING_PLACE_ERROR_PREFIX}update/`,
+
+  InvalidDtoIn: class extends ParkingmanMainUseCaseError {
+    constructor() {
+      super(...arguments);
+      this.code = `${Update.UC_CODE}invalidDtoIn`;
+      this.message = "DtoIn is not valid.";
+    }
+  },
+
+  ParkingPlaceDoesNotExist: class extends ParkingmanMainUseCaseError {
+    constructor() {
+      super(...arguments);
+      this.code = `${Update.UC_CODE}parkingPlaceDoesNotExist`;
+      this.message = "Parking place does not exist.";
+    }
+  },
+
+  ParkingPlaceDaoUpdateFailed: class extends ParkingmanMainUseCaseError {
+    constructor() {
+      super(...arguments);
+      this.code = `${Update.UC_CODE}parkingPlaceDaoUpdateFailed`;
+      this.message = "Parking place DAO update failed.";
+    }
+  },
+};
+
 module.exports = {
+  Update,
   List,
   Create,
 };
