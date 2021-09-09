@@ -62,7 +62,6 @@ export const About = createVisualComponent({
     const aboutLsi = AboutCfg.about || {};
     const licence = AboutCfg.licence || {};
 
-    // NOTE Some of these cannot be passed as prop={<UU5.Bricks.Lsi />} therefore we're using useLsi() hook.
     let about = useLsi(aboutLsi);
     let organisation = useLsi(licence.organisation);
     let authorities = useLsi(licence.authorities);
@@ -82,8 +81,6 @@ export const About = createVisualComponent({
           author = UU5.Common.Tools.merge({}, author);
           author.role =
             author.role && typeof author.role === "object" ? <UU5.Bricks.Lsi lsi={author.role} /> : author.role;
-          // author.src =
-          //   author.src || Calls.getCommandUri("getAppAuthorPhoto", { uuIdentity: author.uuIdentity }).toString();
           return author;
         })
       );
