@@ -45,6 +45,11 @@
         "realization": "api/controllers/ReservationController.listByCriteria",
         "httpMethod": "GET",
         "type": "CMD"
+      },
+      "user/update": {
+        "realization": "api/controllers/UserController.update",
+        "httpMethod": "POST",
+        "type": "CMD"
       }
     }
   }

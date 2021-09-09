@@ -18,6 +18,11 @@ const UserTestHelper = {
     await TestHelper.login("Authorities");
     return await TestHelper.executeGetCommand("user/list", _dtoIn);
   },
+  async userUpdate(dtoIn = {}) {
+    let _dtoIn = { ...DefaultDtoIn.User.Update, ...dtoIn };
+    await TestHelper.login("Authorities");
+    return await TestHelper.executePostCommand("user/update", _dtoIn);
+  },
   async dbUpdateKey(uuObject, id) {
     let change = { ...uuObject };
     return await TestHelper.executeDbScript(

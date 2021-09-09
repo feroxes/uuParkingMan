@@ -42,7 +42,36 @@ const List = {
   },
 };
 
+const Update = {
+  UC_CODE: `${USER_ERROR_PREFIX}update/`,
+
+  InvalidDtoIn: class extends ParkingmanMainUseCaseError {
+    constructor() {
+      super(...arguments);
+      this.code = `${Update.UC_CODE}invalidDtoIn`;
+      this.message = "DtoIn is not valid.";
+    }
+  },
+
+  UserDoesNotExist: class extends ParkingmanMainUseCaseError {
+    constructor() {
+      super(...arguments);
+      this.code = `${Update.UC_CODE}userDoesNotExist`;
+      this.message = "User does not exist.";
+    }
+  },
+
+  UserDaoUpdateFailed: class extends ParkingmanMainUseCaseError {
+    constructor() {
+      super(...arguments);
+      this.code = `${Update.UC_CODE}userDaoUpdateFailed`;
+      this.message = "User DAO update failed.";
+    }
+  },
+};
+
 module.exports = {
+  Update,
   List,
   Create,
 };
