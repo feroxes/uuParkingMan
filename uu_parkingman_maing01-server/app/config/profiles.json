@@ -4,11 +4,15 @@
     "useCaseMap": {}
   },
   "*": {
-    "profileList": ["Authorities","Executives","AwidLicenseOwner","Public","Users","Authorites"],
+    "profileList": ["Authorities","Executives","AwidLicenseOwner","Public","Users"],
     "useCaseMap": {
       "sys/uuAppWorkspace/init": {
         "sysStateList": ["created"],
         "profileList": ["AwidLicenseOwner"]
+      },
+      "parkingman/load": {
+        "sysStateList": ["active"],
+        "profileList": ["Authorities","Users", "Public"]
       },
       "defaultUve": {
         "profileList": ["Public"]

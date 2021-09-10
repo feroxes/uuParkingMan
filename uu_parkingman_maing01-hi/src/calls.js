@@ -86,6 +86,11 @@ let Calls = {
 
     return targetUriStr;
   },
+
+  uuSubAppInstanceLoad(dtoIn) {
+    let commandUri = Calls.getCommandUri("parkingman/load", dtoIn.uri);
+    return Calls.call("get", commandUri, dtoIn.data);
+  },
 };
 
 export default Calls;

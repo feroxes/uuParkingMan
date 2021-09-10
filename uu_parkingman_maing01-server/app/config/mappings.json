@@ -6,6 +6,11 @@
         "httpMethod": "POST",
         "type": "CMD"
       },
+      "parkingman/load": {
+        "realization": "api/controllers/ParkingmanMainController.load",
+        "httpMethod": "GET",
+        "type": "CMD"
+      },
       "defaultUve": {
         "realization": "index.html",
         "httpMethod": "GET",

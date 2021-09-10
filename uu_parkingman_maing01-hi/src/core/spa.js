@@ -2,7 +2,9 @@
 import { createVisualComponent } from "uu5g04-hooks";
 import Plus4U5 from "uu_plus4u5g01";
 import "uu_plus4u5g01-app";
-
+import Parkingman from "./parkingman/parkingman.js";
+import SubAppContextResolver from "../context/sub-app-context-resolver.js";
+import Calls from "calls";
 import Config from "./config/config.js";
 import SpaAuthenticated from "./spa-authenticated.js";
 //@@viewOff:imports
@@ -32,7 +34,9 @@ export const Spa = createVisualComponent({
     //@@viewOn:render
     return (
       <Plus4U5.App.Spa {...props} appName="uuParkingman">
-        <SpaAuthenticated />
+        <SubAppContextResolver subAppDataLoader={Parkingman.Loader} baseUri={Calls.APP_BASE_URI}>
+          <SpaAuthenticated />
+        </SubAppContextResolver>
       </Plus4U5.App.Spa>
     );
     //@@viewOff:render

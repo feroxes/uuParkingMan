@@ -21,7 +21,6 @@ const top = () => Config.Css.css`
     background: ${Constants.mainColor};
     background-color: ${Constants.mainColor};
   }
-
  `;
 
 const About = UU5.Common.Component.lazy(() => import("../routes/about"));
