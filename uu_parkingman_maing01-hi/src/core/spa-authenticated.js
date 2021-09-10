@@ -4,6 +4,7 @@ import "uu5g04-bricks";
 import { createVisualComponent, useState } from "uu5g04-hooks";
 import Plus4U5 from "uu_plus4u5g01";
 import "uu_plus4u5g01-app";
+import Constants from "../helpers/constants.js";
 
 import Config from "./config/config";
 import Bottom from "./bottom";
@@ -15,12 +16,20 @@ const STATICS = {
   //@@viewOff:statics
 };
 
+const top = () => Config.Css.css`
+  .plus4u5-app-button-authenticated {
+    background: ${Constants.mainColor};
+    background-color: ${Constants.mainColor};
+  }
+
+ `;
+
 const About = UU5.Common.Component.lazy(() => import("../routes/about"));
 
 const DEFAULT_USE_CASE = "reservations";
 const ROUTES = {
   "": DEFAULT_USE_CASE,
-  reservations: { },
+  reservations: {},
   about: { component: <About /> },
 };
 
@@ -49,6 +58,7 @@ export const SpaAuthenticated = createVisualComponent({
       <Plus4U5.App.MenuProvider activeItemId={initialActiveItemId}>
         <Plus4U5.App.Page
           {...props}
+          className={top()}
           top={<Plus4U5.App.TopBt />}
           topFixed="smart"
           bottom={<Bottom />}
