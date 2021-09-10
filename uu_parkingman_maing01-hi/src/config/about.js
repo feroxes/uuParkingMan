@@ -1,6 +1,6 @@
 export const About = {
   about: {
-    en: "Enjoy 👍",
+    en: "Enjoy 🤙",
   },
   licence: {
     organisation: {
