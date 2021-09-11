@@ -1,9 +1,8 @@
 //@@viewOn:imports
-import UU5 from "uu5g04";
 import { createComponent, useDataObject } from "uu5g04-hooks";
-import { SubAppDataProvider } from "uu_plus4u5g01-context";
+import { UsersContext } from "./context/context.js";
 
-import Config from "../../bricks/config/config.js";
+import Config from "./config/config.js";
 import Calls from "calls";
 //@@viewOff:imports
 
@@ -13,22 +12,16 @@ export const Loader = createComponent({
   //@@viewOff:statics
 
   //@@viewOn:propTypes
-  propTypes: {
-    baseUri: UU5.PropTypes.string,
-  },
   //@@viewOff:propTypes
 
   //@@viewOn:defaultProps
-  defaultProps: {
-    baseUri: undefined,
-  },
   //@@viewOff:defaultProps
 
   render(props) {
     //@@viewOn:hooks
-    const parkingmanDataObject = useDataObject({
+    const usersDataList = useDataObject({
       handlerMap: {
-        load: Calls.uuSubAppInstanceLoad,
+        load: Calls.usersList,
       },
     });
 
@@ -44,7 +37,7 @@ export const Loader = createComponent({
     //@@viewOff:private
 
     //@@viewOn:render
-    return <SubAppDataProvider data={parkingmanDataObject}>{props.children}</SubAppDataProvider>;
+    return <UsersContext.Provider value={usersDataList}>{props.children}</UsersContext.Provider>;
     //@@viewOff:render
   },
 });

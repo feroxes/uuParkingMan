@@ -88,8 +88,13 @@ let Calls = {
   },
 
   uuSubAppInstanceLoad(dtoIn) {
-    let commandUri = Calls.getCommandUri("parkingman/load", dtoIn.uri);
-    return Calls.call("get", commandUri, dtoIn.data);
+    let commandUri = Calls.getCommandUri("parkingman/load");
+    return Calls.call("get", commandUri, dtoIn);
+  },
+
+  usersList(dtoIn) {
+    let commandUri = Calls.getCommandUri("user/list");
+    return Calls.call("get", commandUri, dtoIn);
   },
 };
 
