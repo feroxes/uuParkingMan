@@ -133,11 +133,36 @@ describe("Testing the reservation/update uuCmd...", () => {
     }
   });
 
-  //TODO Ask Yarik how to better manage multiple profiles in tests (not beforeAll?)
-  //TODO add tests 3.2, 3.3
-
   test("Test 3.2 - reservationBelongsToDifferentUser", async () => {
     const reservation = await prepareBasic(Constants.defaulDuration);
+    const dtoIn = {
+      id: reservation.id,
+      dayTo: moment()
+        .add(Constants.defaulDuration + 1, "days")
+        .format(DateTimeHelper.getDefaultDateFormat()),
+      revision: reservation.sys.rev,
+    };
+
+    await Workspace.login("Users");
+    const expectedError = ErrorAssets.reservationBelongsToDifferentUser(CMD);
+    expect.assertions(ValidateHelper.assertionsCount.error);
+    try {
+      await ReservationTestHelper.reservationUpdate(dtoIn);
+    } catch (e) {
+      ValidateHelper.validateError(e, expectedError);
+    }
+  });
+
+  test("Test 3.3 - notAllowedToChangeUser", async () => {
+    const user = await UserTestHelper.userCreate({ uuIdentity: Constants.uuIdentityUser });
+    const parkingPlace = await ParkingPlaceHelper.parkingPlaceCreate();
+    const reservationCreateDtoIn = {
+      userId: user.id,
+      parkingPlaceId: parkingPlace.id,
+      dayFrom: DateTimeHelper.now(),
+      dayTo: moment().add(Constants.defaulDuration, "days").format(DateTimeHelper.getDefaultDateFormat()),
+    };
+    const reservation = await ReservationTestHelper.reservationCreate(reservationCreateDtoIn);
     const user2 = await UserTestHelper.userCreate({ uuIdentity: Constants.uuIdentity2 });
 
     const dtoIn = {
@@ -150,10 +175,14 @@ describe("Testing the reservation/update uuCmd...", () => {
     };
 
     await Workspace.login("Users");
-    const response = await ReservationTestHelper.reservationUpdate(dtoIn);
-    ValidateHelper.validateBaseHds(response);
-    expectedHds(response, dtoIn);
-x  });
+    const expectedError = ErrorAssets.notAllowedToChangeUser(CMD);
+    expect.assertions(ValidateHelper.assertionsCount.error);
+    try {
+      await ReservationTestHelper.reservationUpdate(dtoIn);
+    } catch (e) {
+      ValidateHelper.validateError(e, expectedError);
+    }
+  });
 
   test("Test 4.1 - reservationRevisionDoesNotMatch", async () => {
     const reservation = await prepareBasic(Constants.defaulDuration);

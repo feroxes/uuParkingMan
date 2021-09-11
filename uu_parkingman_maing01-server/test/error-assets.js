@@ -72,6 +72,20 @@ const ErrorAssets = {
       message: "DayFrom parameter is required if there is dayTo in dtoIn.",
     };
   },
+
+  reservationBelongsToDifferentUser(cmd) {
+    return {
+      code: `${cmd}/reservationBelongsToDifferentUser`,
+      message: "Only Auhtorities may update reservations of other users.",
+    };
+  },
+
+  notAllowedToChangeUser(cmd) {
+    return {
+      code: `${cmd}/notAllowedToChangeUser`,
+      message: "Only Auhtorities may change users.",
+    };
+  },
 };
 
 module.exports = ErrorAssets;

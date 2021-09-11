@@ -102,7 +102,7 @@ const Update = {
     constructor() {
       super(...arguments);
       this.code = `${Update.UC_CODE}reservationBelongsToDifferentUser`;
-      this.message = "Only Auhtorities may update reservations of other users";
+      this.message = "Only Auhtorities may update reservations of other users.";
     }
   },
 
@@ -110,7 +110,7 @@ const Update = {
     constructor() {
       super(...arguments);
       this.code = `${Update.UC_CODE}notAllowedToChangeUser`;
-      this.message = "Only Auhtorities may change users";
+      this.message = "Only Auhtorities may change users.";
     }
   },
 

@@ -31,14 +31,10 @@ class UpdateAbl {
     // 2.1
     if (!reservation) throw new Errors.ReservationDoesNotExist({ uuAppErrorMap }, { reservation: dtoIn.id });
 
-    console.log(`Profiles are: ${JSON.stringify(authorizationResult.getAuthorizedProfiles())}`);
     // HDS 3
     if (!authorizationResult.getAuthorizedProfiles().includes("Authorities")) {
       //HDS 3.1
       const currentReservationUser = await this.userDao.get(awid, reservation.userId);
-
-      console.log(`current uuIdentity: ${authorizationResult.getUuIdentity()}`);
-      console.log(`current reservation uuIdentity: ${currentReservationUser?.uuIdentity}`);
 
       //HDS 3.2
       if (authorizationResult.getUuIdentity() !== currentReservationUser?.uuIdentity) {

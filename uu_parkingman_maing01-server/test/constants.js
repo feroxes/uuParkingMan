@@ -3,6 +3,7 @@ const Constants = {
   dayInPast: "2020-03-22",
   defaulDuration: 3,
   uuIdentity2: "14-2710-1",
+  uuIdentityUser: "24-2461-1"
 };
 
 module.exports = Constants;
