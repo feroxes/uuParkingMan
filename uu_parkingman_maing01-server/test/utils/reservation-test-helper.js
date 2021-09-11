@@ -19,6 +19,12 @@ const ReservationTestHelper = {
     return await TestHelper.executePostCommand("reservation/update", _dtoIn);
   },
 
+  async reservationListByCriteria(dtoIn = {}) {
+    let _dtoIn = { ...dtoIn };
+    await TestHelper.login("Authorities");
+    return await TestHelper.executeGetCommand("reservation/listByCriteria", _dtoIn);
+  },
+
   async dbUpdateKey(uuObject, id) {
     let change = { ...uuObject };
     return await TestHelper.executeDbScript(

@@ -66,10 +66,9 @@ class CreateAbl {
     }
 
     // HDS 7
-    let reservations = await this.dao.listByOverlappingDates(awid, {
+    let reservations = await this.dao.listByCriteria(awid, {
       parkingPlaceId: dtoIn.parkingPlaceId,
-      dayFrom: dtoIn.dayTo,
-      dayTo: dtoIn.dayFrom,
+      ...DayTimeHelper.prepareFilterMapByDays(dtoIn.dayFrom, dtoIn.dayTo),
     });
 
     // 7.1

@@ -30,7 +30,7 @@ const ErrorAssets = {
   },
 
   dateCouldNotBeInPast(cmd) {
-    return { code: `${cmd}/dateCouldNotBeInPast`, message: "Date could not be in the past." };
+    return { code: `${cmd}/dateCouldNotBeInPast`, message: "Date could not be in past." };
   },
 
   dateToCouldNotBeLessThenDayFrom(cmd) {
@@ -56,6 +56,20 @@ const ErrorAssets = {
     return {
       code: `${cmd}/reservationRevisionDoesNotMatch`,
       message: "Reservation revision number does not match the value in the existing reservation.",
+    };
+  },
+
+  dayToParameterIsRequired(cmd) {
+    return {
+      code: `${cmd}/dayToParameterIsRequired`,
+      message: "DayTo parameter is required if there is dayFrom in dtoIn.",
+    };
+  },
+
+  dayFromParameterIsRequired(cmd) {
+    return {
+      code: `${cmd}/dayFromParameterIsRequired`,
+      message: "DayFrom parameter is required if there is dayTo in dtoIn.",
     };
   },
 };

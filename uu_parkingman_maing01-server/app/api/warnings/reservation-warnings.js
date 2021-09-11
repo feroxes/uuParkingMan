@@ -8,6 +8,9 @@ const Warnings = {
   updateUnsupportedKeys: {
     code: `${Errors.Update.UC_CODE}unsupportedKeys`,
   },
+  listByCriteriaUnsupportedKeys: {
+    code: `${Errors.ListByCriteria.UC_CODE}unsupportedKeys`,
+  },
 };
 
 module.exports = Warnings;

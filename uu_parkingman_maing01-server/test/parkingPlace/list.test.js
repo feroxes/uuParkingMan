@@ -43,7 +43,6 @@ describe("Testing the parkingPlace/list uuCmd...", () => {
   test("Test 1.2.1 - unsupportedKeys", async () => {
     await ParkingPlaceTestHelper.parkingPlaceCreate();
     const response = await ParkingPlaceTestHelper.parkingPlaceList(DefaultDtoIn.unsupportedKeys);
-    console.log('----->response<-----', response);
     const expectedWarning = ErrorAssets.unsupportedKeys(CMD);
 
     ValidateHelper.validateUnsupportedKeysWarning(response, expectedWarning);

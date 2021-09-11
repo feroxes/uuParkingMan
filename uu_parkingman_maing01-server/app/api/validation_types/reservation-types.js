@@ -14,3 +14,16 @@ const reservationUpdateDtoInType = shape({
   dayTo: date(),
   revision: integer().isRequired(),
 });
+
+const reservationListByCriteriaDtoInType = shape({
+  filterMap: shape({
+    userId: id(),
+    parkingPlaceId: id(),
+    dayFrom: date(),
+    dayTo: date(),
+  }),
+  pageInfo: shape({
+    pageIndex: integer(),
+    pageSize: integer(),
+  }),
+});

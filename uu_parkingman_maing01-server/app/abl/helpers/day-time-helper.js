@@ -36,6 +36,13 @@ const DayTimeHelper = {
     const reservationRange = this.getDateRage(dayFrom, dayTo);
     return reservationRange > Constants.Reservation.MAX_RESERVATION_DAYS;
   },
+
+  prepareFilterMapByDays(dayFrom, dayTo) {
+    return {
+      dayTo: dayFrom,
+      dayFrom: dayTo,
+    };
+  },
 };
 
 module.exports = DayTimeHelper;
