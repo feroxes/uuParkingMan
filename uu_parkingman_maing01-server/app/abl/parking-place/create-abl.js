@@ -27,7 +27,7 @@ class CreateAbl {
 
     // 2.1
     if (parkingPlace) {
-      throw new Errors.ParkingPlaceAlreadyCreated({ uuAppErrorMap }, { parkingPlace: parkingPlace.id });
+      throw new Errors.ParkingPlaceAlreadyCreated({ uuAppErrorMap }, { parkingPlaceId: parkingPlace.id });
     }
 
     // HDS 3

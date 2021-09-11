@@ -7,6 +7,9 @@ const Warnings = {
   listUnsupportedKeys: {
     code: `${Errors.List.UC_CODE}unsupportedKeys`,
   },
+  updateUnsupportedKeys: {
+    code: `${Errors.Update.UC_CODE}unsupportedKeys`,
+  },
 };
 
 module.exports = Warnings;

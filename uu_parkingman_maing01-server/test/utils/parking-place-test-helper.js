@@ -18,6 +18,11 @@ const ParkingPlaceTestHelper = {
     await TestHelper.login("Authorities");
     return await TestHelper.executeGetCommand("parkingPlace/list", _dtoIn);
   },
+  async parkingPlaceUpdate(dtoIn = {}) {
+    let _dtoIn = { ...DefaultDtoIn.ParkingPlace.Update, ...dtoIn };
+    await TestHelper.login("Authorities");
+    return await TestHelper.executePostCommand("parkingPlace/update", _dtoIn);
+  },
   async dbUpdateKey(uuObject, id) {
     let change = { ...uuObject };
     return await TestHelper.executeDbScript(

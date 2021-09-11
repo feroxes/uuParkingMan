@@ -71,6 +71,42 @@ const Create = {
   },
 };
 
+const ListByCriteria = {
+  UC_CODE: `${RESERVATION_ERROR_PREFIX}listByCriteria/`,
+
+  InvalidDtoIn: class extends ParkingmanMainUseCaseError {
+    constructor() {
+      super(...arguments);
+      this.code = `${ListByCriteria.UC_CODE}invalidDtoIn`;
+      this.message = "DtoIn is not valid.";
+    }
+  },
+
+  DateToCouldNotBeLessThenDayFrom: class extends ParkingmanMainUseCaseError {
+    constructor() {
+      super(...arguments);
+      this.code = `${ListByCriteria.UC_CODE}dateToCouldNotBeLessThenDayFrom`;
+      this.message = "DayTo could not be less then dayFrom.";
+    }
+  },
+
+  DayToParameterIsRequired: class extends ParkingmanMainUseCaseError {
+    constructor() {
+      super(...arguments);
+      this.code = `${ListByCriteria.UC_CODE}dayToParameterIsRequired`;
+      this.message = "DayTo parameter is required if there is dayFrom in dtoIn.";
+    }
+  },
+
+  DayFromParameterIsRequired: class extends ParkingmanMainUseCaseError {
+    constructor() {
+      super(...arguments);
+      this.code = `${ListByCriteria.UC_CODE}dayFromParameterIsRequired`;
+      this.message = "DayFrom parameter is required if there is dayTo in dtoIn.";
+    }
+  },
+};
+
 const Delete = {
   UC_CODE: `${RESERVATION_ERROR_PREFIX}delete/`,
 
@@ -100,6 +136,7 @@ const Delete = {
 };
 
 module.exports = {
+  ListByCriteria,
   Create,
   Delete,
 };

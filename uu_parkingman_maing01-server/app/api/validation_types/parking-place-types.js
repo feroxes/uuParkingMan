@@ -5,3 +5,9 @@ const parkingPlaceCreateDtoInType = shape({
 });
 
 const parkingPlaceListDtoInType = shape({});
+
+const parkingPlaceUpdateDtoInType = shape({
+  id: id().isRequired(),
+  number: number(1, null),
+  type: oneOf(["underground", "surface"])
+});
