@@ -24,6 +24,9 @@ export const Loader = createComponent({
         load: Calls.usersList,
         create: Calls.userCreate,
       },
+      itemHandlerMap: {
+        update: Calls.userUpdate,
+      },
     });
 
     //@@viewOff:hooks

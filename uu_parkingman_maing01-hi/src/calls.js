@@ -101,6 +101,11 @@ let Calls = {
     let commandUri = Calls.getCommandUri("user/create");
     return Calls.call("post", commandUri, dtoIn);
   },
+
+  userUpdate(dtoIn) {
+    let commandUri = Calls.getCommandUri("user/update");
+    return Calls.call("post", commandUri, dtoIn);
+  },
 };
 
 export default Calls;

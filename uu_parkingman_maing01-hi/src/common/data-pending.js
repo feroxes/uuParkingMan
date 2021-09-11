@@ -1,7 +1,7 @@
 //@@viewOn:imports
 import UU5 from "uu5g04";
 import "uu5g04-bricks";
-import { createVisualComponent } from "uu5g04-hooks";
+import { createVisualComponent, useLsi } from "uu5g04-hooks";
 
 import Config from "../config/config";
 import Constants from "../helpers/constants.js";
@@ -19,6 +19,14 @@ const Css = {
 
   spinner: () => Config.Css.css`
     width: 150px;
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  `,
+
+  loading: () => Config.Css.css`
+    width: 40px;
     position: relative;
     top: 50%;
     left: 50%;
@@ -50,6 +58,7 @@ const DataPending = createVisualComponent({
   //@@viewOff:defaultProps
 
   render(props) {
+    const loadingLsi = useLsi({ en: "Loading..." });
     //@@viewOn:private
     //@@viewOff:private
 
@@ -61,6 +70,7 @@ const DataPending = createVisualComponent({
     return (
       <UU5.Bricks.Div {...attrs} className={Css.main()}>
         <UU5.Bricks.Image src={Constants.spinner} className={Css.spinner()} />
+        <UU5.Bricks.Text content={loadingLsi} className={Css.loading()} />
       </UU5.Bricks.Div>
     );
     //@@viewOff:render

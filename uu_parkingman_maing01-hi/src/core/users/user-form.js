@@ -56,9 +56,16 @@ export const UserFrom = createVisualComponent({
     //@@viewOn:private
     function _handleOnSubmitClick(opt) {
       setDisable(true);
-      props.handlerMap.create(_prepareDtoIn(opt.values)).finally(() => {
-        setDisable(false);
-      });
+      if (props.user) {
+        props.handlerMap.update(_prepareDtoIn({ ...opt.values, id: props.user.id })).finally(() => {
+          setDisable(false);
+          props.modal.current.close();
+        });
+      } else {
+        props.handlerMap.create(_prepareDtoIn(opt.values)).finally(() => {
+          setDisable(false);
+        });
+      }
     }
 
     function _prepareDtoIn(values) {
@@ -79,6 +86,7 @@ export const UserFrom = createVisualComponent({
 
     //@@viewOn:render
     const attrs = UU5.Common.VisualComponent.getAttrs(props, CLASS_NAMES.main());
+    const { user } = props;
     return (
       <UU5.Forms.Form
         {...attrs}
@@ -93,29 +101,38 @@ export const UserFrom = createVisualComponent({
           label={uuIdentityLsi}
           required
           placeholder={uuIdentityPlaceHolderLsi}
+          value={user && user.uuIdentity}
         />
         <UU5.Bricks.Line size="s" />
         <UU5.Bricks.Header content={transportInfoLsi} level={6} />
-        <UU5.Forms.Text name={Constants.Users.formNames.type} label={typeLsi} required value={STATICS.defaultType} />
+        <UU5.Forms.Text
+          name={Constants.Users.formNames.type}
+          label={typeLsi}
+          required
+          value={user ? user.transport.type : STATICS.defaultType}
+        />
         <UU5.Forms.Text
           name={Constants.Users.formNames.brand}
           label={brandLsi}
           required
           placeholder={brandPlaceHolderLsi}
+          value={user && user.transport.brand}
         />
         <UU5.Forms.Text
           name={Constants.Users.formNames.model}
           label={modelLsi}
           required
           placeholder={modelPlaceHolderLsi}
+          value={user && user.transport.model}
         />
         <UU5.Forms.Text
           name={Constants.Users.formNames.number}
           label={numberLsi}
           required
           placeholder={numberPlaceHolderLsi}
+          value={user && user.transport.number}
         />
-        <UU5.Forms.Controls className={CLASS_NAMES.controls()}/>
+        <UU5.Forms.Controls className={CLASS_NAMES.controls()} />
       </UU5.Forms.Form>
     );
     //@@viewOff:render

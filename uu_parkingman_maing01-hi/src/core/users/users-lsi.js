@@ -5,6 +5,8 @@ const Lsi = {
   transportNumber: { en: "Transport Number" },
   transportType: { en: "Transport Type" },
   createUser: { en: "Create new user" },
+  userUpdate: { en: "Update user" },
+  update: { en: "Update" },
   userInfo: { en: "User info" },
   transportInfo: { en: "Transport info" },
   uuIdentity: { en: "uuIdentity" },
