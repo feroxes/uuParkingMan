@@ -153,7 +153,7 @@ describe("Testing the reservation/update uuCmd...", () => {
     const response = await ReservationTestHelper.reservationUpdate(dtoIn);
     ValidateHelper.validateBaseHds(response);
     expectedHds(response, dtoIn);
-  });
+x  });
 
   test("Test 4.1 - reservationRevisionDoesNotMatch", async () => {
     const reservation = await prepareBasic(Constants.defaulDuration);

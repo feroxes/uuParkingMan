@@ -34,7 +34,7 @@ const Create = {
     constructor() {
       super(...arguments);
       this.code = `${Create.UC_CODE}dateCouldNotBeInPast`;
-      this.message = "Date could not be in past.";
+      this.message = "Date could not be in the past.";
     }
   },
 
@@ -208,5 +208,5 @@ const ListByCriteria = {
 };
 
 module.exports = {
-  Create,
+  Create, Update, ListByCriteria
 };
