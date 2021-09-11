@@ -90,6 +90,14 @@ const Update = {
     }
   },
 
+  ReservationRevisionDoesNotMatch: class extends ParkingmanMainUseCaseError {
+    constructor() {
+      super(...arguments);
+      this.code = `${Update.UC_CODE}reservationRevisionDoesNotMatch`;
+      this.message = "Reservation revision number does not match the value in the existing reservation.";
+    }
+  },
+
   ReservationBelongsToDifferentUser: class extends ParkingmanMainUseCaseError {
     constructor() {
       super(...arguments);

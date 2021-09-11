@@ -31,11 +31,14 @@ class UpdateAbl {
     // 2.1
     if (!reservation) throw new Errors.ReservationDoesNotExist({ uuAppErrorMap }, { reservation: dtoIn.id });
 
+    console.log(`Profiles are: ${JSON.stringify(authorizationResult.getAuthorizedProfiles())}`);
     // HDS 3
     if (!authorizationResult.getAuthorizedProfiles().includes("Authorities")) {
-
       //HDS 3.1
       const currentReservationUser = await this.userDao.get(awid, reservation.userId);
+
+      console.log(`current uuIdentity: ${authorizationResult.getUuIdentity()}`);
+      console.log(`current reservation uuIdentity: ${currentReservationUser?.uuIdentity}`);
 
       //HDS 3.2
       if (authorizationResult.getUuIdentity() !== currentReservationUser?.uuIdentity) {
@@ -57,6 +60,10 @@ class UpdateAbl {
     }
 
     // HDS 4
+    if (dtoIn.revision !== reservation.sys.rev){
+      // HDS 4.1
+      throw new Errors.ReservationRevisionDoesNotMatch({ uuAppErrorMap }, { userId: dtoIn.userId });
+    }
     const sys = reservation.sys;
     sys.rev = dtoIn.revision;
     delete dtoIn.revision;
@@ -114,23 +121,18 @@ class UpdateAbl {
     //TODO in create & update: check if user has another reservation in these dates
 
     // HDS 10
-    let reservations = await this.dao.listByParkingPlaceId(awid, dtoIn.parkingPlaceId || reservation.parkingPlaceId);
+    let reservations = await this.dao.listByOverlappingDates(awid, {
+      parkingPlaceId: dtoIn.parkingPlaceId || reservation.parkingPlaceId,
+      dayFrom: dtoIn.dayTo,
+      dayTo: dtoIn.dayFrom,
+    });
     // 10.1
     if (reservations.itemList.length) {
-      //TODO need to discuss this step
-      const blockingReservation = reservations.itemList.find(
-        (res) =>
-          DayTimeHelper.isRangeOverlapping(dtoIn.dayFrom, dtoIn.dayTo, res.dayFrom, res.dayTo) &&
-          res.id.toString() !== dtoIn.id
-      );
-      if (blockingReservation) {
-        // 10.2
+      const blockingReservation = reservations.itemList.find(res => res.id.toString() !== dtoIn.id)
+      if (blockingReservation){
         throw new Errors.ParkingPlaceAlreadyReserved(
           { uuAppErrorMap },
-          {
-            reservedFrom: blockingReservation.dayFrom,
-            reservedTo: blockingReservation.dayTo,
-          }
+          { reservedFrom: blockingReservation.dayFrom, reservedTo: blockingReservation.dayTo }
         );
       }
     }

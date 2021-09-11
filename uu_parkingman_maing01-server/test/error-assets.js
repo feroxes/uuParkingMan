@@ -51,6 +51,13 @@ const ErrorAssets = {
   reservationDoesNotExist(cmd) {
     return { code: `${cmd}/reservationDoesNotExist`, message: "Reservation does not exist." };
   },
+
+  reservationRevisionDoesNotMatch(cmd) {
+    return {
+      code: `${cmd}/reservationRevisionDoesNotMatch`,
+      message: "Reservation revision number does not match the value in the existing reservation.",
+    };
+  },
 };
 
 module.exports = ErrorAssets;

@@ -133,8 +133,47 @@ describe("Testing the reservation/update uuCmd...", () => {
     }
   });
 
+
   //TODO Ask Yarik how to better manage multiple profiles in tests (not beforeAll?)
   //TODO add tests 3.2, 3.3
+
+  test("Test 3.2 - reservationBelongsToDifferentUser", async () => {
+    const reservation = await prepareBasic(Constants.defaulDuration);
+    const user2 = await UserTestHelper.userCreate({ uuIdentity: Constants.uuIdentity2 });
+
+    const dtoIn = {
+      id: reservation.id,
+      userId: user2.id,
+      dayTo: moment()
+        .add(Constants.defaulDuration + 1, "days")
+        .format(DateTimeHelper.getDefaultDateFormat()),
+      revision: reservation.sys.rev,
+    };
+
+    await Workspace.login("Users");
+    const response = await ReservationTestHelper.reservationUpdate(dtoIn);
+    ValidateHelper.validateBaseHds(response);
+    expectedHds(response, dtoIn);
+  });
+
+  test("Test 4.1 - reservationRevisionDoesNotMatch", async () => {
+    const reservation = await prepareBasic(Constants.defaulDuration);
+    const dtoIn = {
+      id: reservation.id,
+      dayTo: moment()
+        .add(Constants.defaulDuration + 1, "days")
+        .format(DateTimeHelper.getDefaultDateFormat()),
+      revision: reservation.sys.rev + Constants.defaulDuration,
+    };
+
+    const expectedError = ErrorAssets.reservationRevisionDoesNotMatch(CMD);
+    expect.assertions(ValidateHelper.assertionsCount.error);
+    try {
+      await ReservationTestHelper.reservationUpdate(dtoIn);
+    } catch (e) {
+      ValidateHelper.validateError(e, expectedError);
+    }
+  });
 
   test("Test 5.1 - userDoesNotExist", async () => {
     const reservation = await prepareBasic(Constants.defaulDuration);
@@ -267,6 +306,7 @@ describe("Testing the reservation/update uuCmd...", () => {
       dayTo: reservation2.dayTo,
       revision: reservation.sys.rev,
     };
+
     const expectedError = ErrorAssets.parkingPlaceAlreadyReserved(CMD);
     expect.assertions(ValidateHelper.assertionsCount.error);
     try {
