@@ -8,6 +8,7 @@ import Constants from "../helpers/constants.js";
 
 import Config from "./config/config";
 import Bottom from "./bottom";
+import Admin from "../routes/admin.js";
 //@@viewOff:imports
 
 const STATICS = {
@@ -28,6 +29,7 @@ const About = UU5.Common.Component.lazy(() => import("../routes/about"));
 const DEFAULT_USE_CASE = "reservations";
 const ROUTES = {
   "": DEFAULT_USE_CASE,
+  admin: { component: <Admin /> },
   reservations: {},
   about: { component: <About /> },
 };
