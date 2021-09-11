@@ -7,7 +7,6 @@ const Warnings = {
   listByCriteriaUnsupportedKeys: {
     code: `${Errors.ListByCriteria.UC_CODE}unsupportedKeys`,
   },
-
   deleteUnsupportedKeys: {
     code: `${Errors.Delete.UC_CODE}unsupportedKeys`,
   },

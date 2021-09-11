@@ -61,6 +61,20 @@ const ErrorAssets = {
       message: "DayFrom parameter is required if there is dayTo in dtoIn.",
     };
   },
+
+  reservationDoesNotExist(cmd) {
+    return {
+      code: `${cmd}/reservationDoesNotExist`,
+      message: "Reservation does not exist.",
+    };
+  },
+
+  reservationBelongsToDifferentUser(cmd) {
+    return {
+      code: `${cmd}/reservationBelongsToDifferentUser`,
+      message: "Only Auhtorities may update reservations of other users.",
+    };
+  },
 };
 
 module.exports = ErrorAssets;

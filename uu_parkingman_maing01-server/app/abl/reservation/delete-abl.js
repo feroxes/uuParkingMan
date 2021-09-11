@@ -5,15 +5,15 @@ const { ValidationHelper } = require("uu_appg01_server").AppServer;
 const Errors = require("../../api/errors/reservation-error.js").Delete;
 const Warnings = require("../../api/warnings/reservation-warnings.js");
 const Constants = require("../constants.js");
-const DayTimeHelper = require("../helpers/day-time-helper.js");
 
 class DeleteAbl {
   constructor() {
     this.validator = Validator.load();
     this.dao = DaoFactory.getDao(Constants.Schemas.RESERVATION);
+    this.userDao = DaoFactory.getDao(Constants.Schemas.USER);
   }
 
-  async delete(awid, dtoIn, uuAppErrorMap = {}) {
+  async delete(awid, dtoIn, authorizationResult, uuAppErrorMap = {}) {
     // HDS 1, 1.2, 1.2.1, 1.3, 1.3.1
     const validationResult = this.validator.validate("reservationDeleteDtoInType", dtoIn);
     uuAppErrorMap = ValidationHelper.processValidationResult(
@@ -31,16 +31,30 @@ class DeleteAbl {
     }
 
     // HDS 3
-    try {
-      reservation = await this.dao.delete(awid, dtoIn.id);
-    } catch (e) {
-      // 3.1
-      throw new Errors.ReservationDeleteFailed({ uuAppErrorMap }, e);
+    if (!authorizationResult.getAuthorizedProfiles().includes("Authorities")) {
+      //HDS 3.1
+      const currentReservationUser = await this.userDao.get(awid, reservation.userId);
+
+      //HDS 3.2
+      if (authorizationResult.getUuIdentity() !== currentReservationUser?.uuIdentity) {
+        throw new Errors.ReservationBelongsToDifferentUser(
+          { uuAppErrorMap },
+          { currentReservationUser: currentReservationUser.uuIdentity }
+        );
+      }
     }
 
     // HDS 4
+    try {
+      await this.dao.delete(awid, dtoIn.id);
+    } catch (e) {
+      // 4.1
+      throw new Errors.ReservationDeleteFailed({ uuAppErrorMap }, e);
+    }
+
+    // HDS 5
     return {
-      reservation,
+      ...reservation,
       uuAppErrorMap,
     };
   }

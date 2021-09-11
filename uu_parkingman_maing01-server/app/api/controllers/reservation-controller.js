@@ -12,7 +12,7 @@ class ReservationController {
   }
 
   delete(ucEnv) {
-    return DeleteAbl.delete(ucEnv.getUri().getAwid(), ucEnv.getDtoIn());
+    return DeleteAbl.delete(ucEnv.getUri().getAwid(), ucEnv.getDtoIn(), ucEnv.getAuthorizationResult());
   }
 }
 

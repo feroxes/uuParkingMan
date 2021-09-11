@@ -133,6 +133,14 @@ const Delete = {
       this.message = "Failed to delete reservation.";
     }
   },
+
+  ReservationBelongsToDifferentUser: class extends ParkingmanMainUseCaseError {
+    constructor() {
+      super(...arguments);
+      this.code = `${Delete.UC_CODE}reservationBelongsToDifferentUser`;
+      this.message = "Only Auhtorities may update reservations of other users.";
+    }
+  },
 };
 
 module.exports = {
