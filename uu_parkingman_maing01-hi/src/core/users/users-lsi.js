@@ -1,18 +1,22 @@
 const Lsi = {
-  header: {
-    en: "Users list",
-  },
-  user: {
-    en: "User",
-  },
-  transport: {
-    en: "Transport",
-  },
-  transportNumber: {
-    en: "Transport Number",
-  },
-  transportType: {
-    en: "Transport Type",
+  header: { en: "Users list" },
+  user: { en: "User" },
+  transport: { en: "Transport" },
+  transportNumber: { en: "Transport Number" },
+  transportType: { en: "Transport Type" },
+  createUser: { en: "Create new user" },
+  userInfo: { en: "User info" },
+  transportInfo: { en: "Transport info" },
+  uuIdentity: { en: "uuIdentity" },
+  type: { en: "Type" },
+  model: { en: "Model" },
+  brand: { en: "Brand" },
+  number: { en: "Number" },
+  userCreatePlaceHolders: {
+    uuIdentity: { en: "8517-626-1" },
+    model: { en: "BMW" },
+    brand: { en: "i3" },
+    number: { en: "AA1111OO" },
   },
 };
 

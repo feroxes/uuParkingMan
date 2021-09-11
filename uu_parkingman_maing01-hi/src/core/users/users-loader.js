@@ -1,5 +1,5 @@
 //@@viewOn:imports
-import { createComponent, useDataObject } from "uu5g04-hooks";
+import { createComponent, useDataList } from "uu5g04-hooks";
 import { UsersContext } from "./context/context.js";
 
 import Config from "./config/config.js";
@@ -19,9 +19,10 @@ export const Loader = createComponent({
 
   render(props) {
     //@@viewOn:hooks
-    const usersDataList = useDataObject({
+    const usersDataList = useDataList({
       handlerMap: {
         load: Calls.usersList,
+        create: Calls.userCreate,
       },
     });
 

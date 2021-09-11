@@ -6,6 +6,13 @@ const Constants = {
     columnKeys: {
       uuIdentity: "uuIdentity",
     },
+    formNames: {
+      uuIdentity: "uuIdentity",
+      type: "type",
+      model: "model",
+      brand: "brand",
+      number: "number",
+    },
   },
 };
 

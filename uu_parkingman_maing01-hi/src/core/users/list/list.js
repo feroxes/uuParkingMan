@@ -56,14 +56,14 @@ export const List = createVisualComponent({
     //@@viewOff:interface
 
     //@@viewOn:render
-    console.log('----->usersDataList<-----', usersDataList);
     const className = Config.Css.css``;
     const attrs = UU5.Common.VisualComponent.getAttrs(props, className);
+    console.log('----->usersDataList<-----', usersDataList);
     return (
       <UU5.Bricks.Div {...attrs}>
         <DataObjectStateResolver dataObject={parkingManDataObject}>
           <DataListStateResolver dataList={usersDataList}>
-            <UsersListView usersDataList={usersDataList} />
+            <UsersListView usersDataList={usersDataList} modal={modal} handlerMap={usersDataList.handlerMap} />
           </DataListStateResolver>
         </DataObjectStateResolver>
         <UU5.Bricks.Modal ref_={modal} />

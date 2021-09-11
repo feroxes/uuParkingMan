@@ -96,6 +96,11 @@ let Calls = {
     let commandUri = Calls.getCommandUri("user/list");
     return Calls.call("get", commandUri, dtoIn);
   },
+
+  userCreate(dtoIn) {
+    let commandUri = Calls.getCommandUri("user/create");
+    return Calls.call("post", commandUri, dtoIn);
+  },
 };
 
 export default Calls;

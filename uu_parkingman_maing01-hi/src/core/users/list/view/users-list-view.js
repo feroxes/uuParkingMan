@@ -6,6 +6,7 @@ import Plus4U5 from "uu_plus4u5g01";
 import Config from "../../config/config.js";
 import Constants from "../../../../helpers/constants.js";
 import StringHelper from "../../../../helpers/string-helper.js";
+import UserFrom from "../../user-form.js";
 import Lsi from "../../users-lsi.js";
 //@@viewOff:imports
 
@@ -46,7 +47,7 @@ export const UsersListView = createVisualComponent({
         key: Constants.Users.columnKeys.uuIdentity,
         cell: (cellProps) => (
           <Plus4U5.Bricks.BusinessCard
-            uuIdentity={cellProps.data.uuIdentity}
+            uuIdentity={cellProps.data.data.uuIdentity}
             visual="inline"
             infoDetail="full"
             showUuIdentity
@@ -55,18 +56,36 @@ export const UsersListView = createVisualComponent({
         header: <UU5.Bricks.Lsi lsi={Lsi.user} />,
       },
       {
-        cell: (cellProps) => `${cellProps.data.transport.brand} ${cellProps.data.transport.model}`,
+        cell: (cellProps) => `${cellProps.data.data.transport.brand} ${cellProps.data.data.transport.model}`,
         header: <UU5.Bricks.Lsi lsi={Lsi.transport} />,
       },
       {
-        cell: (cellProps) => cellProps.data.transport.number,
+        cell: (cellProps) => cellProps.data.data.transport.number,
         header: <UU5.Bricks.Lsi lsi={Lsi.transportNumber} />,
       },
       {
-        cell: (cellProps) => StringHelper.capitalizeFirstLetter(cellProps.data.transport.type),
+        cell: (cellProps) => StringHelper.capitalizeFirstLetter(cellProps.data.data.transport.type),
         header: <UU5.Bricks.Lsi lsi={Lsi.transportType} />,
       },
     ];
+
+    function _getActions() {
+      let actions = [];
+      let modalContent = {
+        header: <UU5.Bricks.Lsi lsi={Lsi.createUser} />,
+        content: <UserFrom modal={props.modal} handlerMap={props.handlerMap} />,
+        size: "m",
+      };
+      actions.push({
+        onClick: () => props.modal.current.open(modalContent),
+        icon: "mdi-plus-circle",
+        colorSchema: "primary",
+        bgStyle: "filled",
+        active: true,
+      });
+
+      return actions;
+    }
     //@@viewOff:private
 
     //@@viewOn:handlers
@@ -77,8 +96,9 @@ export const UsersListView = createVisualComponent({
 
     //@@viewOn:render
     return (
-      <Uu5Tiles.ControllerProvider data={props.usersDataList.data.itemList} filters={getFilters(props)}>
+      <Uu5Tiles.ControllerProvider data={props.usersDataList.data} filters={getFilters(props)}>
         <Uu5Tiles.FilterBar />
+        <Uu5Tiles.ActionBar actions={_getActions} searchable={false} />
         <Uu5Tiles.InfoBar />
         <Uu5Tiles.List alternateRowBackground rowPadding="8px 16px" columns={columns} />
       </Uu5Tiles.ControllerProvider>
