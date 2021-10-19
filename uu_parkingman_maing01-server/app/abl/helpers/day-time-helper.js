@@ -22,6 +22,10 @@ const DayTimeHelper = {
     return moment(dayToCheck).isBetween(dayFrom, dayTo, undefined, inclusivity);
   },
 
+  isRangeOverlapping(range1From, range1To, range2From, range2To) {
+    return range1From <= range2To && range2From <= range1To;
+  },
+
   getDateRage(dayFrom, dayTo) {
     const a = moment(dayFrom);
     const b = moment(dayTo);

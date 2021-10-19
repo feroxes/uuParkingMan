@@ -5,6 +5,7 @@
   "license": "License Commercial",
   "spec": "nodejs-app; uu_appg01_devkit@4.2.2",
   "dependencies": {
+    "jest-cli": "^27.1.1",
     "moment": "^2.29.1",
     "uu_appg01_server": "^5.0.0",
     "uu_apprepresentationg01": "^2.0.0"

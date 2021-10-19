@@ -4,6 +4,10 @@ const Warnings = {
   createUnsupportedKeys: {
     code: `${Errors.Create.UC_CODE}unsupportedKeys`,
   },
+
+  updateUnsupportedKeys: {
+    code: `${Errors.Update.UC_CODE}unsupportedKeys`,
+  },
   listByCriteriaUnsupportedKeys: {
     code: `${Errors.ListByCriteria.UC_CODE}unsupportedKeys`,
   },

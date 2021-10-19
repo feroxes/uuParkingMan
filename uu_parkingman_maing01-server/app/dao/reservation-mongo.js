@@ -19,6 +19,13 @@ class ReservationMongo extends ParkingmanObjectDao {
     if (filterMap.dayTo) filter.dayTo = { $gte: filterMap.dayTo };
     return super.find({ awid, ...filter }, pageInfo);
   }
+
+  async listByOverlappingDates(awid, filterMap, pageInfo = {}) {
+    const filter = { ...filterMap };
+    if (filterMap.dayFrom) filter.dayFrom = { $lte: filterMap.dayFrom };
+    if (filterMap.dayTo) filter.dayTo = { $gte: filterMap.dayTo };
+    return super.find({ awid, ...filter }, pageInfo);
+  }
 }
 
 module.exports = ReservationMongo;

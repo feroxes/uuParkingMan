@@ -31,6 +31,7 @@ class CreateAbl {
     if (!user) {
       throw new Errors.UserDoesNotExist({ uuAppErrorMap }, { userId: dtoIn.userId });
     }
+    //TODO add check that non-Authority should only book for themselves (like in update)
 
     // HDS 3
     const parkingPlace = await this.parkingPlaceDao.get(awid, dtoIn.parkingPlaceId);
