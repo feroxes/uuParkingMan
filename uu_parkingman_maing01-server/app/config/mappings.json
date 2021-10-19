@@ -46,6 +46,11 @@
         "httpMethod": "POST",
         "type": "CMD"
       },
+      "reservation/update": {
+        "realization": "api/controllers/ReservationController.update",
+        "httpMethod": "POST",
+        "type": "CMD"
+      },
       "reservation/listByCriteria": {
         "realization": "api/controllers/ReservationController.listByCriteria",
         "httpMethod": "GET",
@@ -58,6 +63,11 @@
       },
       "parkingPlace/update": {
         "realization": "api/controllers/ParkingPlaceController.update",
+        "httpMethod": "POST",
+        "type": "CMD"
+      },
+      "reservation/delete": {
+        "realization": "api/controllers/ReservationController.delete",
         "httpMethod": "POST",
         "type": "CMD"
       }

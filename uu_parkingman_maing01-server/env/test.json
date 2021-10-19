@@ -26,7 +26,14 @@
       "accessCode2": "Cq%iaz#9w-#z7C8yZlZoC$DsebIK2JGWyDK8lg8J7vLFSKXtYFt5tn3eI3WthZtI",
       "uuIdentity": "14-2710-1",
       "profileList": ["Authorities"]
+    },
+    "Users": {
+      "accessCode1": "dcn2YTrKEKL5CSFK",
+      "accessCode2": "fKqX3taKsMGHBRpf",
+      "uuIdentity": "24-2461-1",
+      "profileList": ["Users"]
     }
+
   },
   "log_level": "FATAL",
   "uuapp.appserver.monitoring.accesslog.log_level": "OFF",

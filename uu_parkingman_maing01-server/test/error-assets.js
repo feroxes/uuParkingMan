@@ -30,7 +30,7 @@ const ErrorAssets = {
   },
 
   dateCouldNotBeInPast(cmd) {
-    return { code: `${cmd}/dateCouldNotBeInPast`, message: "Date could not be in past." };
+    return { code: `${cmd}/dateCouldNotBeInPast`, message: "Date could not be in the past." };
   },
 
   dateToCouldNotBeLessThenDayFrom(cmd) {
@@ -48,6 +48,17 @@ const ErrorAssets = {
     return { code: `${cmd}/parkingPlaceAlreadyReserved`, message: "Parking place already reserved." };
   },
 
+  reservationDoesNotExist(cmd) {
+    return { code: `${cmd}/reservationDoesNotExist`, message: "Reservation does not exist." };
+  },
+
+  reservationRevisionDoesNotMatch(cmd) {
+    return {
+      code: `${cmd}/reservationRevisionDoesNotMatch`,
+      message: "Reservation revision number does not match the value in the existing reservation.",
+    };
+  },
+
   dayToParameterIsRequired(cmd) {
     return {
       code: `${cmd}/dayToParameterIsRequired`,
@@ -59,6 +70,20 @@ const ErrorAssets = {
     return {
       code: `${cmd}/dayFromParameterIsRequired`,
       message: "DayFrom parameter is required if there is dayTo in dtoIn.",
+    };
+  },
+
+  reservationBelongsToDifferentUser(cmd) {
+    return {
+      code: `${cmd}/reservationBelongsToDifferentUser`,
+      message: "Only Authorities may update reservations of other users.",
+    };
+  },
+
+  notAllowedToChangeUser(cmd) {
+    return {
+      code: `${cmd}/notAllowedToChangeUser`,
+      message: "Only Authorities may change users.",
     };
   },
 };

@@ -41,6 +41,10 @@
         "sysStateList": ["active"],
         "profileList": ["Users","Authorities"]
       },
+      "reservation/update": {
+        "sysStateList": ["active"],
+        "profileList": ["Users","Authorities"]
+      },
       "reservation/listByCriteria": {
         "sysStateList": ["active"],
         "profileList": ["Authorities","Users"]
@@ -52,6 +56,10 @@
       "parkingPlace/update": {
         "sysStateList": ["active"],
         "profileList": ["Authorities"]
+      },
+      "reservation/delete": {
+        "sysStateList": ["active"],
+        "profileList": ["Users","Authorities"]
       }
     }
   }
