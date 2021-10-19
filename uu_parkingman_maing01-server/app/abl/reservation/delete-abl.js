@@ -31,7 +31,7 @@ class DeleteAbl {
     }
 
     // HDS 3
-    if (!authorizationResult.getAuthorizedProfiles().includes("Authorities")) {
+    if (!authorizationResult.getAuthorizedProfiles().includes(Constants.Profiles.AUTHORITIES)) {
       //HDS 3.1
       const currentReservationUser = await this.userDao.get(awid, reservation.userId);
 
