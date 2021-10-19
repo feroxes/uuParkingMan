@@ -127,7 +127,7 @@ function getColumns(props) {
                     content: (
                       <UserFrom modal={props.modal} handlerMap={cellProps.data.handlerMap} user={cellProps.data.data} />
                     ),
-                    size: "l",
+                    size: "m",
                   });
                 },
               },
@@ -148,7 +148,7 @@ function onControlsBtnClick(props) {
   let modalContent = {
     header: <UU5.Bricks.Lsi lsi={Lsi.createUser} />,
     content: <UserFrom modal={props.modal} handlerMap={props.handlerMap} />,
-    size: "l",
+    size: "m",
   };
   props.modal.current.open(modalContent);
 }
