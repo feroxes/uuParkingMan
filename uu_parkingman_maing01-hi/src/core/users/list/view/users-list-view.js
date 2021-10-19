@@ -106,7 +106,7 @@ function getColumns(props) {
           className={CLASS_NAMES.createBtn()}
         />
       ),
-      width: "0",
+      width: 1,
       fixed: "right",
       isControls: true,
       visible: true,
@@ -139,7 +139,7 @@ function getColumns(props) {
         );
       },
       fixed: "right",
-      width: "48px",
+      width: 48,
       cellPadding: "0 16px",
     },
   ];
