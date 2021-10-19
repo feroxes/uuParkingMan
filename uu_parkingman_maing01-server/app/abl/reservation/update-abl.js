@@ -32,11 +32,11 @@ class UpdateAbl {
     if (!reservation) throw new Errors.ReservationDoesNotExist({ uuAppErrorMap }, { reservation: dtoIn.id });
 
     // HDS 3
-    if (!authorizationResult.getAuthorizedProfiles().includes("Authorities")) {
-      //HDS 3.1
+    if (!authorizationResult.getAuthorizedProfiles().includes(Constants.Profiles.AUTHORITIES)) {
+      //3.1
       const currentReservationUser = await this.userDao.get(awid, reservation.userId);
 
-      //HDS 3.2
+      //3.2
       if (authorizationResult.getUuIdentity() !== currentReservationUser?.uuIdentity) {
         throw new Errors.ReservationBelongsToDifferentUser(
           { uuAppErrorMap },
@@ -44,7 +44,7 @@ class UpdateAbl {
         );
       }
 
-      //HDS 3.3
+      //3.3
       if (dtoIn.userId && currentReservationUser?.userId !== dtoIn.userId) {
         throw new Errors.NotAllowedToChangeUser(
           { uuAppErrorMap },
@@ -56,8 +56,8 @@ class UpdateAbl {
     }
 
     // HDS 4
-    if (dtoIn.revision !== reservation.sys.rev){
-      // HDS 4.1
+    if (dtoIn.revision !== reservation.sys.rev) {
+      // 4.1
       throw new Errors.ReservationRevisionDoesNotMatch({ uuAppErrorMap }, { userId: dtoIn.userId });
     }
     const sys = reservation.sys;
@@ -124,8 +124,8 @@ class UpdateAbl {
     });
     // 10.1
     if (reservations.itemList.length) {
-      const blockingReservation = reservations.itemList.find(res => res.id.toString() !== dtoIn.id)
-      if (blockingReservation){
+      const blockingReservation = reservations.itemList.find((res) => res.id.toString() !== dtoIn.id);
+      if (blockingReservation) {
         throw new Errors.ParkingPlaceAlreadyReserved(
           { uuAppErrorMap },
           { reservedFrom: blockingReservation.dayFrom, reservedTo: blockingReservation.dayTo }

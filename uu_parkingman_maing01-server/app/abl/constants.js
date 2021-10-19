@@ -5,8 +5,13 @@ const Constants = {
     PARKING_PLACE: "parkingPlace",
     RESERVATION: "reservation",
   },
+
   States: {
     ACTIVE: "active",
+  },
+
+  Profiles: {
+    AUTHORITIES: "Authorities",
   },
 
   User: {
