@@ -51,7 +51,7 @@ async function prepareBasic(amount = 3) {
 
 describe("Testing the reservation/update uuCmd...", () => {
   test("HDS", async () => {
-    const reservation = await prepareBasic(Constants.defaulDuration);
+    const reservation = await prepareBasic(Constants.defaultDuration);
     const dtoIn = {
       id: reservation.id,
     };
@@ -68,7 +68,7 @@ describe("Testing the reservation/update uuCmd...", () => {
       userId: user.id,
       parkingPlaceId: parkingPlace.id,
       dayFrom: DateTimeHelper.now(),
-      dayTo: moment().add(Constants.defaulDuration, "days").format(DateTimeHelper.getDefaultDateFormat()),
+      dayTo: moment().add(Constants.defaultDuration, "days").format(DateTimeHelper.getDefaultDateFormat()),
     };
     const reservation = await ReservationTestHelper.reservationCreate(reservationCreateDtoIn);
     const dtoIn = {
@@ -82,7 +82,7 @@ describe("Testing the reservation/update uuCmd...", () => {
   });
 
   test("Test 1.2.1 - unsupportedKeys", async () => {
-    const reservation = await prepareBasic(Constants.defaulDuration);
+    const reservation = await prepareBasic(Constants.defaultDuration);
     const dtoIn = {
       id: reservation.id,
     };
@@ -103,7 +103,7 @@ describe("Testing the reservation/update uuCmd...", () => {
   });
 
   test("Test 2.1 - reservationDoesNotExist", async () => {
-    const reservation = await prepareBasic(Constants.defaulDuration);
+    const reservation = await prepareBasic(Constants.defaultDuration);
     const dtoIn = {
       id: Constants.wrongId,
     };
@@ -118,7 +118,7 @@ describe("Testing the reservation/update uuCmd...", () => {
   });
 
   test("Test 3.2 - reservationBelongsToDifferentUser", async () => {
-    const reservation = await prepareBasic(Constants.defaulDuration);
+    const reservation = await prepareBasic(Constants.defaultDuration);
     const dtoIn = {
       id: reservation.id
     };

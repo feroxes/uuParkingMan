@@ -51,11 +51,11 @@ async function prepareBasic(amount = 3) {
 
 describe("Testing the reservation/update uuCmd...", () => {
   test("HDS", async () => {
-    const reservation = await prepareBasic(Constants.defaulDuration);
+    const reservation = await prepareBasic(Constants.defaultDuration);
     const dtoIn = {
       id: reservation.id,
       dayTo: moment()
-        .add(Constants.defaulDuration + 1, "days")
+        .add(Constants.defaultDuration + 1, "days")
         .format(DateTimeHelper.getDefaultDateFormat()),
       revision: reservation.sys.rev,
     };
@@ -66,7 +66,7 @@ describe("Testing the reservation/update uuCmd...", () => {
   });
 
   test("HDS", async () => {
-    const reservation = await prepareBasic(Constants.defaulDuration);
+    const reservation = await prepareBasic(Constants.defaultDuration);
     const user2 = await UserTestHelper.userCreate({ uuIdentity: Constants.uuIdentity2 });
     const parkingPlace2 = await ParkingPlaceHelper.parkingPlaceCreate({ number: 9 });
 
@@ -75,10 +75,10 @@ describe("Testing the reservation/update uuCmd...", () => {
       userId: user2.id,
       parkingPlaceId: parkingPlace2.id,
       dayFrom: moment()
-        .add(Constants.defaulDuration + 1, "days")
+        .add(Constants.defaultDuration + 1, "days")
         .format(DateTimeHelper.getDefaultDateFormat()),
       dayTo: moment()
-        .add(Constants.defaulDuration + 2, "days")
+        .add(Constants.defaultDuration + 2, "days")
         .format(DateTimeHelper.getDefaultDateFormat()),
       revision: reservation.sys.rev,
     };
@@ -89,11 +89,11 @@ describe("Testing the reservation/update uuCmd...", () => {
   });
 
   test("Test 1.2.1 - unsupportedKeys", async () => {
-    const reservation = await prepareBasic(Constants.defaulDuration);
+    const reservation = await prepareBasic(Constants.defaultDuration);
     const dtoIn = {
       id: reservation.id,
       dayTo: moment()
-        .add(Constants.defaulDuration + 1, "days")
+        .add(Constants.defaultDuration + 1, "days")
         .format(DateTimeHelper.getDefaultDateFormat()),
       revision: reservation.sys.rev,
     };
@@ -115,11 +115,11 @@ describe("Testing the reservation/update uuCmd...", () => {
   });
 
   test("Test 2.1 - reservationDoesNotExist", async () => {
-    const reservation = await prepareBasic(Constants.defaulDuration);
+    const reservation = await prepareBasic(Constants.defaultDuration);
     const dtoIn = {
       id: Constants.wrongId,
       dayTo: moment()
-        .add(Constants.defaulDuration + 1, "days")
+        .add(Constants.defaultDuration + 1, "days")
         .format(DateTimeHelper.getDefaultDateFormat()),
       revision: reservation.sys.rev,
     };
@@ -134,11 +134,11 @@ describe("Testing the reservation/update uuCmd...", () => {
   });
 
   test("Test 3.2 - reservationBelongsToDifferentUser", async () => {
-    const reservation = await prepareBasic(Constants.defaulDuration);
+    const reservation = await prepareBasic(Constants.defaultDuration);
     const dtoIn = {
       id: reservation.id,
       dayTo: moment()
-        .add(Constants.defaulDuration + 1, "days")
+        .add(Constants.defaultDuration + 1, "days")
         .format(DateTimeHelper.getDefaultDateFormat()),
       revision: reservation.sys.rev,
     };
@@ -160,7 +160,7 @@ describe("Testing the reservation/update uuCmd...", () => {
       userId: user.id,
       parkingPlaceId: parkingPlace.id,
       dayFrom: DateTimeHelper.now(),
-      dayTo: moment().add(Constants.defaulDuration, "days").format(DateTimeHelper.getDefaultDateFormat()),
+      dayTo: moment().add(Constants.defaultDuration, "days").format(DateTimeHelper.getDefaultDateFormat()),
     };
     const reservation = await ReservationTestHelper.reservationCreate(reservationCreateDtoIn);
     const user2 = await UserTestHelper.userCreate({ uuIdentity: Constants.uuIdentity2 });
@@ -169,7 +169,7 @@ describe("Testing the reservation/update uuCmd...", () => {
       id: reservation.id,
       userId: user2.id,
       dayTo: moment()
-        .add(Constants.defaulDuration + 1, "days")
+        .add(Constants.defaultDuration + 1, "days")
         .format(DateTimeHelper.getDefaultDateFormat()),
       revision: reservation.sys.rev,
     };
@@ -185,13 +185,13 @@ describe("Testing the reservation/update uuCmd...", () => {
   });
 
   test("Test 4.1 - reservationRevisionDoesNotMatch", async () => {
-    const reservation = await prepareBasic(Constants.defaulDuration);
+    const reservation = await prepareBasic(Constants.defaultDuration);
     const dtoIn = {
       id: reservation.id,
       dayTo: moment()
-        .add(Constants.defaulDuration + 1, "days")
+        .add(Constants.defaultDuration + 1, "days")
         .format(DateTimeHelper.getDefaultDateFormat()),
-      revision: reservation.sys.rev + Constants.defaulDuration,
+      revision: reservation.sys.rev + Constants.defaultDuration,
     };
 
     const expectedError = ErrorAssets.reservationRevisionDoesNotMatch(CMD);
@@ -204,12 +204,12 @@ describe("Testing the reservation/update uuCmd...", () => {
   });
 
   test("Test 5.1 - userDoesNotExist", async () => {
-    const reservation = await prepareBasic(Constants.defaulDuration);
+    const reservation = await prepareBasic(Constants.defaultDuration);
     const dtoIn = {
       id: reservation.id,
       userId: Constants.wrongId,
       dayTo: moment()
-        .add(Constants.defaulDuration + 1, "days")
+        .add(Constants.defaultDuration + 1, "days")
         .format(DateTimeHelper.getDefaultDateFormat()),
       revision: reservation.sys.rev,
     };
@@ -223,12 +223,12 @@ describe("Testing the reservation/update uuCmd...", () => {
   });
 
   test("Test 6.1 - parkingPlaceDoesNotExist", async () => {
-    const reservation = await prepareBasic(Constants.defaulDuration);
+    const reservation = await prepareBasic(Constants.defaultDuration);
     const dtoIn = {
       id: reservation.id,
       parkingPlaceId: Constants.wrongId,
       dayTo: moment()
-        .add(Constants.defaulDuration + 1, "days")
+        .add(Constants.defaultDuration + 1, "days")
         .format(DateTimeHelper.getDefaultDateFormat()),
       revision: reservation.sys.rev,
     };
@@ -243,7 +243,7 @@ describe("Testing the reservation/update uuCmd...", () => {
   });
 
   test("Test 7.1 - dateCouldNotBeInPast (dayFrom)", async () => {
-    const reservation = await prepareBasic(Constants.defaulDuration);
+    const reservation = await prepareBasic(Constants.defaultDuration);
     const dtoIn = {
       id: reservation.id,
       dayFrom: Constants.dayInPast,
@@ -260,7 +260,7 @@ describe("Testing the reservation/update uuCmd...", () => {
   });
 
   test("Test 7.1 - dateCouldNotBeInPast (dayTo)", async () => {
-    const reservation = await prepareBasic(Constants.defaulDuration);
+    const reservation = await prepareBasic(Constants.defaultDuration);
     const dtoIn = {
       id: reservation.id,
       dayTo: Constants.dayInPast,
@@ -277,7 +277,7 @@ describe("Testing the reservation/update uuCmd...", () => {
   });
 
   test("Test 8.1 - dateToCouldNotBeLessThenDayFrom", async () => {
-    const reservation = await prepareBasic(Constants.defaulDuration);
+    const reservation = await prepareBasic(Constants.defaultDuration);
     const dtoIn = {
       id: reservation.id,
       dayFrom: moment().add(5, "days").format(DateTimeHelper.getDefaultDateFormat()),
@@ -294,7 +294,7 @@ describe("Testing the reservation/update uuCmd...", () => {
   });
 
   test("Test 9.1 - reservationLimitExceeded", async () => {
-    const reservation = await prepareBasic(Constants.defaulDuration);
+    const reservation = await prepareBasic(Constants.defaultDuration);
     const dtoIn = {
       id: reservation.id,
       dayTo: moment().add(7, "days").format(DateTimeHelper.getDefaultDateFormat()),
@@ -318,13 +318,13 @@ describe("Testing the reservation/update uuCmd...", () => {
       userId: user.id,
       parkingPlaceId: parkingPlace.id,
       dayFrom: DateTimeHelper.now(),
-      dayTo: moment().add(Constants.defaulDuration, "days").format(DateTimeHelper.getDefaultDateFormat()),
+      dayTo: moment().add(Constants.defaultDuration, "days").format(DateTimeHelper.getDefaultDateFormat()),
     };
     const reservation = await ReservationTestHelper.reservationCreate(reservationCreateDtoIn);
 
     reservationCreateDtoIn.dayFrom = moment().add(10, "days").format(DateTimeHelper.getDefaultDateFormat());
     reservationCreateDtoIn.dayTo = moment()
-      .add(10 + Constants.defaulDuration, "days")
+      .add(10 + Constants.defaultDuration, "days")
       .format(DateTimeHelper.getDefaultDateFormat());
     const reservation2 = await ReservationTestHelper.reservationCreate(reservationCreateDtoIn);
 

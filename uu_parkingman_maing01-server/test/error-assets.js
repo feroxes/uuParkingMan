@@ -76,14 +76,14 @@ const ErrorAssets = {
   reservationBelongsToDifferentUser(cmd) {
     return {
       code: `${cmd}/reservationBelongsToDifferentUser`,
-      message: "Only Auhtorities may update reservations of other users.",
+      message: "Only Authorities may update reservations of other users.",
     };
   },
 
   notAllowedToChangeUser(cmd) {
     return {
       code: `${cmd}/notAllowedToChangeUser`,
-      message: "Only Auhtorities may change users.",
+      message: "Only Authorities may change users.",
     };
   },
 };
