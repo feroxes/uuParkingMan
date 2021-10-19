@@ -1,11 +1,12 @@
 //@@viewOn:imports
 import UU5 from "uu5g04";
 import "uu5g04-bricks";
-import { createVisualComponent } from "uu5g04-hooks";
+import { createVisualComponent, useLsi } from "uu5g04-hooks";
 import "uu_plus4u5g01-app";
 import ListContextResolver from "../core/users/context/list-context-resolver.js";
 import List from "../core/users/list/list.js";
 import Config from "./config/config.js";
+import Lsi from "./routes-lsi.js";
 //@@viewOff:imports
 
 const STATICS = {
@@ -28,6 +29,9 @@ export const Admin = createVisualComponent({
   //@@viewOff:defaultProps
 
   render(props) {
+    const usersListLsi = useLsi(Lsi.Admin.usersList);
+    const parkingPlacesLsi = useLsi(Lsi.Admin.parkingPlaces);
+    const reservationsLsi = useLsi(Lsi.Admin.reservations);
     //@@viewOn:private
     //@@viewOff:private
 
@@ -38,9 +42,18 @@ export const Admin = createVisualComponent({
     const attrs = UU5.Common.VisualComponent.getAttrs(props, CLASS_NAMES.main());
     return (
       <UU5.Bricks.Section {...attrs}>
-        <ListContextResolver>
-          <List />
-        </ListContextResolver>
+        <UU5.Bricks.Tabs>
+          <UU5.Bricks.Tabs.Item
+            header={usersListLsi}
+            content={
+              <ListContextResolver>
+                <List />
+              </ListContextResolver>
+            }
+          />
+          <UU5.Bricks.Tabs.Item header={parkingPlacesLsi} content={parkingPlacesLsi} />
+          <UU5.Bricks.Tabs.Item header={reservationsLsi} content={reservationsLsi} />
+        </UU5.Bricks.Tabs>
       </UU5.Bricks.Section>
     );
   },

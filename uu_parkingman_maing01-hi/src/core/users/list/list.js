@@ -48,7 +48,6 @@ export const List = createVisualComponent({
     const { data: parkingManDataObject } = useSubAppData();
     const usersDataList = useUsers();
     const modal = useRef();
-    const headerLsi = useLsi(Lsi.header);
     //@@viewOff:hooks
 
     //@@viewOn:private
@@ -64,7 +63,6 @@ export const List = createVisualComponent({
       <UU5.Bricks.Div {...attrs}>
         <DataObjectStateResolver dataObject={parkingManDataObject}>
           <DataListStateResolver dataList={usersDataList}>
-            <UU5.Bricks.Header className="uu5-common-center" content={headerLsi} level={5} />
             <UsersListView usersDataList={usersDataList} modal={modal} handlerMap={usersDataList.handlerMap} />
           </DataListStateResolver>
         </DataObjectStateResolver>
