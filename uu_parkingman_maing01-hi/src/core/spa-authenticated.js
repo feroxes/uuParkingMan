@@ -19,8 +19,9 @@ const STATICS = {
 
 const top = () => Config.Css.css`
   .plus4u5-app-button-authenticated {
-    background: ${Constants.mainColor};
-    background-color: ${Constants.mainColor};
+    background: ${Constants.mainColor} !important;
+    background-color: ${Constants.mainColor} !important;
+    border-color: ${Constants.mainColor} !important;
   }
  `;
 
