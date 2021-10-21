@@ -1,8 +1,9 @@
 //@@viewOn:imports
 import UU5 from "uu5g04";
-import { createVisualComponent, useLsi, useState } from "uu5g04-hooks";
+import { createVisualComponent, useLsi } from "uu5g04-hooks";
 import Config from "./config/config.js";
 import Constants from "../../helpers/constants.js";
+import { useContextAlert } from "../managers/alert-manager.js";
 import Lsi from "./users-lsi.js";
 //@@viewOff:imports
 
@@ -50,21 +51,24 @@ export const UserFrom = createVisualComponent({
     const numberPlaceHolderLsi = useLsi(Lsi.userCreatePlaceHolders.number);
     const userInfoLsi = useLsi(Lsi.userInfo);
     const transportInfoLsi = useLsi(Lsi.transportInfo);
-    const [disabled, setDisable] = useState(false);
+    const showAlert = useContextAlert();
     //@@viewOff:hooks
 
     //@@viewOn:private
     function _handleOnSubmitClick(opt) {
-      setDisable(true);
       if (props.user) {
-        props.handlerMap.update(_prepareDtoIn({ ...opt.values, id: props.user.id })).finally(() => {
-          setDisable(false);
-          props.modal.current.close();
-        });
+        props.handlerMap
+          .update(_prepareDtoIn({ ...opt.values, id: props.user.id }))
+          .catch((e) => showAlert(e.message, false))
+          .finally(() => {
+            showAlert(<UU5.Bricks.Lsi lsi={Lsi.successMessage("updated")} />);
+            props.modal.close();
+          });
       } else {
-        props.handlerMap.create(_prepareDtoIn(opt.values)).finally(() => {
-          setDisable(false);
-        });
+        props.handlerMap
+          .create(_prepareDtoIn(opt.values))
+          .catch((e) => showAlert(e.message, false))
+          .finally(() => showAlert(<UU5.Bricks.Lsi lsi={Lsi.successMessage("created")} />));
       }
     }
 
@@ -91,9 +95,8 @@ export const UserFrom = createVisualComponent({
       <UU5.Forms.Form
         {...attrs}
         className="uu5-common-center"
-        onCancel={props.modal.current.close}
+        onCancel={props.modal.close}
         onSave={_handleOnSubmitClick}
-        disabled={disabled}
       >
         <UU5.Bricks.Header content={userInfoLsi} level={6} />
         <UU5.Forms.Text

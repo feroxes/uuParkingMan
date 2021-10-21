@@ -1,6 +1,6 @@
 //@@viewOn:imports
 import UU5 from "uu5g04";
-import { createVisualComponent, useRef } from "uu5g04-hooks";
+import { createVisualComponent } from "uu5g04-hooks";
 import { useSubAppData } from "uu_plus4u5g01-context";
 import Config from "../config/config.js";
 import useUsers from "../context/use-users.js";
@@ -45,7 +45,6 @@ export const List = createVisualComponent({
     //@@viewOn:hooks
     const { data: parkingManDataObject } = useSubAppData();
     const usersDataList = useUsers();
-    const modal = useRef();
     //@@viewOff:hooks
 
     //@@viewOn:private
@@ -61,10 +60,9 @@ export const List = createVisualComponent({
       <UU5.Bricks.Div {...attrs}>
         <DataObjectStateResolver dataObject={parkingManDataObject}>
           <DataListStateResolver dataList={usersDataList}>
-            <UsersListView usersDataList={usersDataList} modal={modal} handlerMap={usersDataList.handlerMap} />
+            <UsersListView usersDataList={usersDataList} handlerMap={usersDataList.handlerMap} />
           </DataListStateResolver>
         </DataObjectStateResolver>
-        <UU5.Bricks.Modal ref_={modal} />
       </UU5.Bricks.Div>
     );
     //@@viewOff:render

@@ -7,6 +7,7 @@ import Config from "../../config/config.js";
 import Constants from "../../../../helpers/constants.js";
 import StringHelper from "../../../../helpers/string-helper.js";
 import UserFrom from "../../user-form.js";
+import { useContextModal } from "../../../managers/modal-manager.js";
 import Lsi from "../../users-lsi.js";
 //@@viewOff:imports
 
@@ -34,7 +35,6 @@ export const UsersListView = createVisualComponent({
   propTypes: {
     usersDataList: UU5.PropTypes.object,
     handlerMap: UU5.PropTypes.object,
-    modal: UU5.PropTypes.object,
   },
   //@@viewOff:propTypes
 
@@ -42,11 +42,11 @@ export const UsersListView = createVisualComponent({
   defaultProps: {
     usersDataList: {},
     handlerMap: {},
-    modal: {},
   },
   //@@viewOff:defaultProps
   render(props) {
     //@@viewOn:hooks
+    const modal = useContextModal();
     //@@viewOff:hooks
 
     //@@viewOn:private
@@ -62,7 +62,7 @@ export const UsersListView = createVisualComponent({
     return (
       <Uu5Tiles.ControllerProvider data={props.usersDataList.data}>
         <Uu5Tiles.InfoBar />
-        <Uu5Tiles.List alternateRowBackground rowPadding="8px 16px" columns={getColumns(props)} />
+        <Uu5Tiles.List alternateRowBackground rowPadding="8px 16px" columns={getColumns(props, modal)} />
       </Uu5Tiles.ControllerProvider>
     );
     //@@viewOff:render
@@ -70,7 +70,7 @@ export const UsersListView = createVisualComponent({
 });
 
 //@@viewOn: helpers
-function getColumns(props) {
+function getColumns(props, modal) {
   return [
     {
       key: Constants.Users.columnKeys.uuIdentity,
@@ -102,7 +102,7 @@ function getColumns(props) {
         <UU5.Bricks.Button
           content={<UU5.Bricks.Icon icon="mdi-plus-circle" />}
           bgStyle="filled"
-          onClick={() => onControlsBtnClick(props)}
+          onClick={() => onControlsBtnClick(props, modal)}
           className={CLASS_NAMES.createBtn()}
         />
       ),
@@ -122,10 +122,10 @@ function getColumns(props) {
               {
                 label: <UU5.Bricks.Lsi lsi={Lsi.update} />,
                 onClick: () => {
-                  props.modal.current.open({
+                  modal.open({
                     header: <UU5.Bricks.Lsi lsi={Lsi.userUpdate} />,
                     content: (
-                      <UserFrom modal={props.modal} handlerMap={cellProps.data.handlerMap} user={cellProps.data.data} />
+                      <UserFrom modal={modal} handlerMap={cellProps.data.handlerMap} user={cellProps.data.data} />
                     ),
                     size: "m",
                   });
@@ -144,13 +144,13 @@ function getColumns(props) {
     },
   ];
 }
-function onControlsBtnClick(props) {
+function onControlsBtnClick(props, modal) {
   let modalContent = {
     header: <UU5.Bricks.Lsi lsi={Lsi.createUser} />,
-    content: <UserFrom modal={props.modal} handlerMap={props.handlerMap} />,
+    content: <UserFrom modal={modal} handlerMap={props.handlerMap} />,
     size: "m",
   };
-  props.modal.current.open(modalContent);
+  modal.open(modalContent);
 }
 //@@viewOff: helpers
 export default UsersListView;

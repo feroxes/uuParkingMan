@@ -1,8 +1,9 @@
 //@@viewOn:imports
 import UU5 from "uu5g04";
-import { createVisualComponent, useLsi, useState } from "uu5g04-hooks";
+import { createVisualComponent, useLsi } from "uu5g04-hooks";
 import Config from "./config/config.js";
 import Constants from "../../helpers/constants.js";
+import { useContextAlert } from "../managers/alert-manager.js";
 import Lsi from "./parking-places-lsi.js";
 //@@viewOff:imports
 
@@ -41,21 +42,24 @@ export const ParkingPlaceFrom = createVisualComponent({
     //@@viewOn:hooks
     const typeLsi = useLsi(Lsi.type);
     const numberLsi = useLsi(Lsi.number);
-    const [disabled, setDisable] = useState(false);
+    const showAlert = useContextAlert();
     //@@viewOff:hooks
 
     //@@viewOn:private
     function _handleOnSubmitClick(opt) {
-      setDisable(true);
       if (props.parkingPlace) {
-        props.handlerMap.update({ ...opt.values, id: props.parkingPlace.id }).finally(() => {
-          setDisable(false);
-          props.modal.current.close();
-        });
+        props.handlerMap
+          .update({ ...opt.values, id: props.parkingPlace.id })
+          .catch((e) => showAlert(e.message, false))
+          .finally(() => {
+            showAlert(<UU5.Bricks.Lsi lsi={Lsi.successMessage("updated")} />);
+            props.modal.close();
+          });
       } else {
-        props.handlerMap.create(opt.values).finally(() => {
-          setDisable(false);
-        });
+        props.handlerMap
+          .create(opt.values)
+          .catch((e) => showAlert(e.message, false))
+          .finally(() => showAlert(<UU5.Bricks.Lsi lsi={Lsi.successMessage("created")} />));
       }
     }
     //@@viewOff:private
@@ -67,7 +71,7 @@ export const ParkingPlaceFrom = createVisualComponent({
     const attrs = UU5.Common.VisualComponent.getAttrs(props, CLASS_NAMES.main());
     const { parkingPlace } = props;
     return (
-      <UU5.Forms.Form {...attrs} onCancel={props.modal.current.close} onSave={_handleOnSubmitClick} disabled={disabled}>
+      <UU5.Forms.Form {...attrs} onCancel={props.modal.close} onSave={_handleOnSubmitClick}>
         <UU5.Forms.Select
           name={Constants.Users.formNames.type}
           label={typeLsi}

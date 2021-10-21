@@ -7,6 +7,8 @@ import SubAppContextResolver from "../context/sub-app-context-resolver.js";
 import Calls from "calls";
 import Config from "./config/config.js";
 import SpaAuthenticated from "./spa-authenticated.js";
+import { AlertManager } from "./managers/alert-manager.js";
+import { ModalManager } from "./managers/modal-manager.js";
 //@@viewOff:imports
 
 const STATICS = {
@@ -35,7 +37,11 @@ export const Spa = createVisualComponent({
     return (
       <Plus4U5.App.Spa {...props} appName="uuParkingman">
         <SubAppContextResolver subAppDataLoader={Parkingman.Loader} baseUri={Calls.APP_BASE_URI}>
-          <SpaAuthenticated />
+          <AlertManager>
+            <ModalManager>
+              <SpaAuthenticated />
+            </ModalManager>
+          </AlertManager>
         </SubAppContextResolver>
       </Plus4U5.App.Spa>
     );

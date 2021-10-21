@@ -19,6 +19,9 @@ const Lsi = {
     brand: { en: "i3" },
     number: { en: "AA1111OO" },
   },
+  successMessage: (prop) => {
+    return { en: `User successfully ${prop}` };
+  },
 };
 
 export default Lsi;

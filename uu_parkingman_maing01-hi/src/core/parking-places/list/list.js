@@ -1,6 +1,6 @@
 //@@viewOn:imports
 import UU5 from "uu5g04";
-import { createVisualComponent, useRef } from "uu5g04-hooks";
+import { createVisualComponent } from "uu5g04-hooks";
 import { useSubAppData } from "uu_plus4u5g01-context";
 import Config from "../config/config.js";
 import useParkingPlaces from "../context/use-parking-places.js";
@@ -45,7 +45,6 @@ export const List = createVisualComponent({
     //@@viewOn:hooks
     const { data: parkingManDataObject } = useSubAppData();
     const parkingPlacesDataList = useParkingPlaces();
-    const modal = useRef();
     //@@viewOff:hooks
 
     //@@viewOn:private
@@ -63,12 +62,10 @@ export const List = createVisualComponent({
           <DataListStateResolver dataList={parkingPlacesDataList}>
             <ParkingPlacesListView
               parkingPlacesDataList={parkingPlacesDataList}
-              modal={modal}
               handlerMap={parkingPlacesDataList.handlerMap}
             />
           </DataListStateResolver>
         </DataObjectStateResolver>
-        <UU5.Bricks.Modal ref_={modal} />
       </UU5.Bricks.Div>
     );
     //@@viewOff:render
