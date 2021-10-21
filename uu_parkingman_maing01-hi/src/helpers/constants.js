@@ -16,6 +16,9 @@ const Constants = {
   },
 
   ParkingPlace: {
+    columnKeys: {
+      type: "type",
+    },
     types: [
       { value: "underground", content: "Underground" },
       { value: "surface", content: "Surface" },

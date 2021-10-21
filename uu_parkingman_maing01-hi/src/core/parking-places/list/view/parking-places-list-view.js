@@ -59,8 +59,12 @@ export const ParkingPlacesListView = createVisualComponent({
 
     //@@viewOn:render
     return (
-      <Uu5Tiles.ControllerProvider data={props.parkingPlacesDataList.data}>
-        <Uu5Tiles.InfoBar />
+      <Uu5Tiles.ControllerProvider
+        data={props.parkingPlacesDataList.data}
+        sorters={getSorters()}
+        initialActiveSorters={getSorters()}
+      >
+        <Uu5Tiles.InfoBar sortable={false} />
         <Uu5Tiles.List alternateRowBackground rowPadding="8px 16px" columns={getColumns(props, modal)} />
       </Uu5Tiles.ControllerProvider>
     );
@@ -69,6 +73,17 @@ export const ParkingPlacesListView = createVisualComponent({
 });
 
 //@@viewOn: helpers
+function getSorters() {
+  return [
+    {
+      key: Constants.ParkingPlace.columnKeys.type,
+      sorterFn: (a, b) => {
+        return a.data.type < b.data.type ? -1 : 1;
+      },
+    },
+  ];
+}
+
 function getColumns(props, modal) {
   return [
     {
@@ -76,6 +91,7 @@ function getColumns(props, modal) {
       header: <UU5.Bricks.Lsi lsi={Lsi.number} />,
     },
     {
+      key: Constants.ParkingPlace.columnKeys.type,
       cell: (cellProps) => <UU5.Bricks.Lsi lsi={Lsi[cellProps.data.data.type]} />,
       header: <UU5.Bricks.Lsi lsi={Lsi.type} />,
     },
