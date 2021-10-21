@@ -106,6 +106,21 @@ let Calls = {
     let commandUri = Calls.getCommandUri("user/update");
     return Calls.call("post", commandUri, dtoIn);
   },
+
+  parkingPlaceList(dtoIn) {
+    let commandUri = Calls.getCommandUri("parkingPlace/list");
+    return Calls.call("get", commandUri, dtoIn);
+  },
+
+  parkingPlaceCreate(dtoIn) {
+    let commandUri = Calls.getCommandUri("parkingPlace/create");
+    return Calls.call("post", commandUri, dtoIn);
+  },
+
+  parkingPlaceUpdate(dtoIn) {
+    let commandUri = Calls.getCommandUri("parkingPlace/update");
+    return Calls.call("post", commandUri, dtoIn);
+  },
 };
 
 export default Calls;

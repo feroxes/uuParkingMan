@@ -3,10 +3,10 @@ import UU5 from "uu5g04";
 import { createVisualComponent, useRef } from "uu5g04-hooks";
 import { useSubAppData } from "uu_plus4u5g01-context";
 import Config from "../config/config.js";
-import useUsers from "../context/use-users.js";
+import useParkingPlaces from "../context/use-parking-places.js";
 import DataListStateResolver from "../../../common/data-list-state-resolver.js";
 import DataObjectStateResolver from "../../../common/data-object-state-resolver.js";
-import UsersListView from "./view/users-list-view.js";
+import ParkingPlacesListView from "./view/parking-places-list-view.js";
 //@@viewOff:imports
 
 const STATICS = {
@@ -44,7 +44,7 @@ export const List = createVisualComponent({
   render(props) {
     //@@viewOn:hooks
     const { data: parkingManDataObject } = useSubAppData();
-    const usersDataList = useUsers();
+    const parkingPlacesDataList = useParkingPlaces();
     const modal = useRef();
     //@@viewOff:hooks
 
@@ -60,8 +60,12 @@ export const List = createVisualComponent({
     return (
       <UU5.Bricks.Div {...attrs}>
         <DataObjectStateResolver dataObject={parkingManDataObject}>
-          <DataListStateResolver dataList={usersDataList}>
-            <UsersListView usersDataList={usersDataList} modal={modal} handlerMap={usersDataList.handlerMap} />
+          <DataListStateResolver dataList={parkingPlacesDataList}>
+            <ParkingPlacesListView
+              parkingPlacesDataList={parkingPlacesDataList}
+              modal={modal}
+              handlerMap={parkingPlacesDataList.handlerMap}
+            />
           </DataListStateResolver>
         </DataObjectStateResolver>
         <UU5.Bricks.Modal ref_={modal} />

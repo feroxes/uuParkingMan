@@ -14,6 +14,13 @@ const Constants = {
       number: "number",
     },
   },
+
+  ParkingPlace: {
+    types: [
+      { value: "underground", content: "Underground" },
+      { value: "surface", content: "Surface" },
+    ],
+  },
 };
 
 export default Constants;
