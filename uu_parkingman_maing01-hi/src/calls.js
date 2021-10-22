@@ -121,6 +121,26 @@ let Calls = {
     let commandUri = Calls.getCommandUri("parkingPlace/update");
     return Calls.call("post", commandUri, dtoIn);
   },
+
+  reservationsList(dtoIn) {
+    let commandUri = Calls.getCommandUri("reservation/listByCriteria");
+    return Calls.call("get", commandUri, dtoIn);
+  },
+
+  reservationsCreate(dtoIn) {
+    let commandUri = Calls.getCommandUri("reservation/create");
+    return Calls.call("post", commandUri, dtoIn);
+  },
+
+  reservationsUpdate(dtoIn) {
+    let commandUri = Calls.getCommandUri("reservation/update");
+    return Calls.call("post", commandUri, dtoIn);
+  },
+
+  reservationsDelete(dtoIn) {
+    let commandUri = Calls.getCommandUri("reservation/delete");
+    return Calls.call("post", commandUri, dtoIn);
+  },
 };
 
 export default Calls;

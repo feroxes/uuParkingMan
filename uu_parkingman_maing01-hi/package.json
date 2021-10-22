@@ -7,6 +7,7 @@
   "namespace": "UuParkingMan",
   "spec": "uu5-app; uu_appg01_devkit@4.2.2",
   "dependencies": {
+    "moment": "^2.29.1",
     "systemjs": "0.19.47",
     "uu5g04": "^1.19.0",
     "uu5tilesg02": "^1.16.0",

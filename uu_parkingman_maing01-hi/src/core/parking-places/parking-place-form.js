@@ -11,7 +11,6 @@ const STATICS = {
   //@@viewOn:statics
   displayName: Config.TAG + "ParkingPlaceFrom",
   nestingLevel: "bigBox",
-  defaultType: "Car",
   //@@viewOff:statics
 };
 
@@ -50,16 +49,16 @@ export const ParkingPlaceFrom = createVisualComponent({
       if (props.parkingPlace) {
         props.handlerMap
           .update({ ...opt.values, id: props.parkingPlace.id })
-          .catch((e) => showAlert(e.message, false))
-          .finally(() => {
+          .then(() => {
             showAlert(<UU5.Bricks.Lsi lsi={Lsi.successMessage("updated")} />);
             props.modal.close();
-          });
+          })
+          .catch((e) => showAlert(e.message, false));
       } else {
         props.handlerMap
           .create(opt.values)
-          .catch((e) => showAlert(e.message, false))
-          .finally(() => showAlert(<UU5.Bricks.Lsi lsi={Lsi.successMessage("created")} />));
+          .then(() => showAlert(<UU5.Bricks.Lsi lsi={Lsi.successMessage("created")} />))
+          .catch((e) => showAlert(e.message, false));
       }
     }
     //@@viewOff:private
@@ -73,7 +72,7 @@ export const ParkingPlaceFrom = createVisualComponent({
     return (
       <UU5.Forms.Form {...attrs} onCancel={props.modal.close} onSave={_handleOnSubmitClick}>
         <UU5.Forms.Select
-          name={Constants.Users.formNames.type}
+          name={Constants.ParkingPlace.formNames.type}
           label={typeLsi}
           required
           value={parkingPlace && parkingPlace.type}
@@ -84,7 +83,7 @@ export const ParkingPlaceFrom = createVisualComponent({
         </UU5.Forms.Select>
         <UU5.Forms.Number
           buttonHidden
-          name={Constants.Users.formNames.number}
+          name={Constants.ParkingPlace.formNames.number}
           label={numberLsi}
           required
           value={parkingPlace && parkingPlace.number}

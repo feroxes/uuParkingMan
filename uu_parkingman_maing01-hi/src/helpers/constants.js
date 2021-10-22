@@ -16,6 +16,9 @@ const Constants = {
   },
 
   ParkingPlace: {
+    underground: "underground",
+    surface: "surface",
+
     columnKeys: {
       type: "type",
     },
@@ -23,6 +26,18 @@ const Constants = {
       { value: "underground", content: "Underground" },
       { value: "surface", content: "Surface" },
     ],
+    formNames: {
+      type: "type",
+      number: "number",
+    },
+  },
+
+  Reservation: {
+    formNames: {
+      userId: "userId",
+      parkingPlaceId: "parkingPlaceId",
+      daysRange: "daysRange",
+    },
   },
 };
 

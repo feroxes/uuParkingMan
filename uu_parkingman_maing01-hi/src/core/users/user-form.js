@@ -59,16 +59,16 @@ export const UserFrom = createVisualComponent({
       if (props.user) {
         props.handlerMap
           .update(_prepareDtoIn({ ...opt.values, id: props.user.id }))
-          .catch((e) => showAlert(e.message, false))
-          .finally(() => {
+          .then(() => {
             showAlert(<UU5.Bricks.Lsi lsi={Lsi.successMessage("updated")} />);
             props.modal.close();
-          });
+          })
+          .catch((e) => showAlert(e.message, false));
       } else {
         props.handlerMap
           .create(_prepareDtoIn(opt.values))
-          .catch((e) => showAlert(e.message, false))
-          .finally(() => showAlert(<UU5.Bricks.Lsi lsi={Lsi.successMessage("created")} />));
+          .then(() => showAlert(<UU5.Bricks.Lsi lsi={Lsi.successMessage("created")} />))
+          .catch((e) => showAlert(e.message, false));
       }
     }
 

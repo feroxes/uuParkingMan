@@ -2,12 +2,12 @@
 import UU5 from "uu5g04";
 import { createVisualComponent } from "uu5g04-hooks";
 import Uu5Tiles from "uu5tilesg02";
-import Plus4U5 from "uu_plus4u5g01";
 import Config from "../../config/config.js";
 import Constants from "../../../../helpers/constants.js";
 import StringHelper from "../../../../helpers/string-helper.js";
 import UserFrom from "../../user-form.js";
 import { useContextModal } from "../../../managers/modal-manager.js";
+import ComponentsHelper from "../../../../helpers/components-helper.js";
 import Lsi from "../../users-lsi.js";
 //@@viewOff:imports
 
@@ -74,14 +74,7 @@ function getColumns(props, modal) {
   return [
     {
       key: Constants.Users.columnKeys.uuIdentity,
-      cell: (cellProps) => (
-        <Plus4U5.Bricks.BusinessCard
-          uuIdentity={cellProps.data.data.uuIdentity}
-          visual="inline"
-          infoDetail="full"
-          showUuIdentity
-        />
-      ),
+      cell: (cellProps) => ComponentsHelper.getBusinessCart(cellProps.data.data.uuIdentity),
       header: <UU5.Bricks.Lsi lsi={Lsi.user} />,
     },
     {

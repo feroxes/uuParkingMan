@@ -5,8 +5,10 @@ import { createVisualComponent, useLsi } from "uu5g04-hooks";
 import "uu_plus4u5g01-app";
 import UsersListContextResolver from "../core/users/context/list-context-resolver.js";
 import ParkingPlacesContextResolver from "../core/parking-places/context/list-context-resolver.js";
+import ReservationsContextResolver from "../core/reservations/context/list-context-resolver.js";
 import UsersList from "../core/users/list/list.js";
 import ParkingPlacesList from "../core/parking-places/list/list.js";
+import ReservationsList from "../core/reservations/admin-list/list.js";
 import Config from "./config/config.js";
 import Lsi from "./routes-lsi.js";
 //@@viewOff:imports
@@ -45,17 +47,25 @@ export const Admin = createVisualComponent({
     return (
       <UU5.Bricks.Section {...attrs}>
         <UU5.Bricks.Tabs>
-          <UU5.Bricks.Tabs.Item header={parkingPlacesLsi}>
-            <ParkingPlacesContextResolver>
-              <ParkingPlacesList />
-            </ParkingPlacesContextResolver>
+          <UU5.Bricks.Tabs.Item header={reservationsLsi}>
+            <UsersListContextResolver>
+              <ParkingPlacesContextResolver>
+                <ReservationsContextResolver>
+                  <ReservationsList />
+                </ReservationsContextResolver>
+              </ParkingPlacesContextResolver>
+            </UsersListContextResolver>
           </UU5.Bricks.Tabs.Item>
           <UU5.Bricks.Tabs.Item header={usersListLsi}>
             <UsersListContextResolver>
               <UsersList />
             </UsersListContextResolver>
           </UU5.Bricks.Tabs.Item>
-          <UU5.Bricks.Tabs.Item header={reservationsLsi} content={reservationsLsi} />
+          <UU5.Bricks.Tabs.Item header={parkingPlacesLsi}>
+            <ParkingPlacesContextResolver>
+              <ParkingPlacesList />
+            </ParkingPlacesContextResolver>
+          </UU5.Bricks.Tabs.Item>
         </UU5.Bricks.Tabs>
       </UU5.Bricks.Section>
     );
