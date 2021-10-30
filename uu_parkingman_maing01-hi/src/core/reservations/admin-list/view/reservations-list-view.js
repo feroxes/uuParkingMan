@@ -112,7 +112,7 @@ function getColumns(props, modal) {
       header: <UU5.Bricks.Lsi lsi={Lsi.reservationDates} />,
       cell: (cellProps) => {
         const { dayFrom, dayTo } = cellProps.data.data;
-        return `${DateTimeHelper.formatDate(dayFrom)} - ${DateTimeHelper.formatDate(dayTo)}`;
+        return `${DateTimeHelper.formatDate(dayFrom, "DD.MM")} - ${DateTimeHelper.formatDate(dayTo, "DD.MM")}`;
       },
     },
     {
