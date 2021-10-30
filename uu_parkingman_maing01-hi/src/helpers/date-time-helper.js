@@ -36,6 +36,13 @@ const DateTimeHelper = {
     const b = this.getDate(date2);
     return b.diff(a, "days");
   },
+
+  isBetween(dayToCheck, dayFrom, dayTo) {
+    const x = this.getDate(dayToCheck);
+    const a = this.getDate(dayFrom);
+    const b = this.getDate(dayTo);
+    return x.isBetween(a, b) || x.isSame(a) || x.isSame(b);
+  },
 };
 
 export default DateTimeHelper;

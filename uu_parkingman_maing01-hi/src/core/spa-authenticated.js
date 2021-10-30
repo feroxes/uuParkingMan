@@ -9,6 +9,7 @@ import Constants from "../helpers/constants.js";
 import Config from "./config/config";
 import Bottom from "./bottom";
 import Admin from "../routes/admin.js";
+import Reservations from "../routes/reservations.js"
 //@@viewOff:imports
 
 const STATICS = {
@@ -31,7 +32,7 @@ const DEFAULT_USE_CASE = "reservations";
 const ROUTES = {
   "": DEFAULT_USE_CASE,
   admin: { component: <Admin /> },
-  reservations: {},
+  reservations: { component: <Reservations /> },
   about: { component: <About /> },
 };
 
