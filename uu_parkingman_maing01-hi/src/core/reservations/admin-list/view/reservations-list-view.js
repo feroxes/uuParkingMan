@@ -74,17 +74,6 @@ export const ReservationsListView = createVisualComponent({
 });
 
 //@@viewOn: helpers
-function getSorters() {
-  return [
-    {
-      key: Constants.ParkingPlace.columnKeys.type,
-      sorterFn: (a, b) => {
-        return a.data.type < b.data.type ? -1 : 1;
-      },
-    },
-  ];
-}
-
 function getColumns(props, modal) {
   return [
     {

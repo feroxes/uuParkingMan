@@ -4,7 +4,6 @@ import UuBookigyWorkplace from "uu_bookigy_workplaceg01-uu5";
 import { createVisualComponent, useState, useEffect } from "uu5g04-hooks";
 import Uu5Tiles from "uu5tilesg02";
 import Config from "../../config/config.js";
-import { useContextModal } from "../../../managers/modal-manager.js";
 import ParkingPlaceItem from "./parking-place-item.js";
 import Constants from "../../../../helpers/constants.js";
 
@@ -50,7 +49,6 @@ export const UserReservationsListView = createVisualComponent({
   //@@viewOff:defaultProps
   render(props) {
     //@@viewOn:hooks
-    const modal = useContextModal();
     const [selectedDate, setSelectedDate] = useState(new Date());
 
     useEffect(() => {

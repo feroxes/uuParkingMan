@@ -41,7 +41,7 @@ const DateTimeHelper = {
     const x = this.getDate(dayToCheck);
     const a = this.getDate(dayFrom);
     const b = this.getDate(dayTo);
-    return x.isBetween(a, b) || x.isSame(a) || x.isSame(b);
+    return x.isBetween(a, b) || x.isSame(a, "day") || x.isSame(b, "day");
   },
 };
 

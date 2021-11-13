@@ -42,13 +42,15 @@ export const ReservationFrom = createVisualComponent({
     parkingPlacesDataList: UU5.PropTypes.array,
     modal: UU5.PropTypes.object,
     handlerMap: UU5.PropTypes.object,
+    user: UU5.PropTypes.object,
+    parkingPlace: UU5.PropTypes.object,
   },
   //@@viewOff:propTypes
 
   //@@viewOn:defaultProps
   //@@viewOff:defaultProps
 
-  render(props) {
+  render({ reservation, user, handlerMap, modal, parkingPlace, parkingPlacesDataList, usersDataList }) {
     //@@viewOn:hooks
     const parkingPlaceLsi = useLsi(Lsi.parkingPlace);
     const userLsi = useLsi(Lsi.user);
@@ -58,16 +60,16 @@ export const ReservationFrom = createVisualComponent({
 
     //@@viewOn:private
     function _handleOnSubmitClick(opt) {
-      if (props.reservation) {
-        props.handlerMap
-          .update({ ..._getDtoIn(opt.values), id: props.reservation.id, revision: props.reservation.sys.rev })
+      if (reservation) {
+        handlerMap
+          .update({ ..._getDtoIn(opt.values), id: reservation.id, revision: reservation.sys.rev })
           .then(() => {
             showAlert(<UU5.Bricks.Lsi lsi={Lsi.successMessage("updated")} />);
-            props.modal.close();
+            modal.close();
           })
           .catch((e) => showAlert(e.message, false));
       } else {
-        props.handlerMap
+        handlerMap
           .create(_getDtoIn(opt.values))
           .then(() => showAlert(<UU5.Bricks.Lsi lsi={Lsi.successMessage("created")} />))
           .catch((e) => showAlert(e.message, false));
@@ -84,40 +86,63 @@ export const ReservationFrom = createVisualComponent({
     }
 
     function _getParkingPlacesOptions() {
-      const { parkingPlacesDataList } = props;
-      const surfacePlaces = [];
-      const undergroundPlaces = [];
-      parkingPlacesDataList.forEach((place, key) => {
-        const { type, id, number } = place.data;
-        if (type === Constants.ParkingPlace.surface) {
-          surfacePlaces.push(<UU5.Forms.Select.Option value={id} content={number} key={key} />);
-        } else undergroundPlaces.push(<UU5.Forms.Select.Option value={id} content={number} key={key} />);
-      });
+      if (parkingPlace) {
+        return <UU5.Forms.Select.Option value={parkingPlace.data.id} content={parkingPlace.data.number} />;
+      } else {
+        const surfacePlaces = [];
+        const undergroundPlaces = [];
+        parkingPlacesDataList.forEach((place, key) => {
+          const { type, id, number } = place.data;
+          if (type === Constants.ParkingPlace.surface) {
+            surfacePlaces.push(<UU5.Forms.Select.Option value={id} content={number} key={key} />);
+          } else undergroundPlaces.push(<UU5.Forms.Select.Option value={id} content={number} key={key} />);
+        });
 
-      return [...surfacePlaces, ...undergroundPlaces];
+        return [...surfacePlaces, ...undergroundPlaces];
+      }
+    }
+
+    function _getParkingPlaceValue() {
+      if (reservation) return reservation.parkingPlaceId;
+      else if (parkingPlace) return parkingPlace.data.id;
     }
 
     function _getUsersOptions() {
-      const { usersDataList } = props;
-      return usersDataList.map((user, key) => {
+      if (user) {
         return (
           <UU5.Forms.Select.Option
             value={user.data.id}
             content={ComponentsHelper.getBusinessCart(user.data.uuIdentity)}
-            key={key}
           />
         );
-      });
+      } else {
+        return usersDataList.map((user, key) => {
+          return (
+            <UU5.Forms.Select.Option
+              value={user.data.id}
+              content={ComponentsHelper.getBusinessCart(user.data.uuIdentity)}
+              key={key}
+            />
+          );
+        });
+      }
+    }
+
+    function _getUserListValue() {
+      if (reservation) return reservation.userId;
+      else if (user) {
+        return user.data.id;
+      }
     }
 
     function _getDateFrom() {
-      const date = props.reservation ? new Date(props.reservation.dayFrom) : new Date();
+      const date = reservation ? new Date(reservation.dayFrom) : new Date();
       return DateTimeHelper.formatDate(date, STATICS.dateFormat);
     }
 
     function _getDateTo() {
-      if (!props.reservation) return null;
-      return DateTimeHelper.formatDate(new Date(props.reservation.dayTo), STATICS.dateFormat);
+      if (!reservation) return null;
+      return DateTimeHelper.formatDate(new Date(reservation.dayTo), STATICS.dateFormat);
     }
     //@@viewOff:private
 
@@ -125,22 +150,15 @@ export const ReservationFrom = createVisualComponent({
     //@@viewOff:interface
 
     //@@viewOn:render
-    const attrs = UU5.Common.VisualComponent.getAttrs(props, CLASS_NAMES.main());
-    const { reservation } = props;
     return (
-      <UU5.Forms.Form
-        {...attrs}
-        labelColWidth="xs-12"
-        colWidth="xs-12"
-        onCancel={props.modal.close}
-        onSave={_handleOnSubmitClick}
-      >
+      <UU5.Forms.Form labelColWidth="xs-12" colWidth="xs-12" onCancel={modal.close} onSave={_handleOnSubmitClick}>
         <UU5.Forms.Select
           className={CLASS_NAMES.formItem()}
           name={Constants.Reservation.formNames.userId}
           label={userLsi}
           required
-          value={reservation && reservation.userId}
+          readOnly={!!user}
+          value={_getUserListValue()}
         >
           {_getUsersOptions()}
         </UU5.Forms.Select>
@@ -161,13 +179,15 @@ export const ReservationFrom = createVisualComponent({
           hideWeekNumber
           showTodayButton
           format="dd-mm-Y"
+          popoverLocation="portal"
         />
         <UU5.Forms.Select
           className={CLASS_NAMES.formItem()}
           name={Constants.Reservation.formNames.parkingPlaceId}
           label={parkingPlaceLsi}
           required
-          value={reservation && reservation.parkingPlaceId}
+          readOnly={!!parkingPlace}
+          value={_getParkingPlaceValue()}
         >
           {_getParkingPlacesOptions()}
         </UU5.Forms.Select>

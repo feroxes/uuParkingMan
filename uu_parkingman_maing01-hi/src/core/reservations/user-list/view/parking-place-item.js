@@ -1,11 +1,14 @@
 //@@viewOn:imports
 import UU5 from "uu5g04";
-import { createVisualComponent } from "uu5g04-hooks";
+import { createVisualComponent, useSession } from "uu5g04-hooks";
 import Config from "../../config/config.js";
 import ParkingPlaceNumber from "./parking-place-number.js";
 import { useContextModal } from "../../../managers/modal-manager.js";
 import Constants from "../../../../helpers/constants.js";
 import ReservationHelper from "../../../../helpers/reservation-helper.js";
+import ComponentsHelper from "../../../../helpers/components-helper.js";
+import ReservationFrom from "../../reservation-form.js";
+import Lsi from "../../reservations-lsi.js";
 //@@viewOff:imports
 
 //@@viewOn:css
@@ -20,6 +23,11 @@ const Css = {
     align-items: center;
     flex-direction: column;
     padding: 16px 0;
+  `,
+  reservedBy: () => Config.Css.css`
+    display: flex;
+    flex-direction: column;
+    padding-top: 16px;
   `,
 };
 
@@ -44,22 +52,61 @@ export const ParkingPlaceItem = createVisualComponent({
 
   //@@viewOn:defaultProps
   //@@viewOff:defaultProps
-  render(props) {
+  render({ data, reservationsDataList, selectedDate, usersDataList }) {
     //@@viewOn:hooks
     const modal = useContextModal();
+    const session = useSession();
     const isParkingPlaceReserved = ReservationHelper.isParkingPlaceReserved(
-      props.data.data.id,
-      props.reservationsDataList.data,
-      props.selectedDate
+      data.data.id,
+      reservationsDataList.data,
+      selectedDate
     );
-    const reservation = ReservationHelper.findReservation(
-      props.data.data.id,
-      props.reservationsDataList.data,
-      props.selectedDate
-    );
+    const reservation = isParkingPlaceReserved
+      ? ReservationHelper.findReservation(data.data.id, reservationsDataList.data, selectedDate)
+      : null;
+
+    const reservedBy = isParkingPlaceReserved
+      ? ReservationHelper.getReservationUser(reservation, usersDataList.data)
+      : null;
+
+    const user = ReservationHelper.getUser(usersDataList, session);
+
+    const isUserOwnerOfReservation = isParkingPlaceReserved
+      ? ReservationHelper.isUserOwnerOfReservation(reservedBy.data.uuIdentity, session)
+      : false;
     //@@viewOff:hooks
 
     //@@viewOn:private
+    function _handleOnParkingPlaceClick() {
+      if (isUserOwnerOfReservation) return _handleOnReservationUpdate();
+      else return _handleOnReservationCreate();
+    }
+
+    function _handleOnReservationUpdate() {
+      modal.open({
+        header: <UU5.Bricks.Lsi lsi={Lsi.reservationUpdate} />,
+        content: (
+          <ReservationFrom
+            modal={modal}
+            user={reservedBy}
+            reservation={reservation.data}
+            parkingPlace={data}
+            handlerMap={reservation.handlerMap}
+          />
+        ),
+        size: "m",
+      });
+    }
+
+    function _handleOnReservationCreate() {
+      modal.open({
+        header: <UU5.Bricks.Lsi lsi={Lsi.createReservation} />,
+        content: (
+          <ReservationFrom modal={modal} user={user} parkingPlace={data} handlerMap={reservationsDataList.handlerMap} />
+        ),
+        size: "m",
+      });
+    }
     //@@viewOff:private
 
     //@@viewOn:handlers
@@ -67,15 +114,26 @@ export const ParkingPlaceItem = createVisualComponent({
 
     // @@viewOn:interface
     //@@viewOff:interface
-
     //@@viewOn:render
     return (
-      <UU5.Bricks.Button className={Css.main()} bgStyle="transparent" disabled={isParkingPlaceReserved}>
-        <ParkingPlaceNumber number={props.data.data.number.toString()} />
+      <UU5.Bricks.Button
+        className={Css.main()}
+        bgStyle="transparent"
+        disabled={isParkingPlaceReserved && !isUserOwnerOfReservation}
+        onClick={_handleOnParkingPlaceClick}
+      >
+        <ParkingPlaceNumber number={data.data.number.toString()} />
         {isParkingPlaceReserved && (
-          <>
-            <span>Reserved by: {reservation.data.userId}</span>
-          </>
+          <div className={Css.reservedBy()}>
+            <span>Reserved by:</span>
+            {ComponentsHelper.getBusinessCart(reservedBy.data.uuIdentity)}
+            {reservedBy.data.transport && (
+              <>
+                <div>{`${reservedBy.data.transport.brand} ${reservedBy.data.transport.model}`}</div>
+                <div>{reservedBy.data.transport.number}</div>
+              </>
+            )}
+          </div>
         )}
       </UU5.Bricks.Button>
     );

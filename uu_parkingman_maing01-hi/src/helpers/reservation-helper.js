@@ -13,6 +13,18 @@ const ReservationHelper = {
   isParkingPlaceReserved(parkingPlaceId, reservations, date) {
     return !!this.findReservation(parkingPlaceId, reservations, date);
   },
+
+  getReservationUser(reservation, usersDataList) {
+    return usersDataList.find((user) => user.data.id === reservation.data.userId);
+  },
+
+  isUserOwnerOfReservation(uuIdentity, session) {
+    return uuIdentity === session.identity.uuIdentity;
+  },
+
+  getUser(usersDataList, session) {
+    return usersDataList.data.find((user) => user.data.uuIdentity === session.identity.uuIdentity);
+  },
 };
 
 export default ReservationHelper;
