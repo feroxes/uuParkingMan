@@ -7,6 +7,7 @@ import { useContextModal } from "../../../managers/modal-manager.js";
 import Constants from "../../../../helpers/constants.js";
 import ReservationHelper from "../../../../helpers/reservation-helper.js";
 import ComponentsHelper from "../../../../helpers/components-helper.js";
+import DateTimeHelper from "../../../../helpers/date-time-helper.js";
 import ReservationFrom from "../../reservation-form.js";
 import Lsi from "../../reservations-lsi.js";
 //@@viewOff:imports
@@ -120,7 +121,7 @@ export const ParkingPlaceItem = createVisualComponent({
       <UU5.Bricks.Button
         className={Css.main()}
         bgStyle="transparent"
-        disabled={isParkingPlaceReserved && !isUserOwnerOfReservation}
+        disabled={DateTimeHelper.isDateInPast(selectedDate) || (isParkingPlaceReserved && !isUserOwnerOfReservation)}
         onClick={_handleOnParkingPlaceClick}
       >
         <ParkingPlaceNumber number={data.data.number.toString()} />
