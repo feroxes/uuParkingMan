@@ -1,6 +1,6 @@
 //@@viewOn:imports
 import UU5 from "uu5g04";
-import { createVisualComponent } from "uu5g04-hooks";
+import { createVisualComponent, useLsi, useRef, useState } from "uu5g04-hooks";
 import Uu5Tiles from "uu5tilesg02";
 import Config from "../../config/config.js";
 import Constants from "../../../../helpers/constants.js";
@@ -51,6 +51,12 @@ export const ReservationsListView = createVisualComponent({
   render(props) {
     //@@viewOn:hooks
     const modal = useContextModal();
+    const confirmModalHeaderLsi = useLsi(Lsi.reservationDelete);
+    const confirmModalContentLsi = useLsi(Lsi.reservationDeleteConfirmation);
+
+    const confirmModalRef = useRef();
+
+    const [reservationForDelete, setReservationForDelete] = useState(null);
     //@@viewOff:hooks
 
     //@@viewOn:private
@@ -66,7 +72,20 @@ export const ReservationsListView = createVisualComponent({
     return (
       <Uu5Tiles.ControllerProvider data={props.reservationsDataList.data}>
         <Uu5Tiles.InfoBar sortable={false} />
-        <Uu5Tiles.List alternateRowBackground rowPadding="8px 16px" columns={getColumns(props, modal)} />
+        <Uu5Tiles.List
+          alternateRowBackground
+          rowPadding="8px 16px"
+          columns={getColumns(props, modal, confirmModalRef, setReservationForDelete)}
+        />
+        <UU5.Bricks.ConfirmModal
+          header={confirmModalHeaderLsi}
+          content={confirmModalContentLsi}
+          onConfirm={() => {
+            reservationForDelete.data.handlerMap.delete();
+          }}
+          confirmButtonProps={{ colorSchema: "danger" }}
+          ref_={confirmModalRef}
+        />
       </Uu5Tiles.ControllerProvider>
     );
     //@@viewOff:render
@@ -74,12 +93,13 @@ export const ReservationsListView = createVisualComponent({
 });
 
 //@@viewOn: helpers
-function getColumns(props, modal) {
+function getColumns(props, modal, confirmModalRef, setReservationForDelete) {
   return [
     {
       header: <UU5.Bricks.Lsi lsi={Lsi.user} />,
       cell: (cellProps) => {
-        const uuIdentity = props.usersDataList.find((user) => user.data.id === cellProps.data.data.userId).data.uuIdentity;
+        const uuIdentity = props.usersDataList.find((user) => user.data.id === cellProps.data.data.userId).data
+          .uuIdentity;
         return ComponentsHelper.getBusinessCart(uuIdentity);
       },
     },
@@ -151,6 +171,14 @@ function getColumns(props, modal) {
                     ),
                     size: "m",
                   });
+                },
+              },
+              {
+                label: <UU5.Bricks.Lsi lsi={Lsi.delete} />,
+                disabled: DateTimeHelper.isDateInPast(cellProps.data.data.dayTo),
+                onClick: () => {
+                  setReservationForDelete(cellProps);
+                  confirmModalRef.current.open(cellProps);
                 },
               },
             ]}

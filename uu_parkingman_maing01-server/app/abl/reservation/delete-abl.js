@@ -53,10 +53,7 @@ class DeleteAbl {
     }
 
     // HDS 5
-    return {
-      ...reservation,
-      uuAppErrorMap,
-    };
+    return { uuAppErrorMap };
   }
 }
 
