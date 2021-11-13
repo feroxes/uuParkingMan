@@ -92,6 +92,7 @@ export const ParkingPlaceItem = createVisualComponent({
             reservation={reservation.data}
             parkingPlace={data}
             handlerMap={reservation.handlerMap}
+            renderDeleteButton
           />
         ),
         size: "m",

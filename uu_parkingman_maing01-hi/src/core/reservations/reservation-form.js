@@ -1,6 +1,6 @@
 //@@viewOn:imports
 import UU5 from "uu5g04";
-import { createVisualComponent, useLsi } from "uu5g04-hooks";
+import { createVisualComponent, useLsi, useRef } from "uu5g04-hooks";
 import Config from "./config/config.js";
 import Constants from "../../helpers/constants.js";
 import { useContextAlert } from "../managers/alert-manager.js";
@@ -44,18 +44,32 @@ export const ReservationFrom = createVisualComponent({
     handlerMap: UU5.PropTypes.object,
     user: UU5.PropTypes.object,
     parkingPlace: UU5.PropTypes.object,
+    renderDeleteButton: UU5.PropTypes.bool,
   },
   //@@viewOff:propTypes
 
   //@@viewOn:defaultProps
+  defaultProps: {
+    renderDeleteButton: false,
+  },
   //@@viewOff:defaultProps
 
-  render({ reservation, user, handlerMap, modal, parkingPlace, parkingPlacesDataList, usersDataList }) {
+  render({
+    reservation,
+    user,
+    handlerMap,
+    modal,
+    parkingPlace,
+    parkingPlacesDataList,
+    usersDataList,
+    renderDeleteButton,
+  }) {
     //@@viewOn:hooks
     const parkingPlaceLsi = useLsi(Lsi.parkingPlace);
     const userLsi = useLsi(Lsi.user);
     const reservationDatesLsi = useLsi(Lsi.reservationDates);
     const showAlert = useContextAlert();
+    const confirmModalRef = useRef();
     //@@viewOff:hooks
 
     //@@viewOn:private
@@ -71,9 +85,16 @@ export const ReservationFrom = createVisualComponent({
       } else {
         handlerMap
           .create(_getDtoIn(opt.values))
-          .then(() => showAlert(<UU5.Bricks.Lsi lsi={Lsi.successMessage("created")} />))
+          .then(() => {
+            showAlert(<UU5.Bricks.Lsi lsi={Lsi.successMessage("created")} />)
+            modal.close();
+          })
           .catch((e) => showAlert(e.message, false));
       }
+    }
+
+    function _handleOnDeleteClick() {
+      confirmModalRef.current.open();
     }
 
     function _getDtoIn(values) {
@@ -144,6 +165,19 @@ export const ReservationFrom = createVisualComponent({
       if (!reservation) return null;
       return DateTimeHelper.formatDate(new Date(reservation.dayTo), STATICS.dateFormat);
     }
+
+    function _getConfirmModalContent() {
+      return (
+        <div style={{ display: "flex", alignItems: "center", flexDirection: "column" }}>
+          <div>Your reservation</div>
+          <div>
+            {reservation.dayFrom} {"<—>"} {reservation.dayTo}
+          </div>
+          <div>will be deleted.</div>
+          <div>Are you sure?</div>
+        </div>
+      );
+    }
     //@@viewOff:private
 
     //@@viewOn:interface
@@ -151,7 +185,13 @@ export const ReservationFrom = createVisualComponent({
 
     //@@viewOn:render
     return (
-      <UU5.Forms.Form labelColWidth="xs-12" colWidth="xs-12" onCancel={modal.close} onSave={_handleOnSubmitClick}>
+      <UU5.Forms.Form
+        labelColWidth="xs-12"
+        colWidth="xs-12"
+        onCancel={modal.close}
+        onSave={_handleOnSubmitClick}
+        onReset={_handleOnDeleteClick}
+      >
         <UU5.Forms.Select
           className={CLASS_NAMES.formItem()}
           name={Constants.Reservation.formNames.userId}
@@ -191,7 +231,27 @@ export const ReservationFrom = createVisualComponent({
         >
           {_getParkingPlacesOptions()}
         </UU5.Forms.Select>
-        <UU5.Forms.Controls className={CLASS_NAMES.controls()} />
+        <UU5.Forms.Controls
+          className={CLASS_NAMES.controls()}
+          buttonReset={renderDeleteButton}
+          buttonResetProps={{
+            content: useLsi(Lsi.delete),
+            bgStyle: "filled",
+            colorSchema: "danger",
+          }}
+        />
+        {renderDeleteButton && (
+          <UU5.Bricks.ConfirmModal
+            header={useLsi(Lsi.reservationDelete)}
+            content={_getConfirmModalContent()}
+            onConfirm={() => {
+              handlerMap.delete();
+              modal.close();
+            }}
+            confirmButtonProps={{ colorSchema: "danger" }}
+            ref_={confirmModalRef}
+          />
+        )}
       </UU5.Forms.Form>
     );
     //@@viewOff:render
