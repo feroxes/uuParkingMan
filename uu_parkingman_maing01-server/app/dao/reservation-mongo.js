@@ -13,18 +13,66 @@ class ReservationMongo extends ParkingmanObjectDao {
     return super.find({ awid, parkingPlaceId }, pageInfo);
   }
 
-  async listByCriteria(awid, filterMap, pageInfo = {}) {
-    const filter = { ...filterMap };
-    if (filterMap.dayFrom) filter.dayFrom = { $lte: filterMap.dayFrom };
-    if (filterMap.dayTo) filter.dayTo = { $gte: filterMap.dayTo };
-    return super.find({ awid, ...filter }, pageInfo);
-  }
+  async listByCriteria(awid, filterMap, sorterMap = [], pageInfo = { pageSize: 1000, pageIndex: 0 }) {
+    const { pageIndex, pageSize } = pageInfo;
+    const filter = { ...filterMap, awid };
+    const sorter = { "sys.cts": -1 };
 
-  async listByOverlappingDates(awid, filterMap, pageInfo = {}) {
-    const filter = { ...filterMap };
+    if (sorterMap.length) {
+      sorterMap.forEach((item) => {
+        sorter[item.key] = item.ascending ? 1 : -1;
+      });
+    }
+
     if (filterMap.dayFrom) filter.dayFrom = { $lte: filterMap.dayFrom };
     if (filterMap.dayTo) filter.dayTo = { $gte: filterMap.dayTo };
-    return super.find({ awid, ...filter }, pageInfo);
+
+    const reservations = await super.aggregate([
+      {
+        $lookup: {
+          from: "user",
+          localField: "userId",
+          foreignField: "_id",
+          as: "user",
+        },
+      },
+      { $unwind: "$user" },
+      {
+        $lookup: {
+          from: "parkingPlace",
+          localField: "parkingPlaceId",
+          foreignField: "_id",
+          as: "parkingPlace",
+        },
+      },
+      { $unwind: "$parkingPlace" },
+      { $match: filter },
+      { $sort: sorter },
+      {
+        $addFields: { id: "$_id" },
+      },
+      {
+        $project: {
+          _id: 0,
+        },
+      },
+      {
+        $facet: {
+          itemList: [{ $skip: pageIndex * pageSize }, { $limit: pageSize }],
+          info: [{ $group: { _id: null, count: { $sum: 1 } } }],
+        },
+      },
+    ]);
+
+    let total = 0;
+    if (reservations[0] && reservations[0].info[0]) {
+      total = reservations[0].info[0].count;
+    }
+
+    return {
+      itemList: reservations[0].itemList,
+      pageInfo: { pageIndex, pageSize, total },
+    };
   }
 }
 

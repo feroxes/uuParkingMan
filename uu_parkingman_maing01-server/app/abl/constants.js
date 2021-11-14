@@ -25,6 +25,8 @@ const Constants = {
   Reservation: {
     MAX_RESERVATION_DAYS: 5,
   },
+  DEFAULT_PAGE_INDEX: 0,
+  DEFAULT_PAGE_SIZE: 1000,
 };
 
 module.exports = Constants;

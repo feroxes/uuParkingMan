@@ -2,6 +2,7 @@
 const { Validator } = require("uu_appg01_server").Validation;
 const { DaoFactory } = require("uu_appg01_server").ObjectStore;
 const { ValidationHelper } = require("uu_appg01_server").AppServer;
+const { ObjectId } = require("mongodb");
 const Errors = require("../../api/errors/reservation-error.js").ListByCriteria;
 const Warnings = require("../../api/warnings/reservation-warnings.js");
 const Constants = require("../constants.js");
@@ -51,9 +52,21 @@ class ListByCriteriaAbl {
         ...DayTimeHelper.prepareFilterMapByDays(dtoIn.filterMap.dayFrom, dtoIn.filterMap.dayTo),
       }),
     };
+    if (!dtoIn.pageInfo) {
+      dtoIn.pageInfo = {
+        pageIndex: Constants.DEFAULT_PAGE_INDEX,
+        pageSize: Constants.DEFAULT_PAGE_SIZE,
+      };
+    } else {
+      if (!dtoIn.pageInfo.hasOwnProperty("pageIndex")) dtoIn.pageInfo.pageIndex = Constants.DEFAULT_PAGE_INDEX;
+      if (!dtoIn.pageInfo.hasOwnProperty("pageSize")) dtoIn.pageInfo.pageSize = Constants.DEFAULT_PAGE_SIZE;
+    }
+
+    filterMap.userId && (filterMap.userId = ObjectId(filterMap.userId));
+    filterMap.parkingPlaceId && (filterMap.parkingPlaceId = ObjectId(filterMap.parkingPlaceId));
 
     // HDS 4
-    const reservationList = await this.dao.listByCriteria(awid, filterMap);
+    const reservationList = await this.dao.listByCriteria(awid, filterMap, [], dtoIn.pageInfo);
 
     // HDS 5
     return {

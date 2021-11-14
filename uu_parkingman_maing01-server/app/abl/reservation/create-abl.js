@@ -2,6 +2,7 @@
 const { Validator } = require("uu_appg01_server").Validation;
 const { DaoFactory } = require("uu_appg01_server").ObjectStore;
 const { ValidationHelper } = require("uu_appg01_server").AppServer;
+const { ObjectId } = require("mongodb");
 const Errors = require("../../api/errors/reservation-error.js").Create;
 const Warnings = require("../../api/warnings/reservation-warnings.js");
 const Constants = require("../constants.js");
@@ -64,7 +65,8 @@ class CreateAbl {
         { maxDaysOfReservation: Constants.Reservation.MAX_RESERVATION_DAYS }
       );
     }
-
+    dtoIn.userId = ObjectId(dtoIn.userId);
+    dtoIn.parkingPlaceId = ObjectId(dtoIn.parkingPlaceId);
     // HDS 7
     let reservations = await this.dao.listByCriteria(awid, {
       parkingPlaceId: dtoIn.parkingPlaceId,

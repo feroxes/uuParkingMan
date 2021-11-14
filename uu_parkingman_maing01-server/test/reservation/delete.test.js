@@ -6,7 +6,6 @@ const ErrorAssets = require("../error-assets");
 const ReservationTestHelper = require("../utils/reservation-test-helper");
 const UserTestHelper = require("../utils/user-test-helper");
 const ParkingPlaceHelper = require("../utils/parking-place-test-helper");
-const ValidateReservation = require("../utils/validate-structures/reservation");
 const DateTimeHelper = require("../../app/abl/helpers/day-time-helper.js");
 const Constants = require("../constants.js");
 
@@ -33,8 +32,7 @@ afterAll(async () => {
 });
 
 function expectedHds(response, expectedOutput = {}) {
-  ValidateHelper.validateBaseObjectData(response);
-  ValidateReservation.validateObject(response, expectedOutput);
+  ValidateHelper.validateBaseHds(response);
 }
 
 async function prepareBasic(amount = 3) {
@@ -49,7 +47,7 @@ async function prepareBasic(amount = 3) {
   return await ReservationTestHelper.reservationCreate(reservationCreateDtoIn);
 }
 
-describe("Testing the reservation/update uuCmd...", () => {
+describe("Testing the reservation/delete uuCmd...", () => {
   test("HDS", async () => {
     const reservation = await prepareBasic(Constants.defaultDuration);
     const dtoIn = {
@@ -89,7 +87,6 @@ describe("Testing the reservation/update uuCmd...", () => {
     const response = await ReservationTestHelper.reservationDelete({ ...dtoIn, ...DefaultDtoIn.unsupportedKeys });
     const expectedWarning = ErrorAssets.unsupportedKeys(CMD);
     ValidateHelper.validateUnsupportedKeysWarning(response, expectedWarning);
-    expectedHds(response, dtoIn);
   });
 
   test("Test 1.3.1 - invalidDtoIn", async () => {
@@ -103,7 +100,7 @@ describe("Testing the reservation/update uuCmd...", () => {
   });
 
   test("Test 2.1 - reservationDoesNotExist", async () => {
-    const reservation = await prepareBasic(Constants.defaultDuration);
+    await prepareBasic(Constants.defaultDuration);
     const dtoIn = {
       id: Constants.wrongId,
     };
@@ -120,7 +117,7 @@ describe("Testing the reservation/update uuCmd...", () => {
   test("Test 3.2 - reservationBelongsToDifferentUser", async () => {
     const reservation = await prepareBasic(Constants.defaultDuration);
     const dtoIn = {
-      id: reservation.id
+      id: reservation.id,
     };
 
     await Workspace.login("Users");

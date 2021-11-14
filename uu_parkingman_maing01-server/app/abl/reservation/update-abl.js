@@ -117,7 +117,7 @@ class UpdateAbl {
     //TODO in create & update: check if user has another reservation in these dates
 
     // HDS 10
-    let reservations = await this.dao.listByOverlappingDates(awid, {
+    let reservations = await this.dao.listByCriteria(awid, {
       parkingPlaceId: dtoIn.parkingPlaceId || reservation.parkingPlaceId,
       dayFrom: dtoIn.dayTo,
       dayTo: dtoIn.dayFrom,

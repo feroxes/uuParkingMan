@@ -39,8 +39,8 @@ const DayTimeHelper = {
 
   prepareFilterMapByDays(dayFrom, dayTo) {
     return {
-      dayTo: dayFrom,
-      dayFrom: dayTo,
+      ...(dayFrom && { dayTo: dayFrom }),
+      ...(dayTo && { dayFrom: dayTo }),
     };
   },
 };
