@@ -34,7 +34,7 @@ const DateTimeHelper = {
   getDiffDays(date1, date2) {
     const a = this.getDate(date1);
     const b = this.getDate(date2);
-    return b.diff(a, "days");
+    return b.diff(a, "days") + 1;
   },
 
   isBetween(dayToCheck, dayFrom, dayTo) {

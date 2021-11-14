@@ -7,7 +7,7 @@
 import { createComponent, useMemo } from "uu5g04-hooks";
 import Config from "../../config/config.js";
 import ContextHelper from "../../../helpers/context-helper.js";
-import UsersLoader from "../reservations-loader.js";
+import ReservationsLoader from "../reservations-loader.js";
 import useReservations from "./use-reservations.js";
 //@@viewOff:imports
 
@@ -28,8 +28,8 @@ export const ListContextResolver = createComponent({
 
   render(props) {
     //@@viewOn:hooks
-    const usersDataList = useReservations();
-    const shouldLoadData = useMemo(() => ContextHelper.checkDataOnContext(usersDataList), [usersDataList]);
+    const reservationsList = useReservations();
+    const shouldLoadData = useMemo(() => ContextHelper.checkDataOnContext(reservationsList), [reservationsList]);
     //@@viewOff:hooks
 
     //@@viewOn:private
@@ -41,7 +41,7 @@ export const ListContextResolver = createComponent({
     //@@viewOn:render
     let child = props.children;
     if (shouldLoadData) {
-      child = <UsersLoader>{props.children}</UsersLoader>;
+      child = <ReservationsLoader>{props.children}</ReservationsLoader>;
     }
     return child;
     //@@viewOff:render

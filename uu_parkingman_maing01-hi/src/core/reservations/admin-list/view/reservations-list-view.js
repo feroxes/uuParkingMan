@@ -97,22 +97,15 @@ function getColumns(props, modal, confirmModalRef, setReservationForDelete) {
   return [
     {
       header: <UU5.Bricks.Lsi lsi={Lsi.user} />,
-      cell: (cellProps) => {
-        const uuIdentity = props.usersDataList.find((user) => user.data.id === cellProps.data.data.userId).data
-          .uuIdentity;
-        return ComponentsHelper.getBusinessCart(uuIdentity);
-      },
+      cell: (cellProps) => ComponentsHelper.getBusinessCart(cellProps.data.data.user.uuIdentity),
     },
     {
       header: <UU5.Bricks.Lsi lsi={Lsi.parkingPlace} />,
       cell: (cellProps) => {
-        const parkingPlace = props.parkingPlacesDataList.find(
-          (parkingPlace) => parkingPlace.data.id === cellProps.data.data.parkingPlaceId
-        );
         return (
           <UU5.Bricks.Text
-            content={parkingPlace.data.number}
-            tooltip={StringHelper.capitalizeFirstLetter(parkingPlace.data.type)}
+            content={cellProps.data.data.parkingPlace.number}
+            tooltip={StringHelper.capitalizeFirstLetter(cellProps.data.data.parkingPlace.type)}
           />
         );
       },

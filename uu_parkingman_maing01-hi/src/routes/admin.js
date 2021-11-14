@@ -9,6 +9,7 @@ import ReservationsContextResolver from "../core/reservations/context/list-conte
 import UsersList from "../core/users/list/list.js";
 import ParkingPlacesList from "../core/parking-places/list/list.js";
 import ReservationsList from "../core/reservations/admin-list/list.js";
+import WeeklyOverview from "../core/reservations/weekly-overview/weekly-overview.js";
 import Config from "./config/config.js";
 import Lsi from "./routes-lsi.js";
 //@@viewOff:imports
@@ -36,6 +37,7 @@ export const Admin = createVisualComponent({
     const usersListLsi = useLsi(Lsi.Admin.usersList);
     const parkingPlacesLsi = useLsi(Lsi.Admin.parkingPlaces);
     const reservationsLsi = useLsi(Lsi.Admin.reservations);
+    const weeklyOverviewLsi = useLsi(Lsi.Admin.weeklyOverview);
     //@@viewOn:private
     //@@viewOff:private
 
@@ -46,27 +48,26 @@ export const Admin = createVisualComponent({
     const attrs = UU5.Common.VisualComponent.getAttrs(props, CLASS_NAMES.main());
     return (
       <UU5.Bricks.Section {...attrs}>
-        <UU5.Bricks.Tabs>
-          <UU5.Bricks.Tabs.Item header={reservationsLsi}>
-            <UsersListContextResolver>
-              <ParkingPlacesContextResolver>
-                <ReservationsContextResolver>
+        <UsersListContextResolver>
+          <ParkingPlacesContextResolver>
+            <ReservationsContextResolver>
+              <UU5.Bricks.Tabs>
+                <UU5.Bricks.Tabs.Item header={weeklyOverviewLsi}>
+                  <WeeklyOverview />
+                </UU5.Bricks.Tabs.Item>
+                <UU5.Bricks.Tabs.Item header={reservationsLsi}>
                   <ReservationsList />
-                </ReservationsContextResolver>
-              </ParkingPlacesContextResolver>
-            </UsersListContextResolver>
-          </UU5.Bricks.Tabs.Item>
-          <UU5.Bricks.Tabs.Item header={usersListLsi}>
-            <UsersListContextResolver>
-              <UsersList />
-            </UsersListContextResolver>
-          </UU5.Bricks.Tabs.Item>
-          <UU5.Bricks.Tabs.Item header={parkingPlacesLsi}>
-            <ParkingPlacesContextResolver>
-              <ParkingPlacesList />
-            </ParkingPlacesContextResolver>
-          </UU5.Bricks.Tabs.Item>
-        </UU5.Bricks.Tabs>
+                </UU5.Bricks.Tabs.Item>
+                <UU5.Bricks.Tabs.Item header={usersListLsi}>
+                  <UsersList />
+                </UU5.Bricks.Tabs.Item>
+                <UU5.Bricks.Tabs.Item header={parkingPlacesLsi}>
+                  <ParkingPlacesList />
+                </UU5.Bricks.Tabs.Item>
+              </UU5.Bricks.Tabs>
+            </ReservationsContextResolver>
+          </ParkingPlacesContextResolver>
+        </UsersListContextResolver>
       </UU5.Bricks.Section>
     );
   },
