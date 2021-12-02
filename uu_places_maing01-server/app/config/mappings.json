@@ -1,0 +1,76 @@
+{
+  "{vendor}-{uuApp}-{uuSubApp}": {
+    "useCaseMap": {
+      "sys/uuAppWorkspace/init": {
+        "realization": "api/controllers/PlacesMainController.init",
+        "httpMethod": "POST",
+        "type": "CMD"
+      },
+      "places/load": {
+        "realization": "api/controllers/PlacesMainController.load",
+        "httpMethod": "GET",
+        "type": "CMD"
+      },
+      "defaultUve": {
+        "realization": "index.html",
+        "httpMethod": "GET",
+        "type": "UVE"
+      },
+      "sys/uuAppWorkspace/initUve": {
+        "realization": "index.html",
+        "httpMethod": "GET",
+        "type": "UVE"
+      },
+      "user/create": {
+        "realization": "api/controllers/UserController.create",
+        "httpMethod": "POST",
+        "type": "CMD"
+      },
+      "user/list": {
+        "realization": "api/controllers/UserController.list",
+        "httpMethod": "GET",
+        "type": "CMD"
+      },
+      "parkingPlace/create": {
+        "realization": "api/controllers/ParkingPlaceController.create",
+        "httpMethod": "POST",
+        "type": "CMD"
+      },
+      "parkingPlace/list": {
+        "realization": "api/controllers/ParkingPlaceController.list",
+        "httpMethod": "GET",
+        "type": "CMD"
+      },
+      "reservation/create": {
+        "realization": "api/controllers/ReservationController.create",
+        "httpMethod": "POST",
+        "type": "CMD"
+      },
+      "reservation/update": {
+        "realization": "api/controllers/ReservationController.update",
+        "httpMethod": "POST",
+        "type": "CMD"
+      },
+      "reservation/listByCriteria": {
+        "realization": "api/controllers/ReservationController.listByCriteria",
+        "httpMethod": "GET",
+        "type": "CMD"
+      },
+      "user/update": {
+        "realization": "api/controllers/UserController.update",
+        "httpMethod": "POST",
+        "type": "CMD"
+      },
+      "parkingPlace/update": {
+        "realization": "api/controllers/ParkingPlaceController.update",
+        "httpMethod": "POST",
+        "type": "CMD"
+      },
+      "reservation/delete": {
+        "realization": "api/controllers/ReservationController.delete",
+        "httpMethod": "POST",
+        "type": "CMD"
+      }
+    }
+  }
+}

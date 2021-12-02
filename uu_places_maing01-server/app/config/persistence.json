@@ -1,0 +1,26 @@
+{
+  "uuSubAppDataStore": {
+    "primary": {
+      "type": "uuAppObjectStore",
+      "realization": "MongoDB",
+      "schemaMap": {
+        "placesMain": {
+          "realization": "dao/PlacesMainMongo",
+          "maxNoi": 1
+        },
+        "user": {
+          "realization": "dao/UserMongo",
+          "maxNoi": 1000
+        },
+        "parkingPlace": {
+          "realization": "dao/ParkingPlaceMongo",
+          "maxNoi": 1000
+        },
+        "reservation": {
+          "realization": "dao/ReservationMongo",
+          "maxNoi": 1000000
+        }
+      }
+    }
+  }
+}

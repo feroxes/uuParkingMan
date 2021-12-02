@@ -1,5 +1,5 @@
 {
-  "product": "uu_parkingman_maing01",
+  "product": "uu_places_maing01",
   "version": "0.1.0",
   "license": "License Commercial",
   "description": {
@@ -12,6 +12,6 @@
       "appDeploymentUri": null
     }
   },
-  "uu_parkingman_maing01-hi": {},
-  "uu_parkingman_maing01-server": {}
+  "uu_places_maing01-hi": {},
+  "uu_places_maing01-server": {}
 }
