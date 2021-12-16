@@ -1,6 +1,6 @@
 {
   "product": "uu_places_maing01",
-  "version": "0.1.0",
+  "version": "0.1.0-dev",
   "license": "License Commercial",
   "description": {
     "en": "",
@@ -9,7 +9,7 @@
   "devkit": {
     "development": {
       "appBoxLocationUri": "ues:DEV0188-BT:SWF.C1/APPBOXES/PLACES",
-      "appDeploymentUri": null
+      "appDeploymentUri": "ues:DEV0188-BT[84723967990185145]:SWFC1_ONBOARDING_AWE[619b534a2ed8c53e521b6cfc]:UU.PLACES.MAING01[61baf6741a27976985594ec8]"
     }
   },
   "uu_places_maing01-hi": {},
