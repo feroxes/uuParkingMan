@@ -15,8 +15,8 @@ const Lsi = {
   number: { en: "Number" },
   userCreatePlaceHolders: {
     uuIdentity: { en: "8517-626-1" },
-    model: { en: "BMW" },
-    brand: { en: "i3" },
+    model: { en: "i3" },
+    brand: { en: "BMW" },
     number: { en: "AA1111OO" },
   },
   successMessage: (prop) => {
