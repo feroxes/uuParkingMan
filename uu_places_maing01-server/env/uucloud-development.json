@@ -9,7 +9,7 @@
     "license": "License Commercial",
     "asidRequired": true,
     "awidCount": 1,
-    "resourcePoolUri": "----- VALUE REQUIRED -----",
+    "resourcePoolUri": "ues:DEV0188-BT:SWFC1_ONBOARDING_AWE",
     "uuAppNodeSetMap": {
       "CMD": {
         "nodeSize": "G1_S",
@@ -17,7 +17,7 @@
           "min": 1,
           "max": 1
         },
-        "appPackUri": null,
+        "appPackUri": "ues:DEV0188-BT:UU.PLACES.MAING01/APPBOX-0.1.0:UU.PLACES.MAING01/CMD-PACK",
         "runtimeStack": "UU.APPG01/APPSERVER_NODEJS_STACK-1.6"
       }
     },
@@ -30,6 +30,25 @@
       }
     },
     "uuConfigMap": {
+      "log_level": "DEBUG",
+      "asid_license_owner_list": [
+        "27-4578-1"
+      ]
+    }
+  },
+  "uuSubAppInstance": {
+    "asid": "db2f964a012d4635991dc178ab3e57db",
+    "asidOwner": "27-4578-1",
+    "awidList": [
+      {
+        "awid": "71730b0ed99a4716ba69b654422b626c",
+        "awidOwner": "27-4579-1"
+      }
+    ],
+    "uuAppObjectStoreMap": {
+      "OSID_1": {
+        "osid": "a3fb372516ae432f96b70b57e87f0ed1"
+      }
     }
   }
 }
