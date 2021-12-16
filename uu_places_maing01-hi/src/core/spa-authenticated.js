@@ -2,6 +2,7 @@
 import UU5 from "uu5g04";
 import "uu5g04-bricks";
 import { createVisualComponent, useState } from "uu5g04-hooks";
+import { useSubAppData } from "uu_plus4u5g01-context";
 import Plus4U5 from "uu_plus4u5g01";
 import "uu_plus4u5g01-app";
 import Constants from "../helpers/constants.js";
@@ -9,7 +10,7 @@ import Constants from "../helpers/constants.js";
 import Config from "./config/config";
 import Bottom from "./bottom";
 import Admin from "../routes/admin.js";
-import Reservations from "../routes/reservations.js"
+import Reservations from "../routes/reservations.js";
 //@@viewOff:imports
 
 const STATICS = {
@@ -29,12 +30,6 @@ const top = () => Config.Css.css`
 const About = UU5.Common.Component.lazy(() => import("../routes/about"));
 
 const DEFAULT_USE_CASE = "reservations";
-const ROUTES = {
-  "": DEFAULT_USE_CASE,
-  admin: { component: <Admin /> },
-  reservations: { component: <Reservations /> },
-  about: { component: <About /> },
-};
 
 export const SpaAuthenticated = createVisualComponent({
   ...STATICS,
@@ -46,11 +41,22 @@ export const SpaAuthenticated = createVisualComponent({
   //@@viewOff:defaultProps
 
   render(props) {
+    const { data: places } = useSubAppData();
+
     //@@viewOn:private
     let [initialActiveItemId] = useState(() => {
       let url = UU5.Common.Url.parse(window.location.href);
       return url.useCase || DEFAULT_USE_CASE;
     });
+
+    function _getRoutes() {
+      return {
+        "": DEFAULT_USE_CASE,
+        admin: { component: <Admin/> },
+        reservations: { component: <Reservations/> },
+        about: { component: <About/> },
+      };
+    }
     //@@viewOff:private
 
     //@@viewOn:interface
@@ -73,7 +79,7 @@ export const SpaAuthenticated = createVisualComponent({
           <Plus4U5.App.MenuConsumer>
             {({ setActiveItemId }) => {
               let handleRouteChanged = ({ useCase }) => setActiveItemId(useCase || DEFAULT_USE_CASE);
-              return <UU5.Common.Router routes={ROUTES} controlled={false} onRouteChanged={handleRouteChanged} />;
+              return <UU5.Common.Router routes={_getRoutes()} controlled={false} onRouteChanged={handleRouteChanged} />;
             }}
           </Plus4U5.App.MenuConsumer>
         </Plus4U5.App.Page>

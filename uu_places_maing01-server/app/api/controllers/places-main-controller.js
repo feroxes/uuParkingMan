@@ -7,7 +7,7 @@ class PlacesMainController {
     return InitAbl.init(ucEnv.getUri(), ucEnv.getDtoIn());
   }
   load(ucEnv) {
-    return LoadAbl.load(ucEnv.getUri());
+    return LoadAbl.load(ucEnv.getUri(), ucEnv.getAuthorizationResult());
   }
 }
 

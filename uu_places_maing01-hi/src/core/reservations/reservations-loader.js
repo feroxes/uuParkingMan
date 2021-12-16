@@ -28,6 +28,7 @@ export const Loader = createComponent({
         update: Calls.reservationsUpdate,
         delete: Calls.reservationsDelete,
       },
+      pageSize: 10000,
     });
 
     //@@viewOff:hooks

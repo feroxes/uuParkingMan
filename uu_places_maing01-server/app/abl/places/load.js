@@ -9,11 +9,12 @@ class LoadAbl {
     this.dao = DaoFactory.getDao(Schemas.PLACES);
   }
 
-  async load(uri, uuAppErrorMap) {
+  async load(uri, authorizationResult, uuAppErrorMap) {
     const awid = uri.getAwid();
     const uuPlaces = await this.dao.getByAwid(awid);
     return {
       ...uuPlaces,
+      identityProfiles: authorizationResult.getIdentityProfiles(),
       uuAppErrorMap,
     };
   }
