@@ -23,7 +23,7 @@
       },
       "user/create": {
         "sysStateList": ["active"],
-        "profileList": ["Users","Authorities"]
+        "profileList": ["Authorities"]
       },
       "user/list": {
         "sysStateList": ["active"],
@@ -31,7 +31,7 @@
       },
       "parkingPlace/create": {
         "sysStateList": ["active"],
-        "profileList": ["Users","Authorities"]
+        "profileList": ["Authorities"]
       },
       "parkingPlace/list": {
         "sysStateList": ["active"],
@@ -51,11 +51,11 @@
       },
       "user/update": {
         "sysStateList": ["active"],
-        "profileList": ["Users","Authorities"]
+        "profileList": ["Authorities"]
       },
       "parkingPlace/update": {
         "sysStateList": ["active"],
-        "profileList": ["Users","Authorities"]
+        "profileList": ["Authorities"]
       },
       "reservation/delete": {
         "sysStateList": ["active"],
