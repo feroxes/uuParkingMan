@@ -129,12 +129,6 @@ export const ParkingPlaceItem = createVisualComponent({
           <div className={Css.reservedBy()}>
             <span>Reserved by:</span>
             {ComponentsHelper.getBusinessCart(reservedBy.data.uuIdentity)}
-            {reservedBy.data.transport && (
-              <>
-                <div>{`${reservedBy.data.transport.brand} ${reservedBy.data.transport.model}`}</div>
-                <div>{reservedBy.data.transport.number}</div>
-              </>
-            )}
           </div>
         )}
       </UU5.Bricks.Button>
