@@ -52,11 +52,11 @@ export const Admin = createVisualComponent({
           <ParkingPlacesContextResolver>
             <ReservationsContextResolver>
               <UU5.Bricks.Tabs>
-                <UU5.Bricks.Tabs.Item header={weeklyOverviewLsi}>
-                  <WeeklyOverview />
-                </UU5.Bricks.Tabs.Item>
                 <UU5.Bricks.Tabs.Item header={reservationsLsi}>
                   <ReservationsList />
+                </UU5.Bricks.Tabs.Item>
+                <UU5.Bricks.Tabs.Item header={weeklyOverviewLsi}>
+                  <WeeklyOverview />
                 </UU5.Bricks.Tabs.Item>
                 <UU5.Bricks.Tabs.Item header={usersListLsi}>
                   <UsersList />
