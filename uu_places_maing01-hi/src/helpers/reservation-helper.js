@@ -10,8 +10,11 @@ const ReservationHelper = {
     );
   },
 
-  isParkingPlaceReserved(parkingPlaceId, reservations, date) {
-    return !!this.findReservation(parkingPlaceId, reservations, date);
+  isParkingPlaceReserved(parkingPlaceId, reservations, date, getReservation = false) {
+    const reservation = this.findReservation(parkingPlaceId, reservations, date);
+    if (getReservation) {
+      return { isParkingPlaceReserved: !!reservation, reservation };
+    } else return !!reservation;
   },
 
   getReservationUser(reservation, usersDataList) {

@@ -3,8 +3,10 @@ import UU5 from "uu5g04";
 import { createVisualComponent } from "uu5g04-hooks";
 import Config from "../config/config.js";
 import useReservations from "../context/use-reservations.js";
+import useParkingPlaces from "../../parking-places/context/use-parking-places.js";
 import DataListStateResolver from "../../../common/data-list-state-resolver.js";
 import WeeklyOverviewView from "./view/weekly-overview-view.js";
+import useUsers from "../../users/context/use-users.js";
 //@@viewOff:imports
 
 const STATICS = {
@@ -42,6 +44,8 @@ export const WeeklyOverview = createVisualComponent({
   render(props) {
     //@@viewOn:hooks
     const reservationsDataList = useReservations();
+    const parkingPlacesDataList = useParkingPlaces();
+    const usersDataList = useUsers();
     //@@viewOff:hooks
 
     //@@viewOn:private
@@ -56,7 +60,15 @@ export const WeeklyOverview = createVisualComponent({
     return (
       <UU5.Bricks.Div {...attrs}>
         <DataListStateResolver dataList={reservationsDataList}>
-          <WeeklyOverviewView reservationsDataList={reservationsDataList} />
+          <DataListStateResolver dataList={parkingPlacesDataList}>
+            <DataListStateResolver dataList={usersDataList}>
+              <WeeklyOverviewView
+                reservationsDataList={reservationsDataList}
+                parkingPlacesDataList={parkingPlacesDataList}
+                usersDataList={usersDataList}
+              />
+            </DataListStateResolver>
+          </DataListStateResolver>
         </DataListStateResolver>
       </UU5.Bricks.Div>
     );
