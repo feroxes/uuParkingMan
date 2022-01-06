@@ -117,21 +117,18 @@ export const UserFrom = createVisualComponent({
         <UU5.Forms.Text
           name={Constants.Users.formNames.brand}
           label={brandLsi}
-          required
           placeholder={brandPlaceHolderLsi}
           value={user && user.transport.brand}
         />
         <UU5.Forms.Text
           name={Constants.Users.formNames.model}
           label={modelLsi}
-          required
           placeholder={modelPlaceHolderLsi}
           value={user && user.transport.model}
         />
         <UU5.Forms.Text
           name={Constants.Users.formNames.number}
           label={numberLsi}
-          required
           placeholder={numberPlaceHolderLsi}
           value={user && user.transport.number}
         />
