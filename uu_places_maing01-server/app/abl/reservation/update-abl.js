@@ -67,9 +67,10 @@ class UpdateAbl {
     dtoIn.dayTo = dtoIn.dayTo || reservation.dayTo;
 
     // HDS 5
+    let user = null;
     if (dtoIn.userId) {
       // 5.1
-      const user = await this.userDao.get(awid, dtoIn.userId);
+      user = await this.userDao.get(awid, dtoIn.userId);
       // 5.2
       if (!user) {
         throw new Errors.UserDoesNotExist({ uuAppErrorMap }, { userId: dtoIn.userId });
@@ -77,9 +78,10 @@ class UpdateAbl {
     }
 
     // HDS 6
+    let parkingPlace = null;
     if (dtoIn.parkingPlaceId) {
       // 6.1
-      const parkingPlace = await this.parkingPlaceDao.get(awid, dtoIn.parkingPlaceId);
+      parkingPlace = await this.parkingPlaceDao.get(awid, dtoIn.parkingPlaceId);
       // 6.2
       if (!parkingPlace) {
         throw new Errors.ParkingPlaceDoesNotExist({ uuAppErrorMap }, { parkingPlaceId: dtoIn.parkingPlaceId });
@@ -140,7 +142,8 @@ class UpdateAbl {
       // 11.1
       throw new Errors.ReservationUpdateFailed({ uuAppErrorMap }, e);
     }
-
+    reservation.user = user;
+    reservation.parkingPlace = parkingPlace;
     // HDS 12
     return {
       ...reservation,

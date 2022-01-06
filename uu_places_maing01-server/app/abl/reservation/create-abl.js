@@ -89,7 +89,8 @@ class CreateAbl {
       // 8.1
       throw new Errors.ReservationCreateFailed({ uuAppErrorMap }, e);
     }
-
+    reservation.user = user;
+    reservation.parkingPlace = parkingPlace;
     // HDS 9
     return {
       ...reservation,
