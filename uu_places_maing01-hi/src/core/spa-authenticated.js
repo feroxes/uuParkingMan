@@ -52,9 +52,9 @@ export const SpaAuthenticated = createVisualComponent({
     function _getRoutes() {
       return {
         "": DEFAULT_USE_CASE,
-        admin: { component: <Admin/> },
-        reservations: { component: <Reservations/> },
-        about: { component: <About/> },
+        admin: { component: <Admin /> },
+        reservations: { component: <Reservations /> },
+        about: { component: <About /> },
       };
     }
     //@@viewOff:private

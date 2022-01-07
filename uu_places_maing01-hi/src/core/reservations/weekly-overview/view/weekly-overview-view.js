@@ -2,7 +2,7 @@
 import UU5 from "uu5g04";
 import Plus4U5 from "uu_plus4u5g01";
 import UuBookigyWorkplace from "uu_bookigy_workplaceg01-uu5";
-import { createVisualComponent, useState, useMemo, useLsi } from "uu5g04-hooks";
+import { createVisualComponent, useState, useMemo, useLsi, useSession } from "uu5g04-hooks";
 import Config from "../../config/config.js";
 import { useContextAlert } from "../../../managers/alert-manager.js";
 import { useContextModal } from "../../../managers/modal-manager.js";
@@ -42,6 +42,8 @@ export const WeeklyOverviewView = createVisualComponent({
     reservationsDataList: UU5.PropTypes.object,
     parkingPlacesDataList: UU5.PropTypes.object,
     usersDataList: UU5.PropTypes.object,
+    selectedDate: UU5.PropTypes.object,
+    useLoggedInUser: UU5.PropTypes.bool,
   },
   //@@viewOff:propTypes
 
@@ -51,6 +53,8 @@ export const WeeklyOverviewView = createVisualComponent({
 
   render(props) {
     //@@viewOn:hooks
+    const session = useSession();
+
     const weeklyOverviewLsi = useLsi(Lsi.weeklyOverview);
     const freeForReservationLsi = useLsi(Lsi.freeForReservation);
     const reservedByLsi = useLsi(Lsi.reservedBy);
@@ -59,9 +63,13 @@ export const WeeklyOverviewView = createVisualComponent({
     const modal = useContextModal();
     const [selectedDate, setSelectedDate] = useState(new Date());
 
-    const week = useMemo(() => DateTimeHelper.getWeek(selectedDate), [selectedDate]);
-    const weekRange = useMemo(() => DateTimeHelper.getRange(week.start, week.end), [selectedDate]);
+    const _selectedDate = props.selectedDate || selectedDate;
+
+    const week = useMemo(() => DateTimeHelper.getWeek(_selectedDate), [_selectedDate]);
+    const weekRange = useMemo(() => DateTimeHelper.getRange(week.start, week.end), [week]);
     const weekDays = useMemo(() => [...DateTimeHelper.getWeekDays().slice(1), DateTimeHelper.getWeekDays()[0]], []);
+
+    const user = ReservationHelper.getUser(props.usersDataList, session);
     //@@viewOff:hooks
 
     //@@viewOn:private
@@ -142,6 +150,7 @@ export const WeeklyOverviewView = createVisualComponent({
                     parkingPlace={parkingPlace}
                     usersDataList={props.usersDataList.data}
                     handlerMap={props.reservationsDataList.handlerMap}
+                    user={props.useLoggedInUser && user}
                   />
                 ),
                 size: "m",
@@ -159,10 +168,12 @@ export const WeeklyOverviewView = createVisualComponent({
     //@@viewOn:render
     return (
       <>
-        <UuBookigyWorkplace.Bricks.CalendarDateSelect
-          className={Css.calendarDateSelect()}
-          onSelectDate={(date) => setSelectedDate(new Date(date))}
-        />
+        {!props.selectedDate && (
+          <UuBookigyWorkplace.Bricks.CalendarDateSelect
+            className={Css.calendarDateSelect()}
+            onSelectDate={(date) => setSelectedDate(new Date(date))}
+          />
+        )}
         <UU5.Bricks.Table header={weeklyOverviewLsi} responsive className={Css.table()}>
           <UU5.Bricks.Table.THead>
             <UU5.Bricks.Table.Tr>

@@ -1,7 +1,8 @@
 //@@viewOn:imports
 import UU5 from "uu5g04";
-import { createVisualComponent } from "uu5g04-hooks";
+import { createVisualComponent, useLsi, useState } from "uu5g04-hooks";
 import { useSubAppData } from "uu_plus4u5g01-context";
+import UuBookigyWorkplace from "uu_bookigy_workplaceg01-uu5";
 import Config from "../config/config.js";
 import useReservations from "../context/use-reservations.js";
 import useUsers from "../../users/context/use-users.js";
@@ -9,6 +10,9 @@ import useParkingPlaces from "../../parking-places/context/use-parking-places.js
 import DataListStateResolver from "../../../common/data-list-state-resolver.js";
 import DataObjectStateResolver from "../../../common/data-object-state-resolver.js";
 import UserReservationsListView from "./view/user-reservations-list-view.js";
+import WeeklyOverviewView from "../weekly-overview/view/weekly-overview-view.js";
+import Constants from "../../../helpers/constants.js";
+import Lsi from "../reservations-lsi.js";
 //@@viewOff:imports
 
 const STATICS = {
@@ -17,7 +21,16 @@ const STATICS = {
   nestingLevel: "bigBox",
   //@@viewOff:statics
 };
-
+const Css = {
+  calendarDateSelect: () => Config.Css.css`
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 20px;
+    .uu5-calendar-simple-calendar-selected {
+      background: ${Constants.mainColor};
+    }
+  `,
+};
 export const List = createVisualComponent({
   ...STATICS,
 
@@ -45,10 +58,16 @@ export const List = createVisualComponent({
 
   render(props) {
     //@@viewOn:hooks
+    const [selectedDate, setSelectedDate] = useState(new Date());
+
     const { data: placesDataObject } = useSubAppData();
     const reservationsDataList = useReservations();
     const usersDataList = useUsers();
     const parkingPlacesDataList = useParkingPlaces();
+
+    const reservationsLsi = useLsi(Lsi.reservations);
+    const weeklyOverviewLsi = useLsi(Lsi.weeklyOverview);
+
     //@@viewOff:hooks
 
     //@@viewOn:private
@@ -66,12 +85,30 @@ export const List = createVisualComponent({
           <DataListStateResolver dataList={reservationsDataList}>
             <DataListStateResolver dataList={usersDataList}>
               <DataListStateResolver dataList={parkingPlacesDataList}>
-                <UserReservationsListView
-                  reservationsDataList={reservationsDataList}
-                  usersDataList={usersDataList}
-                  parkingPlacesDataList={parkingPlacesDataList}
-                  handlerMap={reservationsDataList.handlerMap}
+                <UuBookigyWorkplace.Bricks.CalendarDateSelect
+                  className={Css.calendarDateSelect()}
+                  onSelectDate={(date) => setSelectedDate(new Date(date))}
                 />
+                <UU5.Bricks.Tabs>
+                  <UU5.Bricks.Tabs.Item header={reservationsLsi}>
+                    <UserReservationsListView
+                      reservationsDataList={reservationsDataList}
+                      usersDataList={usersDataList}
+                      parkingPlacesDataList={parkingPlacesDataList}
+                      handlerMap={reservationsDataList.handlerMap}
+                      selectedDate={selectedDate}
+                    />
+                  </UU5.Bricks.Tabs.Item>
+                  <UU5.Bricks.Tabs.Item header={weeklyOverviewLsi}>
+                    <WeeklyOverviewView
+                      reservationsDataList={reservationsDataList}
+                      usersDataList={usersDataList}
+                      parkingPlacesDataList={parkingPlacesDataList}
+                      selectedDate={selectedDate}
+                      useLoggedInUser
+                    />
+                  </UU5.Bricks.Tabs.Item>
+                </UU5.Bricks.Tabs>
               </DataListStateResolver>
             </DataListStateResolver>
           </DataListStateResolver>

@@ -16,6 +16,8 @@ const Lsi = {
   successMessage: (prop) => {
     return { en: `Reservation successfully ${prop}` };
   },
+  reservations: { en: "Reservations" },
+  weeklyOverview: { en: "Weekly Overview" },
 };
 
 export default Lsi;
