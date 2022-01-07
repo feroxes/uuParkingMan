@@ -2,8 +2,17 @@
 const CreateAbl = require("../../abl/user/create-abl.js");
 const ListAbl = require("../../abl/user/list-abl.js");
 const UpdateAbl = require("../../abl/user/update-abl.js");
+const GetUserProfileAbl = require("../../abl/user/get-user-profile-abl.js");
 
 class UserController {
+  getUserProfile(ucEnv) {
+    return GetUserProfileAbl.get(
+      ucEnv.getUri().getAwid(),
+      ucEnv.getDtoIn(),
+      ucEnv.getSession(),
+      ucEnv.getAuthorizationResult()
+    );
+  }
   create(ucEnv) {
     return CreateAbl.create(ucEnv.getUri().getAwid(), ucEnv.getDtoIn());
   }

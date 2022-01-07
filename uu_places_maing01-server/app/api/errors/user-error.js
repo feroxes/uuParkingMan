@@ -70,7 +70,37 @@ const Update = {
   },
 };
 
+const GetUserProfile = {
+  UC_CODE: `${USER_ERROR_PREFIX}getUserProfile/`,
+
+  InvalidDtoIn: class extends PlacesMainUseCaseError {
+    constructor() {
+      super(...arguments);
+      this.code = `${GetUserProfile.UC_CODE}invalidDtoIn`;
+      this.message = "DtoIn is not valid.";
+    }
+  },
+
+  UserDoesNotExist: class extends PlacesMainUseCaseError {
+    constructor() {
+      super(...arguments);
+      this.code = `${GetUserProfile.UC_CODE}userDoesNotExist`;
+      this.message = "User does not exist.";
+    }
+  },
+
+  UserDoesNotAuthorized: class extends PlacesMainUseCaseError {
+    constructor() {
+      super(...arguments);
+      this.code = `${GetUserProfile.UC_CODE}userDoesNotAuthorized`;
+      this.message = "User does not authorized.";
+    }
+  },
+
+};
+
 module.exports = {
+  GetUserProfile,
   Update,
   List,
   Create,

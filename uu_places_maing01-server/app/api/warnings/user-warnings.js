@@ -10,6 +10,9 @@ const Warnings = {
   updateUnsupportedKeys: {
     code: `${Errors.Update.UC_CODE}unsupportedKeys`,
   },
+  getUserProfileUnsupportedKeys: {
+    code: `${Errors.GetUserProfile.UC_CODE}unsupportedKeys`,
+  },
 };
 
 module.exports = Warnings;

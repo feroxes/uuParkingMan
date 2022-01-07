@@ -1,8 +1,7 @@
 //@@viewOn:imports
 import UU5 from "uu5g04";
 import "uu5g04-bricks";
-import { createVisualComponent, useState } from "uu5g04-hooks";
-import { useSubAppData } from "uu_plus4u5g01-context";
+import { createVisualComponent, useState, useSession } from "uu5g04-hooks";
 import Plus4U5 from "uu_plus4u5g01";
 import "uu_plus4u5g01-app";
 import Constants from "../helpers/constants.js";
@@ -41,7 +40,8 @@ export const SpaAuthenticated = createVisualComponent({
   //@@viewOff:defaultProps
 
   render(props) {
-    const { data: places } = useSubAppData();
+    const session = useSession();
+    console.log('----->session<-----', session);
 
     //@@viewOn:private
     let [initialActiveItemId] = useState(() => {
@@ -52,6 +52,7 @@ export const SpaAuthenticated = createVisualComponent({
     function _getRoutes() {
       return {
         "": DEFAULT_USE_CASE,
+        "*": { component: <Reservations /> },
         admin: { component: <Admin /> },
         reservations: { component: <Reservations /> },
         about: { component: <About /> },
@@ -79,7 +80,14 @@ export const SpaAuthenticated = createVisualComponent({
           <Plus4U5.App.MenuConsumer>
             {({ setActiveItemId }) => {
               let handleRouteChanged = ({ useCase }) => setActiveItemId(useCase || DEFAULT_USE_CASE);
-              return <UU5.Common.Router routes={_getRoutes()} controlled={false} onRouteChanged={handleRouteChanged} />;
+              return (
+                <UU5.Common.Router
+                  routes={_getRoutes()}
+                  controlled={false}
+                  onRouteChanged={handleRouteChanged}
+                  notFoundRoute="about"
+                />
+              );
             }}
           </Plus4U5.App.MenuConsumer>
         </Plus4U5.App.Page>

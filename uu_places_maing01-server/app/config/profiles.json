@@ -12,7 +12,7 @@
       },
       "places/load": {
         "sysStateList": ["active"],
-        "profileList": ["Authorities","Users", "Public"]
+        "profileList": ["Authorities","Users","Public"]
       },
       "defaultUve": {
         "profileList": ["Public"]
@@ -58,6 +58,10 @@
         "profileList": ["Authorities"]
       },
       "reservation/delete": {
+        "sysStateList": ["active"],
+        "profileList": ["Users","Authorities"]
+      },
+      "user/getUserProfile": {
         "sysStateList": ["active"],
         "profileList": ["Users","Authorities"]
       }

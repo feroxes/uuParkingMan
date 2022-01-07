@@ -21,3 +21,7 @@ const userUpdateDtoInType = shape({
     number: uu5String(10).isRequired(),
   })
 });
+
+const getUserProfileDtoInType = shape({
+  uuIdentity: uuIdentity().isRequired(),
+});
