@@ -97,6 +97,11 @@ let Calls = {
     return Calls.call("get", commandUri, dtoIn);
   },
 
+  getUserProfile(dtoIn) {
+    let commandUri = Calls.getCommandUri("user/getUserProfile");
+    return Calls.call("get", commandUri, dtoIn);
+  },
+
   userCreate(dtoIn) {
     let commandUri = Calls.getCommandUri("user/create");
     return Calls.call("post", commandUri, dtoIn);
