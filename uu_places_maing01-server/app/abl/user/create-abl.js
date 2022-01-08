@@ -2,6 +2,7 @@
 const { Validator } = require("uu_appg01_server").Validation;
 const { DaoFactory } = require("uu_appg01_server").ObjectStore;
 const { ValidationHelper } = require("uu_appg01_server").AppServer;
+const { Permission } = require("uu_appg01_server").Workspace;
 const Errors = require("../../api/errors/user-error.js").Create;
 const Warnings = require("../../api/warnings/user-warnings.js");
 const Constants = require("../constants.js");
@@ -43,6 +44,9 @@ class CreateAbl {
     }
 
     // HDS 4
+    await Permission.create(awid, Constants.Profiles.USERS, [dtoIn.uuIdentity]);
+
+    // HDS 5
     return {
       ...user,
       uuAppErrorMap,

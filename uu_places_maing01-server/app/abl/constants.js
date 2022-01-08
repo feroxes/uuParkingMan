@@ -12,6 +12,7 @@ const Constants = {
 
   Profiles: {
     AUTHORITIES: "Authorities",
+    USERS: "Users",
   },
 
   User: {
