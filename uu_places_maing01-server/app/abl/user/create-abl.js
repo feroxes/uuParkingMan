@@ -33,7 +33,7 @@ class CreateAbl {
       throw new Errors.UserAlreadyCreated({ uuAppErrorMap }, { uuIdentity: dtoIn.uuIdentity });
     }
 
-    dtoIn.transport.number = dtoIn.transport.number.toUpperCase();
+    dtoIn.transport.number && (dtoIn.transport.number = dtoIn.transport.number.toUpperCase());
 
     // HDS 3
     try {
