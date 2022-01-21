@@ -64,6 +64,10 @@
       "user/getUserProfile": {
         "sysStateList": ["active"],
         "profileList": ["Users","Authorities"]
+      },
+      "places/update": {
+        "sysStateList": ["active"],
+        "profileList": ["Authorities"]
       }
     }
   }

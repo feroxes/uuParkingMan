@@ -39,6 +39,35 @@ const Init = {
   },
 };
 
+const Update = {
+  UC_CODE: `${PlacesMainUseCaseError.ERROR_PREFIX}places/update/`,
+
+  InvalidDtoIn: class extends PlacesMainUseCaseError {
+    constructor() {
+      super(...arguments);
+      this.code = `${Update.UC_CODE}invalidDtoIn`;
+      this.message = "DtoIn is not valid.";
+    }
+  },
+
+  PlacesDoesNotExist: class extends PlacesMainUseCaseError {
+    constructor() {
+      super(...arguments);
+      this.code = `${Update.UC_CODE}placesDoesNotExist`;
+      this.message = "Places does not exist.";
+    }
+  },
+
+  PlacesDaoUpdateFailed: class extends PlacesMainUseCaseError {
+    constructor() {
+      super(...arguments);
+      this.code = `${Update.UC_CODE}placesDaoUpdateFailed`;
+      this.message = "Places DAO update failed.";
+    }
+  },
+};
+
 module.exports = {
   Init,
+  Update,
 };

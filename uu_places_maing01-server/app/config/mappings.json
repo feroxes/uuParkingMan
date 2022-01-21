@@ -75,6 +75,11 @@
         "realization": "api/controllers/UserController.getUserProfile",
         "httpMethod": "GET",
         "type": "CMD"
+      },
+      "places/update": {
+        "realization": "api/controllers/PlacesMainController.update",
+        "httpMethod": "POST",
+        "type": "CMD"
       }
     }
   }

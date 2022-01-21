@@ -8,6 +8,14 @@ const DB_LIST = {
   },
 };
 
+const PlacesTestHelper = {
+  async placesUpdate(dtoIn = {}) {
+    let _dtoIn = { ...DefaultDtoIn.uuPlaces.Update, ...dtoIn };
+    await TestHelper.login("Authorities");
+    return await TestHelper.executePostCommand("places/update", _dtoIn);
+  },
+};
+
 const PlacesMainTestHelper = {
   async initUuSubApp(dtoIn = {}) {
     const initAppWorkspaceDtoIn = {
@@ -45,6 +53,7 @@ PlacesMainTestHelper.States = {
 };
 
 module.exports = {
+  PlacesTestHelper,
   Helper: PlacesMainTestHelper,
   Workspace: TestHelper,
   Server,

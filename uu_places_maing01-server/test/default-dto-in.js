@@ -4,6 +4,17 @@ const DefaultDtoIn = {
   uuPlaces: {
     Init: {
       name: "uuPlaces",
+      reservationsConfig: {
+        dayOfStartReservations: 1,
+        hourOfStartReservations: 10,
+      },
+    },
+    Update: {
+      name: "uuPlaces updated",
+      reservationsConfig: {
+        dayOfStartReservations: 5,
+        hourOfStartReservations: 15,
+      },
     },
   },
 
