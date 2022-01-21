@@ -11,6 +11,7 @@ import DataListStateResolver from "../../../common/data-list-state-resolver.js";
 import DataObjectStateResolver from "../../../common/data-object-state-resolver.js";
 import UserReservationsListView from "./view/user-reservations-list-view.js";
 import WeeklyOverviewView from "../weekly-overview/view/weekly-overview-view.js";
+import InfoBlock from "./view/info-block.js";
 import Constants from "../../../helpers/constants.js";
 import Lsi from "../reservations-lsi.js";
 //@@viewOff:imports
@@ -89,6 +90,7 @@ export const List = createVisualComponent({
                   className={Css.calendarDateSelect()}
                   onSelectDate={(date) => setSelectedDate(new Date(date))}
                 />
+                <InfoBlock reservationsDataList={reservationsDataList} selectedDate={selectedDate} />
                 <UU5.Bricks.Tabs>
                   <UU5.Bricks.Tabs.Item header={reservationsLsi}>
                     <UserReservationsListView
