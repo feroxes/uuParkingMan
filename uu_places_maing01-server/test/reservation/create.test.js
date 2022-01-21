@@ -37,14 +37,14 @@ function expectedHds(response, expectedOutput = {}) {
   ValidateReservation.validateObject(response, expectedOutput);
 }
 
-async function prepareBasic(amount = 3) {
+async function prepareBasic(dayToAmount = 3, dayFromAmount = 0) {
   const user = await UserTestHelper.userCreate();
   const parkingPlace = await ParkingPlaceHelper.parkingPlaceCreate();
   return {
     userId: user.id,
     parkingPlaceId: parkingPlace.id,
-    dayFrom: DateTimeHelper.now(),
-    dayTo: moment().add(amount, "days").format(DateTimeHelper.getDefaultDateFormat()),
+    dayFrom: moment().add(dayFromAmount, "days").format(DateTimeHelper.getDefaultDateFormat()),
+    dayTo: moment().add(dayToAmount, "days").format(DateTimeHelper.getDefaultDateFormat()),
   };
 }
 
@@ -77,7 +77,7 @@ describe("Testing the reservation/create uuCmd...", () => {
     }
   });
 
-  test("Test 2.1 - userDoesNotExist", async () => {
+  test("Test 3.1 - userDoesNotExist", async () => {
     const dtoIn = await prepareBasic();
     dtoIn.userId = Constants.wrongId;
     const expectedError = ErrorAssets.userDoesNotExist(CMD);
@@ -90,7 +90,7 @@ describe("Testing the reservation/create uuCmd...", () => {
     }
   });
 
-  test("Test 3.1 - parkingPlaceDoesNotExist", async () => {
+  test("Test 4.1 - parkingPlaceDoesNotExist", async () => {
     const dtoIn = await prepareBasic();
     dtoIn.parkingPlaceId = Constants.wrongId;
     const expectedError = ErrorAssets.parkingPlaceDoesNotExist(CMD);
@@ -103,7 +103,7 @@ describe("Testing the reservation/create uuCmd...", () => {
     }
   });
 
-  test("Test 4.1 - dateCouldNotBeInPast (dayFrom)", async () => {
+  test("Test 5.1 - dateCouldNotBeInPast (dayFrom)", async () => {
     const dtoIn = await prepareBasic();
     dtoIn.dayFrom = Constants.dayInPast;
     const expectedError = ErrorAssets.dateCouldNotBeInPast(CMD);
@@ -116,7 +116,7 @@ describe("Testing the reservation/create uuCmd...", () => {
     }
   });
 
-  test("Test 4.1 - dateCouldNotBeInPast (dayTo)", async () => {
+  test("Test 5.1 - dateCouldNotBeInPast (dayTo)", async () => {
     const dtoIn = await prepareBasic();
     dtoIn.dayTo = Constants.dayInPast;
     const expectedError = ErrorAssets.dateCouldNotBeInPast(CMD);
@@ -129,7 +129,7 @@ describe("Testing the reservation/create uuCmd...", () => {
     }
   });
 
-  test("Test 5.1 - dateToCouldNotBeLessThenDayFrom", async () => {
+  test("Test 6.1 - dateToCouldNotBeLessThenDayFrom", async () => {
     const dtoIn = await prepareBasic();
     dtoIn.dayFrom = moment().add(5, "days").format(DateTimeHelper.getDefaultDateFormat());
     const expectedError = ErrorAssets.dateToCouldNotBeLessThenDayFrom(CMD);
@@ -142,7 +142,7 @@ describe("Testing the reservation/create uuCmd...", () => {
     }
   });
 
-  test("Test 6.1 - reservationLimitExceeded", async () => {
+  test("Test 7.1 - reservationLimitExceeded", async () => {
     const dtoIn = await prepareBasic(7);
     const expectedError = ErrorAssets.reservationLimitExceeded(CMD);
 
@@ -154,7 +154,19 @@ describe("Testing the reservation/create uuCmd...", () => {
     }
   });
 
-  test("Test 7.1 - parkingPlaceAlreadyReserved", async () => {
+  test("Test 8.3.A - reservationClosed", async () => {
+    const dtoIn = await prepareBasic(10, 10);
+    const expectedError = ErrorAssets.reservationClosed(CMD);
+
+    expect.assertions(ValidateHelper.assertionsCount.error);
+    try {
+      await ReservationTestHelper.reservationCreate(dtoIn, "Users");
+    } catch (e) {
+      ValidateHelper.validateError(e, expectedError);
+    }
+  });
+
+  test("Test 9.1 - parkingPlaceAlreadyReserved", async () => {
     const dtoIn = await prepareBasic();
     await ReservationTestHelper.reservationCreate(dtoIn);
     const expectedError = ErrorAssets.parkingPlaceAlreadyReserved(CMD);
@@ -167,5 +179,5 @@ describe("Testing the reservation/create uuCmd...", () => {
     }
   });
 
-  // HDS 8.1 - could not be simulated
+  // HDS 10.1 - could not be simulated
 });

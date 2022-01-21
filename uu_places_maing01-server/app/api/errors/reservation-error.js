@@ -54,6 +54,14 @@ const Create = {
     }
   },
 
+  ReservationClosed: class extends PlacesMainUseCaseError {
+    constructor() {
+      super(...arguments);
+      this.code = `${Create.UC_CODE}reservationClosed`;
+      this.message = "Parking places closed for reservation.";
+    }
+  },
+
   ParkingPlaceAlreadyReserved: class extends PlacesMainUseCaseError {
     constructor() {
       super(...arguments);

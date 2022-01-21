@@ -44,6 +44,13 @@ const ErrorAssets = {
     };
   },
 
+  reservationClosed(cmd) {
+    return {
+      code: `${cmd}/reservationClosed`,
+      message: "Parking places closed for reservation.",
+    };
+  },
+
   parkingPlaceAlreadyReserved(cmd) {
     return { code: `${cmd}/parkingPlaceAlreadyReserved`, message: "Parking place already reserved." };
   },

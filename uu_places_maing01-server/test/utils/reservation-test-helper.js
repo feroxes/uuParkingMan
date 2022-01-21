@@ -7,10 +7,10 @@ const DB_LIST = {
 };
 
 const ReservationTestHelper = {
-  async reservationCreate(dtoIn = {}) {
+  async reservationCreate(dtoIn = {}, userName = "Authorities") {
     let _dtoIn = { ...dtoIn };
     //TODO Remove TestHelper.login in all helpers here, it should be redundant (and corrupt tests for non-Authorities); it already logs in in beforeEach
-    await TestHelper.login("Authorities");
+    await TestHelper.login(userName);
     return await TestHelper.executePostCommand("reservation/create", _dtoIn);
   },
 
