@@ -49,15 +49,17 @@ const DayTimeHelper = {
     const openReservationTimePeriod = moment()
       .startOf("isoWeek")
       .add(reservationsConfig.dayOfStartReservations - 1, "days")
-      .add(14, "hours");
+      .add(reservationsConfig.hourOfStartReservations, "hours");
 
     const a = moment(dayFrom);
     const b = moment(dayTo);
 
     const startOfNextWeek = moment().add(1, "week").startOf("isoWeek");
+    const endOfNextWeek = moment().add(1, "week").endOf("isoWeek");
 
     if (a.isSameOrAfter(startOfNextWeek) || b.isSameOrAfter(startOfNextWeek)) {
-      return now.isSameOrAfter(openReservationTimePeriod);
+      if (a.isAfter(endOfNextWeek) || b.isAfter(endOfNextWeek)) return false;
+      else return now.isSameOrAfter(openReservationTimePeriod);
     } else return true;
   },
 
