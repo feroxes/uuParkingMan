@@ -14,8 +14,9 @@ const ReservationTestHelper = {
     return await TestHelper.executePostCommand("reservation/create", _dtoIn);
   },
 
-  async reservationUpdate(dtoIn = {}) {
+  async reservationUpdate(dtoIn = {}, userName = "Authorities") {
     let _dtoIn = { ...dtoIn };
+    await TestHelper.login(userName);
     return await TestHelper.executePostCommand("reservation/update", _dtoIn);
   },
 

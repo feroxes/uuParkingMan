@@ -36,7 +36,8 @@ class DeleteAbl {
       const currentReservationUser = await this.userDao.get(awid, reservation.userId);
 
       //HDS 3.2
-      if (authorizationResult.getUuIdentity() !== currentReservationUser?.uuIdentity) {
+      const sessionUuIdentity = authorizationResult.getUuIdentity();
+      if (sessionUuIdentity !== currentReservationUser?.uuIdentity) {
         throw new Errors.ReservationBelongsToDifferentUser(
           { uuAppErrorMap },
           { currentReservationUser: currentReservationUser.uuIdentity }

@@ -20,7 +20,7 @@ const DefaultDtoIn = {
 
   User: {
     Create: {
-      uuIdentity: "8517-626-1",
+      uuIdentity: "24-2461-1",
       transport: {
         brand: "Kia",
         model: "Rio X",

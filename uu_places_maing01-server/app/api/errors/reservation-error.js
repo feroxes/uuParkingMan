@@ -162,6 +162,14 @@ const Update = {
     }
   },
 
+  ReservationClosed: class extends PlacesMainUseCaseError {
+    constructor() {
+      super(...arguments);
+      this.code = `${Update.UC_CODE}reservationClosed`;
+      this.message = "Parking places closed for reservation.";
+    }
+  },
+
   ParkingPlaceAlreadyReserved: class extends PlacesMainUseCaseError {
     constructor() {
       super(...arguments);

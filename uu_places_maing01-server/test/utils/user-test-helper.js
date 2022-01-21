@@ -8,9 +8,9 @@ const DB_LIST = {
 };
 
 const UserTestHelper = {
-  async userCreate(dtoIn = {}) {
+  async userCreate(dtoIn = {}, userName = "Authorities") {
     let _dtoIn = { ...DefaultDtoIn.User.Create, ...dtoIn };
-    await TestHelper.login("Authorities");
+    await TestHelper.login(userName);
     return await TestHelper.executePostCommand("user/create", _dtoIn);
   },
   async userList(dtoIn = {}) {

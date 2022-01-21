@@ -35,8 +35,8 @@ function expectedHds(response, expectedOutput = {}) {
   ValidateHelper.validateBaseHds(response);
 }
 
-async function prepareBasic(amount = 3) {
-  const user = await UserTestHelper.userCreate();
+async function prepareBasic(amount = 3, useDtoIn = {}) {
+  const user = await UserTestHelper.userCreate(useDtoIn);
   const parkingPlace = await ParkingPlaceHelper.parkingPlaceCreate();
   const reservationCreateDtoIn = {
     userId: user.id,
@@ -115,7 +115,7 @@ describe("Testing the reservation/delete uuCmd...", () => {
   });
 
   test("Test 3.2 - reservationBelongsToDifferentUser", async () => {
-    const reservation = await prepareBasic(Constants.defaultDuration);
+    const reservation = await prepareBasic(Constants.defaultDuration, { uuIdentity: "8517-626-1" });
     const dtoIn = {
       id: reservation.id,
     };
