@@ -33,8 +33,8 @@ const Css = {
     margin: 0 20px;
   `,
 
-  tableCell: () => Config.Css.css`
-    background-color: #FAFAFA;
+  tableCell: (key) => Config.Css.css`
+    background-color: ${key > 4 ? "#FAFAFA" : "#FFFFFF"};
   `,
 };
 
@@ -98,7 +98,7 @@ export const WeeklyOverviewView = createVisualComponent({
                   return (
                     <UU5.Bricks.Table.Td
                       key={key}
-                      className={key > 4 && Css.tableCell()}
+                      className={Css.tableCell(key)}
                       content={_getReservationAvailability(
                         isParkingPlaceReserved,
                         isDateInPast,

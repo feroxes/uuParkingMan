@@ -54,9 +54,6 @@ export const Admin = createVisualComponent({
           <ParkingPlacesContextResolver>
             <ReservationsContextResolver>
               <UU5.Bricks.Tabs>
-                <UU5.Bricks.Tabs.Item header={settingsLsi}>
-                  <SettingsForm />
-                </UU5.Bricks.Tabs.Item>
                 <UU5.Bricks.Tabs.Item header={reservationsLsi}>
                   <ReservationsList />
                 </UU5.Bricks.Tabs.Item>
@@ -69,7 +66,9 @@ export const Admin = createVisualComponent({
                 <UU5.Bricks.Tabs.Item header={parkingPlacesLsi}>
                   <ParkingPlacesList />
                 </UU5.Bricks.Tabs.Item>
-
+                <UU5.Bricks.Tabs.Item header={settingsLsi}>
+                  <SettingsForm />
+                </UU5.Bricks.Tabs.Item>
               </UU5.Bricks.Tabs>
             </ReservationsContextResolver>
           </ParkingPlacesContextResolver>
