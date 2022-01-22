@@ -10,6 +10,7 @@ import UsersList from "../core/users/list/list.js";
 import ParkingPlacesList from "../core/parking-places/list/list.js";
 import ReservationsList from "../core/reservations/admin-list/list.js";
 import WeeklyOverview from "../core/reservations/weekly-overview/weekly-overview.js";
+import SettingsForm from "../core/settings/form/form.js";
 import Config from "./config/config.js";
 import Lsi from "./routes-lsi.js";
 //@@viewOff:imports
@@ -38,6 +39,7 @@ export const Admin = createVisualComponent({
     const parkingPlacesLsi = useLsi(Lsi.Admin.parkingPlaces);
     const reservationsLsi = useLsi(Lsi.Admin.reservations);
     const weeklyOverviewLsi = useLsi(Lsi.Admin.weeklyOverview);
+    const settingsLsi = useLsi(Lsi.Admin.settings);
     //@@viewOn:private
     //@@viewOff:private
 
@@ -52,6 +54,9 @@ export const Admin = createVisualComponent({
           <ParkingPlacesContextResolver>
             <ReservationsContextResolver>
               <UU5.Bricks.Tabs>
+                <UU5.Bricks.Tabs.Item header={settingsLsi}>
+                  <SettingsForm />
+                </UU5.Bricks.Tabs.Item>
                 <UU5.Bricks.Tabs.Item header={reservationsLsi}>
                   <ReservationsList />
                 </UU5.Bricks.Tabs.Item>
@@ -64,6 +69,7 @@ export const Admin = createVisualComponent({
                 <UU5.Bricks.Tabs.Item header={parkingPlacesLsi}>
                   <ParkingPlacesList />
                 </UU5.Bricks.Tabs.Item>
+
               </UU5.Bricks.Tabs>
             </ReservationsContextResolver>
           </ParkingPlacesContextResolver>

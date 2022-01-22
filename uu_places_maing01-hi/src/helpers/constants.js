@@ -43,6 +43,13 @@ const Constants = {
       daysRange: "daysRange",
     },
   },
+
+  Settings: {
+    formNames: {
+      dayOfStartReservations: "dayOfStartReservations",
+      hourOfStartReservations: "hourOfStartReservations",
+    },
+  },
 };
 
 export default Constants;

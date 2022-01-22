@@ -4,6 +4,7 @@ const Lsi = {
     parkingPlaces: { en: "Parking Places" },
     reservations: { en: "Reservations" },
     weeklyOverview: { en: "Weekly Overview" },
+    settings: { en: "Settings" },
   },
 };
 

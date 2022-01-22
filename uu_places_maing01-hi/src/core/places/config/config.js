@@ -1,7 +1,7 @@
 import UU5 from "uu5g04";
-import Config from "../../../bricks/config/config.js";
+import Config from "../../config/config.js";
 
-const TAG = Config.TAG + "ParkingMan.";
+const TAG = Config.TAG + "Places.";
 
 export default {
   ...Config,

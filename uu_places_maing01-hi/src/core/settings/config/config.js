@@ -1,10 +1,10 @@
-// This file was auto-generated according to the "namespace" setting in package.json.
-// Manual changes to this file are discouraged, if values are inconsistent with package.json setting.
 import UU5 from "uu5g04";
+import Config from "../../config/config.js";
 
-const TAG = "UuPlaces.";
+const TAG = Config.TAG + "Settings.";
 
 export default {
+  ...Config,
   TAG,
   Css: UU5.Common.Css.createCssModule(
     TAG.replace(/\.$/, "")
@@ -13,5 +13,4 @@ export default {
       .replace(/[^a-z-]/g, ""),
     process.env.NAME + "/" + process.env.OUTPUT_NAME + "@" + process.env.VERSION // this helps preserve proper order of styles among loaded libraries
   ),
-  SUB_APP_NAME: "UuParkingMan",
 };

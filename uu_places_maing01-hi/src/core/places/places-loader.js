@@ -29,6 +29,7 @@ export const Loader = createComponent({
     const placesDataObject = useDataObject({
       handlerMap: {
         load: Calls.uuSubAppInstanceLoad,
+        update: Calls.placesUpdate,
       },
     });
 

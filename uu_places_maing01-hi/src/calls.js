@@ -92,6 +92,11 @@ let Calls = {
     return Calls.call("get", commandUri, dtoIn);
   },
 
+  placesUpdate(dtoIn) {
+    let commandUri = Calls.getCommandUri("places/update");
+    return Calls.call("post", commandUri, dtoIn);
+  },
+
   usersList(dtoIn) {
     let commandUri = Calls.getCommandUri("user/list");
     return Calls.call("get", commandUri, dtoIn);
