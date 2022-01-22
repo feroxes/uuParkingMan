@@ -32,6 +32,10 @@ const Css = {
   table: () => Config.Css.css`
     margin: 0 20px;
   `,
+
+  tableCell: () => Config.Css.css`
+    background-color: #FAFAFA;
+  `,
 };
 
 export const WeeklyOverviewView = createVisualComponent({
@@ -44,6 +48,9 @@ export const WeeklyOverviewView = createVisualComponent({
     usersDataList: UU5.PropTypes.object,
     selectedDate: UU5.PropTypes.object,
     useLoggedInUser: UU5.PropTypes.bool,
+    isReservationOpenedBySelectedDay: UU5.PropTypes.bool,
+    isReservationOpened: UU5.PropTypes.bool,
+    isAdminView: UU5.PropTypes.bool,
   },
   //@@viewOff:propTypes
 
@@ -91,6 +98,7 @@ export const WeeklyOverviewView = createVisualComponent({
                   return (
                     <UU5.Bricks.Table.Td
                       key={key}
+                      className={key > 4 && Css.tableCell()}
                       content={_getReservationAvailability(
                         isParkingPlaceReserved,
                         isDateInPast,
@@ -137,7 +145,7 @@ export const WeeklyOverviewView = createVisualComponent({
             content={<UU5.Bricks.Icon icon="mdi-checkbox-marked-circle" />}
             bgStyle="outline"
             colorSchema="green"
-            disabled={isDateInPast}
+            disabled={_isDisabled(isDateInPast)}
             borderRadius="50%"
             tooltip={freeForReservationLsi}
             onClick={() => {
@@ -151,6 +159,8 @@ export const WeeklyOverviewView = createVisualComponent({
                     usersDataList={props.usersDataList.data}
                     handlerMap={props.reservationsDataList.handlerMap}
                     user={props.useLoggedInUser && user}
+                    isReservationOpened={props.isReservationOpened}
+                    isAdminView={props.isAdminView}
                   />
                 ),
                 size: "m",
@@ -159,6 +169,11 @@ export const WeeklyOverviewView = createVisualComponent({
           />
         );
       }
+    }
+
+    function _isDisabled(isDateInPast) {
+      if (props.isAdminView) return false;
+      else if (isDateInPast || !props.isReservationOpenedBySelectedDay) return true;
     }
     //@@viewOff:private
 
@@ -174,7 +189,7 @@ export const WeeklyOverviewView = createVisualComponent({
             onSelectDate={(date) => setSelectedDate(new Date(date))}
           />
         )}
-        <UU5.Bricks.Table header={weeklyOverviewLsi} responsive className={Css.table()}>
+        <UU5.Bricks.Table header={weeklyOverviewLsi} responsive className={Css.table()} bordered>
           <UU5.Bricks.Table.THead>
             <UU5.Bricks.Table.Tr>
               <UU5.Bricks.Table.Th content="" />

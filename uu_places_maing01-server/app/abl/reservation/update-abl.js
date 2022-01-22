@@ -34,9 +34,9 @@ class UpdateAbl {
     let reservation = await this.reservationDao.get(awid, dtoIn.id);
     // 3.1
     if (!reservation) throw new Errors.ReservationDoesNotExist({ uuAppErrorMap }, { reservation: dtoIn.id });
-
+    const userProfilesList = authorizationResult.getAuthorizedProfiles();
     // HDS 4
-    if (!authorizationResult.getAuthorizedProfiles().includes(Constants.Profiles.AUTHORITIES)) {
+    if (!userProfilesList.includes(Constants.Profiles.AUTHORITIES)) {
       // 4.1
       const currentReservationUser = await this.userDao.get(awid, reservation.userId);
 
@@ -94,7 +94,7 @@ class UpdateAbl {
     }
 
     // HDS 8
-    if (DayTimeHelper.isDateInPast(dtoIn.dayFrom) || DayTimeHelper.isDateInPast(dtoIn.dayTo)) {
+    if (DayTimeHelper.isDateInPast(dtoIn.dayTo)) {
       // 8.1
       throw new Errors.DateCouldNotBeInPast({ uuAppErrorMap }, { daysRange: `${dtoIn.dayFrom} - ${dtoIn.dayTo}` });
     }
@@ -119,7 +119,7 @@ class UpdateAbl {
     }
 
     // HDS 11, 11.1
-    if (!authorizationResult.getAuthorizedProfiles().includes(Constants.Profiles.AUTHORITIES)) {
+    if (!userProfilesList.includes(Constants.Profiles.AUTHORITIES)) {
       // 11.2
       const isReservationOpened = DayTimeHelper.isReservationOpened(
         uuPlaces.reservationsConfig,

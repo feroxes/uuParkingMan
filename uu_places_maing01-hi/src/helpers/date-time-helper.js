@@ -65,6 +65,47 @@ const DateTimeHelper = {
     }
     return range;
   },
+
+  isReservationOpenedBySelectedDay(reservationsConfig, selectedDay) {
+    const now = moment();
+    const openReservationTimePeriod = moment()
+      .startOf("isoWeek")
+      .add(reservationsConfig.dayOfStartReservations - 1, "days")
+      .add(reservationsConfig.hourOfStartReservations, "hours");
+    const a = moment(selectedDay);
+
+    const startOfNextWeek = moment().add(1, "week").startOf("isoWeek");
+    const endOfNextWeek = moment().add(1, "week").endOf("isoWeek");
+
+    if (a.isSameOrAfter(startOfNextWeek)) {
+      if (a.isAfter(endOfNextWeek)) return false;
+      else return now.isSameOrAfter(openReservationTimePeriod);
+    } else return true;
+  },
+
+  isReservationOpened(reservationsConfig) {
+    const now = moment();
+    const openReservationTimePeriod = moment()
+      .startOf("isoWeek")
+      .add(reservationsConfig.dayOfStartReservations - 1, "days")
+      .add(reservationsConfig.hourOfStartReservations, "hours");
+    return now.isAfter(openReservationTimePeriod);
+  },
+
+  getDayName(day) {
+    const date = moment().startOf("isoWeek").add(day, "days");
+    return date.format("dddd");
+  },
+
+  getEndOnNextWeek(format) {
+    const date = moment().endOf("isoWeek").add(1, "week");
+    return date.format(format);
+  },
+
+  getEndOnCurrentWeek(format) {
+    const date = moment().endOf("isoWeek");
+    return date.format(format);
+  },
 };
 
 export default DateTimeHelper;

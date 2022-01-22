@@ -56,7 +56,7 @@ export const Admin = createVisualComponent({
                   <ReservationsList />
                 </UU5.Bricks.Tabs.Item>
                 <UU5.Bricks.Tabs.Item header={weeklyOverviewLsi}>
-                  <WeeklyOverview />
+                  <WeeklyOverview isAdminView />
                 </UU5.Bricks.Tabs.Item>
                 <UU5.Bricks.Tabs.Item header={usersListLsi}>
                   <UsersList />

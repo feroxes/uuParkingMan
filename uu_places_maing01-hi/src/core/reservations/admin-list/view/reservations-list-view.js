@@ -196,6 +196,7 @@ function onControlsBtnClick(props, modal) {
         handlerMap={props.handlerMap}
         usersDataList={props.usersDataList}
         parkingPlacesDataList={props.parkingPlacesDataList}
+        isAdminView
       />
     ),
     size: "m",

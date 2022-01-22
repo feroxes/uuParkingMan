@@ -45,15 +45,18 @@ export const ParkingPlaceItem = createVisualComponent({
 
   //@@viewOn:propTypes
   propTypes: {
+    data: UU5.PropTypes.object,
     reservationsDataList: UU5.PropTypes.object,
     usersDataList: UU5.PropTypes.object,
     selectedDate: UU5.PropTypes.object,
+    disabled: UU5.PropTypes.bool,
+    isReservationOpened: UU5.PropTypes.bool,
   },
   //@@viewOff:propTypes
 
   //@@viewOn:defaultProps
   //@@viewOff:defaultProps
-  render({ data, reservationsDataList, selectedDate, usersDataList }) {
+  render({ data, reservationsDataList, selectedDate, usersDataList, disabled, isReservationOpened }) {
     //@@viewOn:hooks
     const modal = useContextModal();
     const session = useSession();
@@ -104,10 +107,22 @@ export const ParkingPlaceItem = createVisualComponent({
       modal.open({
         header: <UU5.Bricks.Lsi lsi={Lsi.createReservation} />,
         content: (
-          <ReservationFrom modal={modal} user={user} parkingPlace={data} handlerMap={reservationsDataList.handlerMap} />
+          <ReservationFrom
+            modal={modal}
+            user={user}
+            parkingPlace={data}
+            handlerMap={reservationsDataList.handlerMap}
+            isReservationOpened={isReservationOpened}
+          />
         ),
         size: "m",
       });
+    }
+
+    function _isDisabled() {
+      return (
+        disabled || DateTimeHelper.isDateInPast(selectedDate) || (isParkingPlaceReserved && !isUserOwnerOfReservation)
+      );
     }
     //@@viewOff:private
 
@@ -116,12 +131,13 @@ export const ParkingPlaceItem = createVisualComponent({
 
     // @@viewOn:interface
     //@@viewOff:interface
+
     //@@viewOn:render
     return (
       <UU5.Bricks.Button
         className={Css.main()}
         bgStyle="transparent"
-        disabled={DateTimeHelper.isDateInPast(selectedDate) || (isParkingPlaceReserved && !isUserOwnerOfReservation)}
+        disabled={_isDisabled()}
         onClick={_handleOnParkingPlaceClick}
       >
         <ParkingPlaceNumber number={data.data.number.toString()} />

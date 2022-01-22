@@ -66,6 +66,7 @@ export const WeeklyOverview = createVisualComponent({
                 reservationsDataList={reservationsDataList}
                 parkingPlacesDataList={parkingPlacesDataList}
                 usersDataList={usersDataList}
+                isAdminView={props.isAdminView}
               />
             </DataListStateResolver>
           </DataListStateResolver>

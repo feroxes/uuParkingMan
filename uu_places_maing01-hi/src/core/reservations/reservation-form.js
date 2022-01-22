@@ -45,6 +45,8 @@ export const ReservationFrom = createVisualComponent({
     user: UU5.PropTypes.object,
     parkingPlace: UU5.PropTypes.object,
     renderDeleteButton: UU5.PropTypes.bool,
+    isReservationOpened: UU5.PropTypes.bool,
+    isAdminView: UU5.PropTypes.bool,
   },
   //@@viewOff:propTypes
 
@@ -63,6 +65,8 @@ export const ReservationFrom = createVisualComponent({
     parkingPlacesDataList,
     usersDataList,
     renderDeleteButton,
+    isReservationOpened,
+    isAdminView,
   }) {
     //@@viewOn:hooks
     const parkingPlaceLsi = useLsi(Lsi.parkingPlace);
@@ -86,7 +90,7 @@ export const ReservationFrom = createVisualComponent({
         handlerMap
           .create(_getDtoIn(opt.values))
           .then(() => {
-            showAlert(<UU5.Bricks.Lsi lsi={Lsi.successMessage("created")} />)
+            showAlert(<UU5.Bricks.Lsi lsi={Lsi.successMessage("created")} />);
             modal.close();
           })
           .catch((e) => showAlert(e.message, false));
@@ -162,7 +166,9 @@ export const ReservationFrom = createVisualComponent({
     }
 
     function _getDateTo() {
-      if (!reservation) return null;
+      if (isAdminView) return null;
+      else if (!reservation && isReservationOpened) return DateTimeHelper.getEndOnNextWeek(STATICS.dateFormat);
+      else if (!reservation && !isReservationOpened) return DateTimeHelper.getEndOnCurrentWeek(STATICS.dateFormat);
       return DateTimeHelper.formatDate(new Date(reservation.dayTo), STATICS.dateFormat);
     }
 

@@ -20,6 +20,7 @@ const Lsi = {
   weeklyOverview: { en: "Weekly Overview" },
   yourParkingPlace: { en: "Your parking place:" },
   noReservation: { en: "Today you haven't reservations." },
+  notOpened: { en: "Reservation will be opened on" },
 };
 
 export default Lsi;

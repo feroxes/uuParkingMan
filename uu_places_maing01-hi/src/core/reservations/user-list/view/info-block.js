@@ -1,6 +1,6 @@
 //@@viewOn:imports
 import UU5 from "uu5g04";
-import { createVisualComponent, useSession, useMemo, useLsi, useScreenSize } from "uu5g04-hooks";
+import { createVisualComponent, useLsi, useMemo, useScreenSize, useSession } from "uu5g04-hooks";
 import Config from "../../config/config.js";
 import Constants from "../../../../helpers/constants.js";
 import DateTimeHelper from "../../../../helpers/date-time-helper.js";
@@ -22,7 +22,8 @@ const Css = {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-right: ${screenSize === "s" || screenSize === 'xs' ? "0px" : "52px"};
+    text-align: center;
+    margin-right: ${screenSize === "s" || screenSize === "xs" ? "0px" : "52px"};
   `,
 };
 
@@ -41,19 +42,21 @@ export const InfoBlock = createVisualComponent({
   propTypes: {
     reservationsDataList: UU5.PropTypes.object,
     selectedDate: UU5.PropTypes.object,
+    placesDataObject: UU5.PropTypes.object,
+    isReservationOpenedBySelectedDay: UU5.PropTypes.bool,
   },
   //@@viewOff:propTypes
 
   //@@viewOn:defaultProps
   //@@viewOff:defaultProps
-  render({ reservationsDataList, selectedDate }) {
+  render({ reservationsDataList, selectedDate, isReservationOpenedBySelectedDay, placesDataObject }) {
     //@@viewOn:hooks
     const noReservationLsi = useLsi(Lsi.noReservation);
     const yourParkingPlaceLsi = useLsi(Lsi.yourParkingPlace);
+    const notOpenedLsi = useLsi(Lsi.notOpened);
 
     const { uuIdentity } = useSession().identity;
     const screenSize = useScreenSize();
-    console.log('----->screenSize<-----', screenSize);
 
     const reservation = useMemo(() => {
       return reservationsDataList.data.find((reservation) => {
@@ -65,6 +68,15 @@ export const InfoBlock = createVisualComponent({
     //@@viewOff:hooks
 
     //@@viewOn:private
+    function _getChild() {
+      if (reservation) {
+        return `${yourParkingPlaceLsi} ${reservation.data.parkingPlace.number}`;
+      } else if (!isReservationOpenedBySelectedDay) {
+        const { dayOfStartReservations, hourOfStartReservations } = placesDataObject.data.reservationsConfig;
+        const dayName = DateTimeHelper.getDayName(dayOfStartReservations - 1);
+        return `${notOpenedLsi} ${dayName} at ${hourOfStartReservations}:00`;
+      } else return noReservationLsi;
+    }
     //@@viewOff:private
 
     //@@viewOn:handlers
@@ -75,9 +87,7 @@ export const InfoBlock = createVisualComponent({
     //@@viewOn:render
     return (
       <div className={Css.wrapper()}>
-        <div className={Css.main(screenSize)}>
-          {reservation ? `${yourParkingPlaceLsi} ${reservation.data.parkingPlace.number}` : noReservationLsi}
-        </div>
+        <div className={Css.main(screenSize)}>{_getChild()}</div>
       </div>
     );
     //@@viewOff:render

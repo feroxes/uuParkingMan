@@ -1,6 +1,6 @@
 //@@viewOn:imports
 import UU5 from "uu5g04";
-import { createVisualComponent, useLsi, useState } from "uu5g04-hooks";
+import { createVisualComponent, useLsi, useState, useMemo } from "uu5g04-hooks";
 import { useSubAppData } from "uu_plus4u5g01-context";
 import UuBookigyWorkplace from "uu_bookigy_workplaceg01-uu5";
 import Config from "../config/config.js";
@@ -13,6 +13,7 @@ import UserReservationsListView from "./view/user-reservations-list-view.js";
 import WeeklyOverviewView from "../weekly-overview/view/weekly-overview-view.js";
 import InfoBlock from "./view/info-block.js";
 import Constants from "../../../helpers/constants.js";
+import DateTimeHelper from "../../../helpers/date-time-helper.js";
 import Lsi from "../reservations-lsi.js";
 //@@viewOff:imports
 
@@ -69,8 +70,17 @@ export const List = createVisualComponent({
     const reservationsLsi = useLsi(Lsi.reservations);
     const weeklyOverviewLsi = useLsi(Lsi.weeklyOverview);
 
-    //@@viewOff:hooks
+    const isReservationOpenedBySelectedDay = useMemo(() => {
+      return (
+        placesDataObject.data &&
+        DateTimeHelper.isReservationOpenedBySelectedDay(placesDataObject.data.reservationsConfig, selectedDate)
+      );
+    }, [placesDataObject, selectedDate]);
 
+    const isReservationOpened = useMemo(() => {
+      return placesDataObject.data && DateTimeHelper.isReservationOpened(placesDataObject.data.reservationsConfig);
+    }, [placesDataObject]);
+    //@@viewOff:hooks
     //@@viewOn:private
     //@@viewOff:private
 
@@ -90,7 +100,12 @@ export const List = createVisualComponent({
                   className={Css.calendarDateSelect()}
                   onSelectDate={(date) => setSelectedDate(new Date(date))}
                 />
-                <InfoBlock reservationsDataList={reservationsDataList} selectedDate={selectedDate} />
+                <InfoBlock
+                  reservationsDataList={reservationsDataList}
+                  selectedDate={selectedDate}
+                  isReservationOpenedBySelectedDay={isReservationOpenedBySelectedDay}
+                  placesDataObject={placesDataObject}
+                />
                 <UU5.Bricks.Tabs>
                   <UU5.Bricks.Tabs.Item header={reservationsLsi}>
                     <UserReservationsListView
@@ -99,6 +114,8 @@ export const List = createVisualComponent({
                       parkingPlacesDataList={parkingPlacesDataList}
                       handlerMap={reservationsDataList.handlerMap}
                       selectedDate={selectedDate}
+                      isReservationOpenedBySelectedDay={isReservationOpenedBySelectedDay}
+                      isReservationOpened={isReservationOpened}
                     />
                   </UU5.Bricks.Tabs.Item>
                   <UU5.Bricks.Tabs.Item header={weeklyOverviewLsi}>
@@ -108,6 +125,8 @@ export const List = createVisualComponent({
                       parkingPlacesDataList={parkingPlacesDataList}
                       selectedDate={selectedDate}
                       useLoggedInUser
+                      isReservationOpenedBySelectedDay={isReservationOpenedBySelectedDay}
+                      isReservationOpened={isReservationOpened}
                     />
                   </UU5.Bricks.Tabs.Item>
                 </UU5.Bricks.Tabs>

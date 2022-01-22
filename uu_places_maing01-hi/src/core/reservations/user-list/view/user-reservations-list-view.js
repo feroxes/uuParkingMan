@@ -24,6 +24,8 @@ export const UserReservationsListView = createVisualComponent({
     parkingPlacesDataList: UU5.PropTypes.object,
     handlerMap: UU5.PropTypes.object,
     selectedDate: UU5.PropTypes.object,
+    isReservationOpenedBySelectedDay: UU5.PropTypes.bool,
+    isReservationOpened: UU5.PropTypes.bool,
   },
   //@@viewOff:propTypes
 
@@ -50,21 +52,21 @@ export const UserReservationsListView = createVisualComponent({
     //@@viewOff:interface
 
     //@@viewOn:render
-
     return (
-      <>
-        <div className="uu5-common-padding-s">
-          <Uu5Tiles.ControllerProvider data={props.parkingPlacesDataList.data}>
-            <Uu5Tiles.Grid tileMinWidth={200} tileMaxWidth={300} tileSpacing={8} rowSpacing={8}>
-              <ParkingPlaceItem
-                reservationsDataList={props.reservationsDataList}
-                usersDataList={props.usersDataList}
-                selectedDate={props.selectedDate}
-              />
-            </Uu5Tiles.Grid>
-          </Uu5Tiles.ControllerProvider>
-        </div>
-      </>
+      <div className="uu5-common-padding-s">
+        <Uu5Tiles.ControllerProvider data={props.parkingPlacesDataList.data}>
+          <Uu5Tiles.Grid tileMinWidth={200} tileMaxWidth={300} tileSpacing={8} rowSpacing={8}>
+            <ParkingPlaceItem
+              reservationsDataList={props.reservationsDataList}
+              usersDataList={props.usersDataList}
+              selectedDate={props.selectedDate}
+              placesDataObject={props.placesDataObject}
+              disabled={!props.isReservationOpenedBySelectedDay}
+              isReservationOpened={props.isReservationOpened}
+            />
+          </Uu5Tiles.Grid>
+        </Uu5Tiles.ControllerProvider>
+      </div>
     );
     //@@viewOff:render
   },
