@@ -1,6 +1,6 @@
 {
   "name": "uu_places_maing01-server",
-  "version": "0.1.0-dev",
+  "version": "0.2.0-dev",
   "description": "",
   "license": "License Commercial",
   "spec": "nodejs-app; uu_appg01_devkit@4.2.2",
