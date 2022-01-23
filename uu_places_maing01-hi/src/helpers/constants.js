@@ -41,6 +41,7 @@ const Constants = {
       userId: "userId",
       parkingPlaceId: "parkingPlaceId",
       daysRange: "daysRange",
+      sendMessage: "sendMessage",
     },
   },
 

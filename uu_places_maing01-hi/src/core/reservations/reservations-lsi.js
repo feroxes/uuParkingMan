@@ -21,6 +21,7 @@ const Lsi = {
   yourParkingPlace: { en: "Your parking place:" },
   noReservation: { en: "Today you haven't reservations." },
   notOpened: { en: "Reservation will be opened on" },
+  sendNotification: { en: "Send notification" },
 };
 
 export default Lsi;

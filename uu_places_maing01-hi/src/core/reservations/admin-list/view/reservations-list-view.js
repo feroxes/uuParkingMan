@@ -53,16 +53,36 @@ export const ReservationsListView = createVisualComponent({
     const modal = useContextModal();
     const confirmModalHeaderLsi = useLsi(Lsi.reservationDelete);
     const confirmModalContentLsi = useLsi(Lsi.reservationDeleteConfirmation);
+    const sendNotificationLsi = useLsi(Lsi.sendNotification);
 
     const confirmModalRef = useRef();
+    const checkboxModalRef = useRef();
 
     const [reservationForDelete, setReservationForDelete] = useState(null);
     //@@viewOff:hooks
 
     //@@viewOn:private
+    function _getConfirmModalContent() {
+      return (
+        <div>
+          {confirmModalContentLsi}
+          <UU5.Forms.Checkbox
+            labelPosition="right"
+            colWidth="xs-12"
+            name={Constants.Reservation.formNames.sendMessage}
+            label={sendNotificationLsi}
+            ref_={checkboxModalRef}
+          />
+        </div>
+      );
+    }
     //@@viewOff:private
 
     //@@viewOn:handlers
+    function _handleReservationDelete() {
+      const sendMessage = checkboxModalRef.current.getValue();
+      reservationForDelete.data.handlerMap.delete({ sendMessage });
+    }
     //@@viewOff:handlers
 
     // @@viewOn:interface
@@ -79,10 +99,8 @@ export const ReservationsListView = createVisualComponent({
         />
         <UU5.Bricks.ConfirmModal
           header={confirmModalHeaderLsi}
-          content={confirmModalContentLsi}
-          onConfirm={() => {
-            reservationForDelete.data.handlerMap.delete();
-          }}
+          content={_getConfirmModalContent()}
+          onConfirm={_handleReservationDelete}
           confirmButtonProps={{ colorSchema: "danger" }}
           ref_={confirmModalRef}
         />
