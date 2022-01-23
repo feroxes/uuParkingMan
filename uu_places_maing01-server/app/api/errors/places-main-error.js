@@ -66,8 +66,28 @@ const Update = {
     }
   },
 };
+const SendMessage = {
+  UC_CODE: `${PlacesMainUseCaseError.ERROR_PREFIX}places/sendMessage/`,
+
+  InvalidDtoIn: class extends PlacesMainUseCaseError {
+    constructor() {
+      super(...arguments);
+      this.code = `${SendMessage.UC_CODE}invalidDtoIn`;
+      this.message = "DtoIn is not valid.";
+    }
+  },
+
+  FailedToSentMessage: class extends PlacesMainUseCaseError {
+    constructor() {
+      super(...arguments);
+      this.code = `${SendMessage.UC_CODE}failedToSentMessage`;
+      this.message = "Failed to send message.";
+    }
+  },
+};
 
 module.exports = {
   Init,
   Update,
+  SendMessage,
 };

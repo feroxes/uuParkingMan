@@ -2,6 +2,7 @@
 const InitAbl = require("../../abl/places/init.js");
 const LoadAbl = require("../../abl/places/load.js");
 const UpdateAbl = require("../../abl/places/update-abl.js");
+const SendMessageAbl = require("../../abl/places/send-message-abl.js")
 
 class PlacesMainController {
   init(ucEnv) {
@@ -12,6 +13,9 @@ class PlacesMainController {
   }
   update(ucEnv) {
     return UpdateAbl.update(ucEnv.getUri().getAwid(), ucEnv.getDtoIn());
+  }
+  sendMessage(ucEnv) {
+    return SendMessageAbl.send(ucEnv.getUri().getAwid(), ucEnv.getDtoIn());
   }
 }
 

@@ -30,6 +30,7 @@ export const Loader = createComponent({
       handlerMap: {
         load: Calls.uuSubAppInstanceLoad,
         update: Calls.placesUpdate,
+        sendMessage: Calls.sendMessage,
       },
     });
 

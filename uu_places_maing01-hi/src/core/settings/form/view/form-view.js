@@ -1,11 +1,12 @@
 //@@viewOn:imports
 import UU5 from "uu5g04";
-import { createVisualComponent, useLsi } from "uu5g04-hooks";
+import { createVisualComponent, useLsi, useCall } from "uu5g04-hooks";
 import Config from "../../config/config.js";
 import Constants from "../../../../helpers/constants.js";
 import Lsi from "../../lsi.js";
 import DateTimeHelper from "../../../../helpers/date-time-helper.js";
 import { useContextAlert } from "../../../managers/alert-manager.js";
+import Calls from "calls";
 //@@viewOff:imports
 
 //@@viewOn:constants
@@ -17,6 +18,7 @@ const Css = {
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
   `,
   form: () => Config.Css.css`
     width: 500px;
@@ -45,9 +47,14 @@ export const FormView = createVisualComponent({
     //@@viewOn:hooks
     const dayOfStartReservationsLsi = useLsi(Lsi.dayOfStartReservations);
     const hourOfStartReservationsLsi = useLsi(Lsi.hourOfStartReservations);
+    const messageLsi = useLsi(Lsi.message);
     const formHeaderLsi = useLsi(Lsi.formHeader);
+    const sendMessageFormHeaderLsi = useLsi(Lsi.sendMessageFormHeader);
     const successLsi = useLsi(Lsi.success);
+    const successMessageSendLsi = useLsi(Lsi.successMessageSend);
     const showAlert = useContextAlert();
+
+    const { call } = useCall(Calls.sendMessage);
     //@@viewOff:hooks
     //@@viewOn:private
     function _getSelectDaysValues() {
@@ -84,6 +91,13 @@ export const FormView = createVisualComponent({
         .then(() => showAlert(successLsi))
         .catch((e) => showAlert(e.message, false));
     }
+    function _handleOnSendMessageClick(opt) {
+      const { message } = opt.values;
+
+      call({ message })
+        .then(() => showAlert(successMessageSendLsi))
+        .catch((e) => showAlert(e.message, false));
+    }
     //@@viewOff:private
 
     //@@viewOn:handlers
@@ -115,6 +129,10 @@ export const FormView = createVisualComponent({
           >
             {_getSelectHoursValues()}
           </UU5.Forms.Select>
+          <UU5.Forms.Controls />
+        </UU5.Forms.Form>
+        <UU5.Forms.Form onSave={_handleOnSendMessageClick} header={sendMessageFormHeaderLsi} className={Css.form()}>
+          <UU5.Forms.TextArea name={Constants.Settings.formNames.message} label={messageLsi} required />
           <UU5.Forms.Controls />
         </UU5.Forms.Form>
       </div>

@@ -80,6 +80,11 @@
         "realization": "api/controllers/PlacesMainController.update",
         "httpMethod": "POST",
         "type": "CMD"
+      },
+      "places/sendMessage": {
+        "realization": "api/controllers/PlacesMainController.sendMessage",
+        "httpMethod": "POST",
+        "type": "CMD"
       }
     }
   }

@@ -48,6 +48,7 @@ const Constants = {
     formNames: {
       dayOfStartReservations: "dayOfStartReservations",
       hourOfStartReservations: "hourOfStartReservations",
+      message: "message",
     },
   },
 };

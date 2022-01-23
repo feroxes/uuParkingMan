@@ -97,6 +97,11 @@ let Calls = {
     return Calls.call("post", commandUri, dtoIn);
   },
 
+  sendMessage(dtoIn) {
+    let commandUri = Calls.getCommandUri("places/sendMessage");
+    return Calls.call("post", commandUri, dtoIn);
+  },
+
   usersList(dtoIn) {
     let commandUri = Calls.getCommandUri("user/list");
     return Calls.call("get", commandUri, dtoIn);

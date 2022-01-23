@@ -14,3 +14,7 @@ const placesLoadDtoInType = shape({
     hourOfStartReservations: number(1, 24).isRequired(),
   }),
 });
+
+const placesSendMessageDtoInType = shape({
+  message: string().isRequired(),
+});

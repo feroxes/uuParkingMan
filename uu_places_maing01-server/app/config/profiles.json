@@ -68,6 +68,10 @@
       "places/update": {
         "sysStateList": ["active"],
         "profileList": ["Authorities"]
+      },
+      "places/sendMessage": {
+        "sysStateList": ["active"],
+        "profileList": ["Authorities"]
       }
     }
   }
