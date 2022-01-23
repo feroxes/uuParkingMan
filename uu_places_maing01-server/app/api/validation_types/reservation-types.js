@@ -8,7 +8,8 @@ const reservationCreateDtoInType = shape({
 
 
 const reservationDeleteDtoInType = shape({
-  id: id().isRequired()
+  id: id().isRequired(),
+  sendMessage: boolean(),
 });
 
 const reservationUpdateDtoInType = shape({

@@ -18,7 +18,7 @@ class ReservationController {
   }
 
   delete(ucEnv) {
-    return DeleteAbl.delete(ucEnv.getUri().getAwid(), ucEnv.getDtoIn(), ucEnv.getAuthorizationResult());
+    return DeleteAbl.delete(ucEnv.getUri().getAwid(), ucEnv.getDtoIn(), ucEnv.getAuthorizationResult(), ucEnv.getUri());
   }
 }
 

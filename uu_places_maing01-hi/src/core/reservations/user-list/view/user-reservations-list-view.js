@@ -1,9 +1,10 @@
 //@@viewOn:imports
 import UU5 from "uu5g04";
-import { createVisualComponent, useEffect } from "uu5g04-hooks";
+import { createVisualComponent, useEffect, useMemo } from "uu5g04-hooks";
 import Uu5Tiles from "uu5tilesg02";
 import Config from "../../config/config.js";
 import ParkingPlaceItem from "./parking-place-item.js";
+import ReservationHelper from "../../../../helpers/reservation-helper.js";
 //@@viewOff:imports
 
 //@@viewOn:constants
@@ -40,6 +41,13 @@ export const UserReservationsListView = createVisualComponent({
     useEffect(() => {
       props.parkingPlacesDataList.data.sort((a, b) => a.data.number - b.data.number);
     }, []);
+
+    const isAllParkingPlacesReserved = useMemo(() => {
+      const { reservationsDataList, parkingPlacesDataList } = props;
+      return parkingPlacesDataList.data.every((place) => {
+        return ReservationHelper.isParkingPlaceReserved(place.data.id, reservationsDataList.data, props.selectedDate);
+      });
+    }, [props.reservationsDataList]);
     //@@viewOff:hooks
 
     //@@viewOn:private
@@ -63,6 +71,7 @@ export const UserReservationsListView = createVisualComponent({
               placesDataObject={props.placesDataObject}
               disabled={!props.isReservationOpenedBySelectedDay}
               isReservationOpened={props.isReservationOpened}
+              isAllParkingPlacesReserved={isAllParkingPlacesReserved}
             />
           </Uu5Tiles.Grid>
         </Uu5Tiles.ControllerProvider>

@@ -67,6 +67,18 @@ const DayTimeHelper = {
     const date = moment().startOf("isoWeek").add(day, "days");
     return date.format("dddd");
   },
+
+  getTimeSlotForNotification(dayFrom, dayTo) {
+    const now = moment();
+    const a = moment(dayFrom);
+    const b = moment(dayTo);
+
+    if (a.isBefore(now)) {
+      return `${now.format(DEFAULT_DATE_FORMAT)} - ${b.format(DEFAULT_DATE_FORMAT)}`;
+    } else {
+      return `${a.format(DEFAULT_DATE_FORMAT)} - ${b.format(DEFAULT_DATE_FORMAT)}`;
+    }
+  },
 };
 
 module.exports = DayTimeHelper;

@@ -51,12 +51,21 @@ export const ParkingPlaceItem = createVisualComponent({
     selectedDate: UU5.PropTypes.object,
     disabled: UU5.PropTypes.bool,
     isReservationOpened: UU5.PropTypes.bool,
+    isAllParkingPlacesReserved: UU5.PropTypes.bool,
   },
   //@@viewOff:propTypes
 
   //@@viewOn:defaultProps
   //@@viewOff:defaultProps
-  render({ data, reservationsDataList, selectedDate, usersDataList, disabled, isReservationOpened }) {
+  render({
+    data,
+    reservationsDataList,
+    selectedDate,
+    usersDataList,
+    disabled,
+    isReservationOpened,
+    isAllParkingPlacesReserved,
+  }) {
     //@@viewOn:hooks
     const modal = useContextModal();
     const session = useSession();
@@ -97,6 +106,7 @@ export const ParkingPlaceItem = createVisualComponent({
             parkingPlace={data}
             handlerMap={reservation.handlerMap}
             renderDeleteButton
+            isAllParkingPlacesReserved={isAllParkingPlacesReserved}
           />
         ),
         size: "m",

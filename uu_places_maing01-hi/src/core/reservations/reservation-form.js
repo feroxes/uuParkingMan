@@ -47,6 +47,7 @@ export const ReservationFrom = createVisualComponent({
     renderDeleteButton: UU5.PropTypes.bool,
     isReservationOpened: UU5.PropTypes.bool,
     isAdminView: UU5.PropTypes.bool,
+    isAllParkingPlacesReserved: UU5.PropTypes.bool,
   },
   //@@viewOff:propTypes
 
@@ -67,6 +68,7 @@ export const ReservationFrom = createVisualComponent({
     renderDeleteButton,
     isReservationOpened,
     isAdminView,
+    isAllParkingPlacesReserved,
   }) {
     //@@viewOn:hooks
     const parkingPlaceLsi = useLsi(Lsi.parkingPlace);
@@ -251,7 +253,7 @@ export const ReservationFrom = createVisualComponent({
             header={useLsi(Lsi.reservationDelete)}
             content={_getConfirmModalContent()}
             onConfirm={() => {
-              handlerMap.delete();
+              handlerMap.delete({ sendMessage: isAllParkingPlacesReserved });
               modal.close();
             }}
             confirmButtonProps={{ colorSchema: "danger" }}

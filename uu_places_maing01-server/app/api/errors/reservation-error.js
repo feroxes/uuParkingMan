@@ -257,6 +257,14 @@ const Delete = {
       this.message = "Only Authorities may update reservations of other users.";
     }
   },
+
+  FailedToSentMessage: class extends PlacesMainUseCaseError {
+    constructor() {
+      super(...arguments);
+      this.code = `${Delete.UC_CODE}failedToSentMessage`;
+      this.message = "Failed to send message.";
+    }
+  },
 };
 
 module.exports = {
