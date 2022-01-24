@@ -19,7 +19,7 @@ const Lsi = {
   reservations: { en: "Reservations" },
   weeklyOverview: { en: "Weekly Overview" },
   yourParkingPlace: { en: "Your parking place:" },
-  noReservation: { en: "Today you haven't reservations." },
+  noReservation: { en: "Today you don't have reservations." },
   notOpened: { en: "Reservation will be opened on" },
   sendNotification: { en: "Send notification" },
 };
