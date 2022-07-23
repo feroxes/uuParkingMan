@@ -14,4 +14,7 @@ export default {
     process.env.NAME + "/" + process.env.OUTPUT_NAME + "@" + process.env.VERSION // this helps preserve proper order of styles among loaded libraries
   ),
   SUB_APP_NAME: "UuParkingMan",
+  ROUTES: {
+    ABOUT: "about",
+  },
 };

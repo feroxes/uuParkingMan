@@ -1,17 +1,7 @@
 export const About = {
   about: {
     en: "Enjoy 🤙",
-  },
-  licence: {
-    organisation: {
-      en: {
-        name: "Unicorn a.s.",
-        uri: "https://www.unicorn.com/",
-      },
-    },
-    authorities: {
-      en: [{ name: "Yarik Harmash" }, { name: "Roman Hurzhii" }],
-    },
+    uk: "Насолоджуйтесь життям 🤙",
   },
   leadingAuthors: [
     {
@@ -19,13 +9,15 @@ export const About = {
       uuIdentity: "8517-626-1",
       role: {
         en: "Head of Development",
+        uk: "Щось робить",
       },
     },
     {
       name: "Roman Hurhii",
       uuIdentity: "12-1350-1",
       role: {
-        en: "Operation Manager, Chief Developer",
+        en: "Operation Manager",
+        uk: "Операційний менеджер",
       },
     },
   ],

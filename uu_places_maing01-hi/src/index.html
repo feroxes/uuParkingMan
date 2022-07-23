@@ -10,15 +10,15 @@
       not relatively to current use case in the URL. -->
     <% template = `
     <script src="uu5-environment.js"></script>
-    <script src="~uu5g04/uu5g04-browser-update.min.js" crossorigin="anonymous"></script>
+    <script src="~uu5g05-browser-compatibility/uu5g05-browser-compatibility.min.js" crossorigin="anonymous"></script>
 
     <link type="text/css" rel="stylesheet" href="https://cdn.plus4u.net/libs/clearsans/2.0.0/fonts/clear-sans.min.css">
     <link type="text/css" rel="stylesheet" href="loading.css">
     <link rel="preconnect" href="https://uuidentity.plus4u.net">
-    <script src="~systemjs/system.js" crossorigin="anonymous"></script>
+    <script src="~uu5loaderg01" crossorigin="anonymous"></script>
 
-    <meta name="apple-mobile-web-app-title" content="uuPlaces">
-    <meta name="application-name" content="uuPlaces">
+    <meta name="apple-mobile-web-app-title" content="uuPlus4uMall">
+    <meta name="application-name" content="uuPlus4uMall">
     <meta name="msapplication-TileImage" content="assets/meta/mstile-150x150.png">
     <meta name="msapplication-TileColor" content="#004191">
     <link rel="apple-touch-icon" sizes="180x180" href="assets/meta/apple-touch-icon.png">
@@ -50,8 +50,8 @@
 %>
 
     <script>
-      if (!window.SystemJS) handleUuAppScriptError(new Error("SystemJS failed to load."));
-      else SystemJS.import("./index.js").then(function (Index) {
+      if (!window.Uu5Loader) handleUuAppScriptError(new Error("Uu5Loader failed to load."));
+      else Uu5Loader.import("./index.js").then(function (Index) {
         Index.render("uuApp");
       }).catch(handleUuAppScriptError);
     </script>

@@ -9,20 +9,25 @@
   "dependencies": {
     "moment": "^2.29.1",
     "systemjs": "0.19.47",
-    "uu5g04": "^1.19.0",
-    "uu5g05": "^1.2.0",
-    "uu5tilesg02": "^1.16.0",
     "uu_bookigy_workplaceg01-uu5": "^1.12.0",
     "uu_contentkitg01": "^2.0.0",
-    "uu_pg01": "^3.9.1",
     "uu_plus4u5g01": "^4.0.0",
-    "uu_territoryg01": "^1.0.0"
+    "uu_plus4u5g02": "^1.7.0",
+    "uu_plus4u5g02-app": "^1.7.0",
+    "uu_plus4u5g02-elements": "^1.7.0",
+    "uu5g04": "^1.19.0",
+    "uu5g05": "^1.10.3",
+    "uu5g05-browser-compatibility": "^1.10.3",
+    "uu5g05-elements": "^1.10.3",
+    "uu5g05-forms": "^1.10.3",
+    "uu5loaderg01": "^1.1.2",
+    "uu5tilesg02": "^1.16.0"
   },
   "uuBuildSettings": {
     "externals": {}
   },
   "devDependencies": {
-    "uu_appg01_devkit": "^4.2.2"
+    "uu_appg01_devkit": "^5.2.2"
   },
   "engines": {
     "node": ">=12.0.0"

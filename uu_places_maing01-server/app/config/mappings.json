@@ -11,6 +11,11 @@
         "httpMethod": "GET",
         "type": "CMD"
       },
+      "sys/uuAppWorkspace/load": {
+        "realization": "api/controllers/PlacesMainController.workspaceLoad",
+        "httpMethod": "GET",
+        "type": "CMD"
+      },
       "defaultUve": {
         "realization": "index.html",
         "httpMethod": "GET",
