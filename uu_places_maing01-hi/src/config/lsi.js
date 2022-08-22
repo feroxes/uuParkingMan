@@ -67,6 +67,14 @@ const Lsi = {
   emptyPlace: { en: "Empty place", uk: "Вільне місце" },
   dayFrom: { en: "Day from", uk: "Початкова дата" },
   dayTo: { en: "Day to", uk: "Кінцева дата" },
+  undergroundPlaces: {
+    en: "Underground places",
+    uk: "Підземні місця",
+  },
+  surfacePlaces: {
+    en: "Surface places",
+    uk: "Надземні місця",
+  },
 };
 
 export default Lsi;

@@ -1,9 +1,11 @@
 //@@viewOn:imports
-import { createVisualComponent, PropTypes, useEffect, useMemo } from "uu5g05";
+import { createVisualComponent, PropTypes, useEffect, useMemo, Lsi } from "uu5g05";
+import { Text } from "uu5g05-elements";
 import Uu5Tiles from "uu5tilesg02";
 import Config from "../../config/config.js";
 import ParkingPlaceItem from "./parking-place-item.js";
 import ReservationHelper from "../../../../helpers/reservation-helper.js";
+import LsiData from "../../../../config/lsi.js";
 //@@viewOff:imports
 
 //@@viewOn:constants
@@ -44,6 +46,12 @@ export const UserReservationsListView = createVisualComponent({
         return ReservationHelper.isParkingPlaceReserved(place.data.id, reservationsDataList.data, props.selectedDate);
       });
     }, [props.reservationsDataList]);
+    const undergroundPlaces = useMemo(() => {
+      return props.parkingPlacesDataList.data.filter((place) => place.data.type === "underground");
+    }, [props.parkingPlacesDataList]);
+    const surfacePlaces = useMemo(() => {
+      return props.parkingPlacesDataList.data.filter((place) => place.data.type === "surface");
+    }, [props.parkingPlacesDataList]);
     //@@viewOff:hooks
 
     //@@viewOn:private
@@ -57,21 +65,44 @@ export const UserReservationsListView = createVisualComponent({
 
     //@@viewOn:render
     return (
-      <div className="uu5-common-padding-s">
-        <Uu5Tiles.ControllerProvider data={props.parkingPlacesDataList.data}>
-          <Uu5Tiles.Grid tileMinWidth={200} tileMaxWidth={300} tileSpacing={8} rowSpacing={8}>
-            <ParkingPlaceItem
-              reservationsDataList={props.reservationsDataList}
-              usersDataList={props.usersDataList}
-              selectedDate={props.selectedDate}
-              placesDataObject={props.placesDataObject}
-              disabled={!props.isReservationOpenedBySelectedDay}
-              isReservationOpened={props.isReservationOpened}
-              isAllParkingPlacesReserved={isAllParkingPlacesReserved}
-            />
-          </Uu5Tiles.Grid>
-        </Uu5Tiles.ControllerProvider>
-      </div>
+      <>
+        <div className="uu5-common-padding-s">
+          <Text category="interface" segment="title" type="common">
+            <Lsi lsi={LsiData.undergroundPlaces} />
+          </Text>
+          <Uu5Tiles.ControllerProvider data={undergroundPlaces}>
+            <Uu5Tiles.Grid tileMinWidth={200} tileMaxWidth={300} tileSpacing={8} rowSpacing={8}>
+              <ParkingPlaceItem
+                reservationsDataList={props.reservationsDataList}
+                usersDataList={props.usersDataList}
+                selectedDate={props.selectedDate}
+                placesDataObject={props.placesDataObject}
+                disabled={!props.isReservationOpenedBySelectedDay}
+                isReservationOpened={props.isReservationOpened}
+                isAllParkingPlacesReserved={isAllParkingPlacesReserved}
+              />
+            </Uu5Tiles.Grid>
+          </Uu5Tiles.ControllerProvider>
+        </div>
+        <div className="uu5-common-padding-s">
+          <Text category="interface" segment="title" type="common">
+            <Lsi lsi={LsiData.surfacePlaces} />
+          </Text>
+          <Uu5Tiles.ControllerProvider data={surfacePlaces}>
+            <Uu5Tiles.Grid tileMinWidth={200} tileMaxWidth={300} tileSpacing={8} rowSpacing={8}>
+              <ParkingPlaceItem
+                reservationsDataList={props.reservationsDataList}
+                usersDataList={props.usersDataList}
+                selectedDate={props.selectedDate}
+                placesDataObject={props.placesDataObject}
+                disabled={!props.isReservationOpenedBySelectedDay}
+                isReservationOpened={props.isReservationOpened}
+                isAllParkingPlacesReserved={isAllParkingPlacesReserved}
+              />
+            </Uu5Tiles.Grid>
+          </Uu5Tiles.ControllerProvider>
+        </div>
+      </>
     );
     //@@viewOff:render
   },
