@@ -28,6 +28,8 @@ class ReservationMongo extends PlacesObjectDao {
     if (filterMap.dayTo) filter.dayTo = { $gte: filterMap.dayTo };
 
     const reservations = await super.aggregate([
+      { $match: filter },
+      { $sort: sorter },
       {
         $lookup: {
           from: "user",
@@ -46,8 +48,6 @@ class ReservationMongo extends PlacesObjectDao {
         },
       },
       { $unwind: "$parkingPlace" },
-      { $match: filter },
-      { $sort: sorter },
       {
         $addFields: { id: "$_id" },
       },

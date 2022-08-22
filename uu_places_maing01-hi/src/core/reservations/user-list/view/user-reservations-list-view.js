@@ -1,6 +1,5 @@
 //@@viewOn:imports
-import UU5 from "uu5g04";
-import { createVisualComponent, useEffect, useMemo } from "uu5g04-hooks";
+import { createVisualComponent, PropTypes, useEffect, useMemo } from "uu5g05";
 import Uu5Tiles from "uu5tilesg02";
 import Config from "../../config/config.js";
 import ParkingPlaceItem from "./parking-place-item.js";
@@ -9,24 +8,21 @@ import ReservationHelper from "../../../../helpers/reservation-helper.js";
 
 //@@viewOn:constants
 //@@viewOff:constants
-const STATICS = {
-  //@@viewOn:statics
-  displayName: Config.TAG + "UserReservationsListView",
-  //@@viewOff:statics
-};
 
 export const UserReservationsListView = createVisualComponent({
-  ...STATICS,
+  //@@viewOn:statics
+  uu5Tag: Config.TAG + "UserReservationsListView",
+  //@@viewOff:statics
 
   //@@viewOn:propTypes
   propTypes: {
-    reservationsDataList: UU5.PropTypes.object,
-    usersDataList: UU5.PropTypes.object,
-    parkingPlacesDataList: UU5.PropTypes.object,
-    handlerMap: UU5.PropTypes.object,
-    selectedDate: UU5.PropTypes.object,
-    isReservationOpenedBySelectedDay: UU5.PropTypes.bool,
-    isReservationOpened: UU5.PropTypes.bool,
+    reservationsDataList: PropTypes.object,
+    usersDataList: PropTypes.object,
+    parkingPlacesDataList: PropTypes.object,
+    handlerMap: PropTypes.object,
+    selectedDate: PropTypes.object,
+    isReservationOpenedBySelectedDay: PropTypes.bool,
+    isReservationOpened: PropTypes.bool,
   },
   //@@viewOff:propTypes
 

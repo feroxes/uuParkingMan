@@ -1,34 +1,34 @@
 //@@viewOn:imports
-import UU5 from "uu5g04";
-import { createVisualComponent, useLsi, useRef } from "uu5g04-hooks";
+import { Form, FormSelect, FormDate, SubmitButton, CancelButton, ResetButton } from "uu5g05-forms";
+import { createVisualComponent, PropTypes, Lsi, useState } from "uu5g05";
+import { useAlertBus, Dialog } from "uu5g05-elements";
 import Config from "./config/config.js";
 import Constants from "../../helpers/constants.js";
 import { useContextAlert } from "../managers/alert-manager.js";
 import ComponentsHelper from "../../helpers/components-helper.js";
 import DateTimeHelper from "../../helpers/date-time-helper.js";
-import Lsi from "./reservations-lsi.js";
+import LsiData from "../../config/lsi.js";
 //@@viewOff:imports
 
 const STATICS = {
   //@@viewOn:statics
-  displayName: Config.TAG + "ReservationFrom",
-  nestingLevel: "bigBox",
+  uu5Tag: Config.TAG + "ReservationFrom",
   dateFormat: "YYYY-MM-DD",
   //@@viewOff:statics
 };
 
 const CLASS_NAMES = {
-  main: () => Config.Css.css``,
-  controls: () => Config.Css.css`
-    > *:last-child {
-      background-color: ${Constants.mainColor} !important;
-    }
+  grid: () => Config.Css.css`
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
   `,
-  formItem: () => Config.Css.css`
-    width: 100%;
-    .uu5-forms-input-wrapper {
-      width: 100%;
-    }
+  controls: () => Config.Css.css`
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid #ccc;
+    display: flex;
+    justify-content: flex-end;
   `,
 };
 
@@ -37,17 +37,17 @@ export const ReservationFrom = createVisualComponent({
 
   //@@viewOn:propTypes
   propTypes: {
-    reservation: UU5.PropTypes.object,
-    usersDataList: UU5.PropTypes.array,
-    parkingPlacesDataList: UU5.PropTypes.array,
-    modal: UU5.PropTypes.object,
-    handlerMap: UU5.PropTypes.object,
-    user: UU5.PropTypes.object,
-    parkingPlace: UU5.PropTypes.object,
-    renderDeleteButton: UU5.PropTypes.bool,
-    isReservationOpened: UU5.PropTypes.bool,
-    isAdminView: UU5.PropTypes.bool,
-    isAllParkingPlacesReserved: UU5.PropTypes.bool,
+    reservation: PropTypes.object,
+    usersDataList: PropTypes.array,
+    parkingPlacesDataList: PropTypes.array,
+    onClose: PropTypes.func,
+    handlerMap: PropTypes.object,
+    user: PropTypes.object,
+    parkingPlace: PropTypes.object,
+    renderDeleteButton: PropTypes.bool,
+    isReservationOpened: PropTypes.bool,
+    isAdminView: PropTypes.bool,
+    isAllParkingPlacesReserved: PropTypes.bool,
   },
   //@@viewOff:propTypes
 
@@ -57,117 +57,87 @@ export const ReservationFrom = createVisualComponent({
   },
   //@@viewOff:defaultProps
 
-  render({
-    reservation,
-    user,
-    handlerMap,
-    modal,
-    parkingPlace,
-    parkingPlacesDataList,
-    usersDataList,
-    renderDeleteButton,
-    isReservationOpened,
-    isAdminView,
-    isAllParkingPlacesReserved,
-  }) {
+  render(props) {
+    const {
+      reservation,
+      user,
+      handlerMap,
+      onClose,
+      parkingPlace,
+      parkingPlacesDataList,
+      usersDataList,
+      renderDeleteButton,
+      isReservationOpened,
+      isAdminView,
+      isAllParkingPlacesReserved,
+      selectedDate,
+    } = props;
     //@@viewOn:hooks
-    const parkingPlaceLsi = useLsi(Lsi.parkingPlace);
-    const userLsi = useLsi(Lsi.user);
-    const reservationDatesLsi = useLsi(Lsi.reservationDates);
+    const { addAlert } = useAlertBus();
+    const [open, setOpen] = useState(false);
     const showAlert = useContextAlert();
-    const confirmModalRef = useRef();
     //@@viewOff:hooks
 
     //@@viewOn:private
-    function _handleOnSubmitClick(opt) {
+    function handleOnSubmitClick({ data }) {
       if (reservation) {
         handlerMap
-          .update({ ..._getDtoIn(opt.values), id: reservation.id, revision: reservation.sys.rev })
+          .update({ ...data.value, id: reservation.id, revision: reservation.sys.rev })
           .then(() => {
-            showAlert(<UU5.Bricks.Lsi lsi={Lsi.successMessage("updated")} />);
-            modal.close();
+            addAlert({ message: <Lsi lsi={LsiData.successMessageUpdated} />, priority: "success", durationMs: 3000 });
+            onClose();
           })
-          .catch((e) => showAlert(e.message, false));
+          .catch(({ message }) => addAlert({ message, priority: "error", durationMs: 3000 }));
       } else {
         handlerMap
-          .create(_getDtoIn(opt.values))
+          .create(data.value)
           .then(() => {
-            showAlert(<UU5.Bricks.Lsi lsi={Lsi.successMessage("created")} />);
-            modal.close();
+            addAlert({ message: <Lsi lsi={LsiData.successMessageCreated} />, priority: "success", durationMs: 3000 });
+            onClose();
           })
           .catch((e) => showAlert(e.message, false));
       }
     }
 
-    function _handleOnDeleteClick() {
-      confirmModalRef.current.open();
-    }
-
-    function _getDtoIn(values) {
-      return {
-        userId: values.userId,
-        parkingPlaceId: values.parkingPlaceId,
-        dayFrom: DateTimeHelper.formatDate(values.daysRange[0], STATICS.dateFormat),
-        dayTo: DateTimeHelper.formatDate(values.daysRange[1], STATICS.dateFormat),
-      };
-    }
-
-    function _getParkingPlacesOptions() {
+    function getParkingPlacesItemList() {
       if (parkingPlace) {
-        return <UU5.Forms.Select.Option value={parkingPlace.data.id} content={parkingPlace.data.number} />;
+        return [{ value: parkingPlace.data.id, children: parkingPlace.data.number }];
       } else {
         const surfacePlaces = [];
         const undergroundPlaces = [];
-        parkingPlacesDataList.forEach((place, key) => {
+        parkingPlacesDataList.forEach((place) => {
           const { type, id, number } = place.data;
           if (type === Constants.ParkingPlace.surface) {
-            surfacePlaces.push(<UU5.Forms.Select.Option value={id} content={number} key={key} />);
-          } else undergroundPlaces.push(<UU5.Forms.Select.Option value={id} content={number} key={key} />);
+            surfacePlaces.push({ value: id, children: number });
+          } else undergroundPlaces.push({ value: id, children: number });
         });
-
         return [...surfacePlaces, ...undergroundPlaces];
       }
     }
 
-    function _getParkingPlaceValue() {
+    function getParkingPlaceValue() {
       if (reservation) return reservation.parkingPlaceId;
       else if (parkingPlace) return parkingPlace.data.id;
     }
 
-    function _getUsersOptions() {
+    function getUsersItemList() {
+      const itemList = [];
       if (user) {
-        return (
-          <UU5.Forms.Select.Option
-            value={user.data.id}
-            content={ComponentsHelper.getBusinessCart(user.data.uuIdentity)}
-          />
-        );
+        itemList.push({ value: user.data.id, children: ComponentsHelper.getBusinessCart(user.data.uuIdentity) });
       } else {
-        return usersDataList.map((user, key) => {
-          return (
-            <UU5.Forms.Select.Option
-              value={user.data.id}
-              content={ComponentsHelper.getBusinessCart(user.data.uuIdentity)}
-              key={key}
-            />
-          );
+        usersDataList.forEach((user) => {
+          itemList.push({ value: user.data.id, children: ComponentsHelper.getBusinessCart(user.data.uuIdentity) });
         });
       }
+      return itemList;
     }
 
-    function _getUserListValue() {
-      if (reservation) return reservation.userId;
-      else if (user) {
-        return user.data.id;
-      }
-    }
-
-    function _getDateFrom() {
+    function getDateFrom() {
       const date = reservation ? new Date(reservation.dayFrom) : new Date();
       return DateTimeHelper.formatDate(date, STATICS.dateFormat);
     }
 
-    function _getDateTo() {
+    function getDateTo() {
       if (isAdminView) return null;
       else if (!reservation && isReservationOpened) return DateTimeHelper.getEndOnNextWeek(STATICS.dateFormat);
       else if (!reservation && !isReservationOpened) return DateTimeHelper.getEndOnCurrentWeek(STATICS.dateFormat);
@@ -176,15 +146,23 @@ export const ReservationFrom = createVisualComponent({
 
     function _getConfirmModalContent() {
       return (
-        <div style={{ display: "flex", alignItems: "center", flexDirection: "column" }}>
-          <div>Your reservation</div>
-          <div>
-            {reservation.dayFrom} {"<—>"} {reservation.dayTo}
-          </div>
-          <div>will be deleted.</div>
-          <div>Are you sure?</div>
+        <div>
+          <Lsi lsi={LsiData.confirmDelete} />
+          <br />
+          {`${reservation.dayFrom} <--> ${reservation.dayTo}`}
+          <br />
+          <Lsi lsi={LsiData.areYouSure} />
         </div>
       );
+    }
+    function handleOnReservationDelete() {
+      handlerMap
+        .delete({ sendMessage: isAllParkingPlacesReserved })
+        .then(() => {
+          onClose();
+          addAlert({ message: <Lsi lsi={LsiData.successMessageDeleted} />, priority: "success", durationMs: 3000 });
+        })
+        .catch(({ message }) => addAlert({ message, priority: "error", durationMs: 3000 }));
     }
     //@@viewOff:private
 
@@ -193,74 +171,78 @@ export const ReservationFrom = createVisualComponent({
 
     //@@viewOn:render
     return (
-      <UU5.Forms.Form
-        labelColWidth="xs-12"
-        colWidth="xs-12"
-        onCancel={modal.close}
-        onSave={_handleOnSubmitClick}
-        onReset={_handleOnDeleteClick}
-      >
-        <UU5.Forms.Select
-          className={CLASS_NAMES.formItem()}
+      <Form onSubmit={handleOnSubmitClick}>
+        <FormSelect
           name={Constants.Reservation.formNames.userId}
-          label={userLsi}
+          label={<Lsi lsi={LsiData.user} />}
           required
+          initialValue={user ? user.data.id : null}
           readOnly={!!user}
-          value={_getUserListValue()}
-        >
-          {_getUsersOptions()}
-        </UU5.Forms.Select>
-        <UU5.Forms.DateRangePicker
-          className={CLASS_NAMES.formItem()}
-          name={Constants.Reservation.formNames.daysRange}
-          label={reservationDatesLsi}
-          required
-          value={
-            reservation && [
-              DateTimeHelper.formatDate(reservation.dayFrom, STATICS.dateFormat),
-              DateTimeHelper.formatDate(reservation.dayTo, STATICS.dateFormat),
-            ]
-          }
-          dateFrom={_getDateFrom()}
-          dateTo={_getDateTo()}
-          hideFormatPlaceholder
-          hideWeekNumber
-          showTodayButton
-          format="dd-mm-Y"
-          popoverLocation="portal"
+          itemList={getUsersItemList()}
         />
-        <UU5.Forms.Select
-          className={CLASS_NAMES.formItem()}
-          name={Constants.Reservation.formNames.parkingPlaceId}
-          label={parkingPlaceLsi}
-          required
-          readOnly={!!parkingPlace}
-          value={_getParkingPlaceValue()}
-        >
-          {_getParkingPlacesOptions()}
-        </UU5.Forms.Select>
-        <UU5.Forms.Controls
-          className={CLASS_NAMES.controls()}
-          buttonReset={renderDeleteButton}
-          buttonResetProps={{
-            content: useLsi(Lsi.delete),
-            bgStyle: "filled",
-            colorSchema: "danger",
-          }}
-        />
-        {renderDeleteButton && (
-          <UU5.Bricks.ConfirmModal
-            header={useLsi(Lsi.reservationDelete)}
-            content={_getConfirmModalContent()}
-            onConfirm={() => {
-              handlerMap.delete({ sendMessage: isAllParkingPlacesReserved });
-              modal.close();
-            }}
-            confirmButtonProps={{ colorSchema: "danger" }}
-            ref_={confirmModalRef}
+        <div className={CLASS_NAMES.grid()}>
+          <FormDate
+            label={<Lsi lsi={LsiData.dayFrom} />}
+            required
+            name="dayFrom"
+            min={getDateFrom()}
+            max={getDateTo()}
+            initialValue={
+              reservation
+                ? DateTimeHelper.formatDate(reservation.dayFrom, STATICS.dateFormat)
+                : DateTimeHelper.formatDate(selectedDate, STATICS.dateFormat)
+            }
+          />
+          <FormDate
+            label={<Lsi lsi={LsiData.dayTo} />}
+            required
+            name="dayTo"
+            min={getDateFrom()}
+            max={getDateTo()}
+            {...(reservation && { initialValue: DateTimeHelper.formatDate(reservation.dayTo, STATICS.dateFormat) })}
+          />
+        </div>
+        <div className={CLASS_NAMES.grid()}>
+          <FormSelect
+            name={Constants.Reservation.formNames.parkingPlaceId}
+            label={<Lsi lsi={LsiData.parkingPlace} />}
+            required
+            initialValue={getParkingPlaceValue()}
+            readOnly={!!parkingPlace}
+            itemList={getParkingPlacesItemList()}
+          />
+        </div>
+        <div className={CLASS_NAMES.controls()}>
+          <SubmitButton
+            style={{ marginRight: "8px" }}
+            lsi={{ submit: reservation ? LsiData.update : LsiData.create }}
+          />
+          <CancelButton style={{ marginRight: renderDeleteButton ? "8px" : "0px" }} onClick={onClose} />
+          {renderDeleteButton && (
+            <ResetButton colorScheme="negative" lsi={{ reset: LsiData.delete }} onClick={() => setOpen(true)} />
+          )}
+        </div>
+        {open && (
+          <Dialog
+            open
+            header={<Lsi lsi={LsiData.reservationDelete} />}
+            onClose={() => setOpen(false)}
+            actionDirection="horizontal"
+            info={_getConfirmModalContent()}
+            actionList={[
+              {
+                children: <Lsi lsi={LsiData.cancel} />,
+                onClick: () => setOpen(false),
+              },
+              {
+                children: <Lsi lsi={LsiData.delete} />,
+                colorScheme: "negative",
+                onClick: handleOnReservationDelete,
+              },
+            ]}
           />
         )}
-      </UU5.Forms.Form>
+      </Form>
     );
     //@@viewOff:render
   },

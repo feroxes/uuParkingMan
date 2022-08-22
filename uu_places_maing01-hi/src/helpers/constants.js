@@ -1,5 +1,6 @@
 const Constants = {
-  mainColor: "#8680D3",
+  mainColor: "rgb(33, 150, 243)",
+  space: `\u00A0`,
   spinner: "https://c.radikal.ru/c23/2109/23/5ee314a917b6.gif",
 
   profiles: {

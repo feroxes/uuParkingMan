@@ -6,6 +6,7 @@ import Config from "../config/config";
 //@@viewOff:imports
 
 const About = Utils.Component.lazy(() => import("../routes/about.js"));
+const Reservations = Utils.Component.lazy(() => import("../routes/reservations.js"));
 
 export const SpaView = createVisualComponent({
   //@@viewOn:statics
@@ -31,7 +32,10 @@ export const SpaView = createVisualComponent({
 
     //@@viewOn:render
     const routeMap = {
+      [Config.ROUTES.HOME]: () => <Reservations />,
       [Config.ROUTES.ABOUT]: () => <About />,
+      "": { redirect: Config.ROUTES.HOME },
+      "*": { redirect: Config.ROUTES.HOME },
     };
 
     return (

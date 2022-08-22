@@ -16,5 +16,6 @@ export default {
   SUB_APP_NAME: "UuParkingMan",
   ROUTES: {
     ABOUT: "about",
+    HOME: "home",
   },
 };

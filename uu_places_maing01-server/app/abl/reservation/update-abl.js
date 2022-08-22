@@ -1,4 +1,5 @@
 "use strict";
+const { ObjectId } = require("mongodb");
 const { Validator } = require("uu_appg01_server").Validation;
 const { DaoFactory } = require("uu_appg01_server").ObjectStore;
 const { ValidationHelper } = require("uu_appg01_server").AppServer;
@@ -77,6 +78,7 @@ class UpdateAbl {
       // 6.1
       user = await this.userDao.get(awid, dtoIn.userId);
       // 6.2
+      dtoIn.userId = ObjectId(dtoIn.userId);
       if (!user) {
         throw new Errors.UserDoesNotExist({ uuAppErrorMap }, { userId: dtoIn.userId });
       }
@@ -87,6 +89,7 @@ class UpdateAbl {
     if (dtoIn.parkingPlaceId) {
       // 7.1
       parkingPlace = await this.parkingPlaceDao.get(awid, dtoIn.parkingPlaceId);
+      dtoIn.parkingPlaceId = ObjectId(dtoIn.parkingPlaceId);
       // 7.2
       if (!parkingPlace) {
         throw new Errors.ParkingPlaceDoesNotExist({ uuAppErrorMap }, { parkingPlaceId: dtoIn.parkingPlaceId });

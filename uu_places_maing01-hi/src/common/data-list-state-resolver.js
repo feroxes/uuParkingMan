@@ -1,82 +1,50 @@
 //@@viewOn:imports
-import UU5 from "uu5g04";
-import { createComponent } from "uu5g04-hooks";
-import "uu_plus4u5g01-bricks";
-
+import { createComponent, PropTypes } from "uu5g05";
+import { Pending } from "uu5g05-elements";
+import { Error } from "uu_plus4u5g02-elements";
 import Config from "../config/config";
-import DataPending from "./data-pending";
-import DataError from "./data-error";
-import Lsi from "./error-lsi";
 //@@viewOff:imports
 
-const PLACEHOLDER_HEIGHT = 400;
-
+const CLASS_NAMES = {
+  pending: () => Config.Css.css`
+     display: block;
+     text-align: center;
+  `,
+};
 export const DataListStateResolver = createComponent({
   //@@viewOn:statics
-  displayName: Config.TAG + "DataListStateResolver",
+  uu5Tag: Config.TAG + "DataListStateResolver",
   //@@viewOff:statics
 
   //@@viewOn:propTypes
   propTypes: {
-    dataList: UU5.PropTypes.object,
-    height: UU5.PropTypes.number,
+    dataList: PropTypes.object.isRequired,
   },
   //@@viewOff:propTypes
 
   //@@viewOn:defaultProps
-  defaultProps: {
-    dataList: {},
-    height: PLACEHOLDER_HEIGHT,
-  },
+  defaultProps: {},
   //@@viewOff:defaultProps
 
   render(props) {
-    //@@viewOn:hooks
-    //@@viewOff:hooks
-
-    //@@viewOn:handlers
-    //@@viewOff:handlers
-
-    //@@viewOn:interface
-    //@@viewOff:interface
-
-    //@@viewOn:private
-    //@@viewOff:private
-
     //@@viewOn:render
-    let child = null;
-    switch (props.dataList.state) {
+    const { dataList, children } = props;
+
+    switch (dataList.state) {
       case "ready":
       case "error":
       case "pending":
-      case "itemPending": {
-        child = props.children;
-        break;
-      }
-      case "readyNoData": {
-        // ready no data
-        child = <UU5.Bricks.Block background colorSchema="warning" content={<UU5.Bricks.Lsi lsi={Lsi.noData} />} />;
-        break;
-      }
-      case "errorNoData": {
-        child = <DataError height={props.height} moreInfo errorData={props.dataList.errorData} />;
-        break;
-      }
-      case "pendingNoData": {
-        child = <DataPending height={props.height} />;
-        break;
-      }
-      default: {
-        child = <DataError height={props.height} errorLsi={Lsi.contextError} />;
-      }
+      case "itemPending":
+        return typeof children === "function" ? children() : children;
+      case "readyNoData":
+      case "pendingNoData":
+        return <Pending size="xl" className={CLASS_NAMES.pending()} />;
+      case "errorNoData":
+      default:
+        return <Error error={dataList.errorData} />;
     }
-
-    return child;
     //@@viewOff:render
   },
 });
-
-//@@viewOn:helpers
-//@@viewOff:helpers
 
 export default DataListStateResolver;

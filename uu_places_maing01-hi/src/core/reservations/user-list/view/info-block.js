@@ -1,10 +1,9 @@
 //@@viewOn:imports
-import UU5 from "uu5g04";
-import { createVisualComponent, useLsi, useMemo, useScreenSize, useSession } from "uu5g04-hooks";
+import { createVisualComponent, PropTypes, useMemo, useScreenSize, useSession, Lsi } from "uu5g05";
 import Config from "../../config/config.js";
 import Constants from "../../../../helpers/constants.js";
 import DateTimeHelper from "../../../../helpers/date-time-helper.js";
-import Lsi from "../../reservations-lsi.js";
+import LsiData from "../../../../config/lsi.js";
 //@@viewOff:imports
 
 //@@viewOn:css
@@ -15,8 +14,8 @@ const Css = {
   `,
   main: (screenSize) => Config.Css.css`
     width: 230px;
-    border: 2px solid ${Constants.mainColor};
-    border-radius: 4px;
+    border: 1px solid ${Constants.mainColor};
+    border-radius: 6px;
     height: auto;
     min-height: 40px;
     display: flex;
@@ -40,10 +39,10 @@ export const InfoBlock = createVisualComponent({
 
   //@@viewOn:propTypes
   propTypes: {
-    reservationsDataList: UU5.PropTypes.object,
-    selectedDate: UU5.PropTypes.object,
-    placesDataObject: UU5.PropTypes.object,
-    isReservationOpenedBySelectedDay: UU5.PropTypes.bool,
+    reservationsDataList: PropTypes.object,
+    selectedDate: PropTypes.object,
+    placesDataObject: PropTypes.object,
+    isReservationOpenedBySelectedDay: PropTypes.bool,
   },
   //@@viewOff:propTypes
 
@@ -51,10 +50,6 @@ export const InfoBlock = createVisualComponent({
   //@@viewOff:defaultProps
   render({ reservationsDataList, selectedDate, isReservationOpenedBySelectedDay, placesDataObject }) {
     //@@viewOn:hooks
-    const noReservationLsi = useLsi(Lsi.noReservation);
-    const yourParkingPlaceLsi = useLsi(Lsi.yourParkingPlace);
-    const notOpenedLsi = useLsi(Lsi.notOpened);
-
     const { uuIdentity } = useSession().identity;
     const screenSize = useScreenSize();
 
@@ -70,12 +65,12 @@ export const InfoBlock = createVisualComponent({
     //@@viewOn:private
     function _getChild() {
       if (reservation) {
-        return `${yourParkingPlaceLsi} ${reservation.data.parkingPlace.number}`;
+        return <Lsi lsi={LsiData.yourParkingPlace} params={{ number: reservation.data.parkingPlace.number }} />;
       } else if (!isReservationOpenedBySelectedDay) {
         const { dayOfStartReservations, hourOfStartReservations } = placesDataObject.data.reservationsConfig;
         const dayName = DateTimeHelper.getDayName(dayOfStartReservations - 1);
-        return `${notOpenedLsi} ${dayName} at ${hourOfStartReservations}:00`;
-      } else return noReservationLsi;
+        return `${(<Lsi lsi={LsiData.notOpened} />)} ${dayName} at ${hourOfStartReservations}:00`;
+      } else return <Lsi lsi={LsiData.noReservation} />;
     }
     //@@viewOff:private
 

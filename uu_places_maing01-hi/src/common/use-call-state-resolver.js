@@ -3,7 +3,7 @@ import UU5 from "uu5g04";
 import { createComponent } from "uu5g04-hooks";
 import "uu_plus4u5g01-bricks";
 
-import DataError from "./data-error";
+import Error from "./error.js";
 import DataPending from "./data-pending";
 
 import Config from "../config/config";
@@ -45,7 +45,7 @@ export const UseCallStateResolver = createComponent({
     if (props.data.viewState === "call" || (props.data.viewState === "ready" && !props.data.data)) {
       child = <DataPending />;
     } else if (props.data.viewState === "error") {
-      child = <DataError height={props.height} moreInfo errorData={props.data.error} />;
+      child = <Error height={props.height} moreInfo errorData={props.data.error} />;
     } else child = props.children;
 
     return child;

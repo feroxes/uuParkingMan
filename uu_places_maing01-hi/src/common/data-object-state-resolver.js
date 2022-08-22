@@ -1,24 +1,25 @@
 //@@viewOn:imports
-import UU5 from "uu5g04";
-import { createComponent } from "uu5g04-hooks";
-import "uu_plus4u5g01-bricks";
-
-import DataError from "./data-error";
-import DataPending from "./data-pending";
-
+import { createComponent, PropTypes } from "uu5g05";
+import { Pending } from "uu5g05-elements";
+import { Error } from "uu_plus4u5g02-elements";
 import Config from "../config/config";
-import Lsi from "./error-lsi";
-//@@viewOff:imports
 
+//@@viewOff:imports
+const CLASS_NAMES = {
+  pending: () => Config.Css.css`
+     display: block;
+     text-align: center;
+  `,
+};
 export const DataObjectStateResolver = createComponent({
   //@@viewOn:statics
-  displayName: Config.TAG + "DataObjectStateResolver",
+  uu5Tag: Config.TAG + "DataObjectStateResolver",
   //@@viewOff:statics
 
   //@@viewOn:propTypes
   propTypes: {
-    dataObject: UU5.PropTypes.object,
-    height: UU5.PropTypes.number,
+    dataObject: PropTypes.object,
+    height: PropTypes.number,
   },
   //@@viewOff:propTypes
 
@@ -30,6 +31,7 @@ export const DataObjectStateResolver = createComponent({
   //@@viewOff:defaultProps
 
   render(props) {
+    const { dataObject, children } = props;
     //@@viewOn:hooks
     //@@viewOff:hooks
 
@@ -43,32 +45,18 @@ export const DataObjectStateResolver = createComponent({
     //@@viewOff:private
 
     //@@viewOn:render
-    let child = null;
-    switch (props.dataObject.state) {
+    switch (dataObject.state) {
       case "ready":
       case "error":
-      case "pending": {
-        child = props.children;
-        break;
-      }
-      case "readyNoData": {
-        child = <UU5.Bricks.Block background colorSchema="warning" content={<UU5.Bricks.Lsi lsi={Lsi.noData} />} />;
-        break;
-      }
-      case "errorNoData": {
-        child = <DataError height={props.height} moreInfo errorData={props.dataObject.errorData} />;
-        break;
-      }
-      case "pendingNoData": {
-        child = <DataPending height={props.height} />;
-        break;
-      }
-      default: {
-        child = <DataError height={props.height} errorLsi={Lsi.dataObjectError} />;
-      }
+      case "pending":
+        return typeof children === "function" ? children() : children;
+      case "readyNoData":
+      case "pendingNoData":
+        return <Pending size="xl" className={CLASS_NAMES.pending()} />;
+      case "errorNoData":
+      default:
+        return <Error error={dataObject.errorData} />;
     }
-
-    return child;
     //@@viewOff:render
   },
 });

@@ -87,6 +87,59 @@ let Calls = {
     return targetUriStr;
   },
 
+  USERS: {
+    create(dtoIn) {
+      let commandUri = Calls.getCommandUri("user/create");
+      return Calls.call("post", commandUri, dtoIn);
+    },
+    load(dtoIn) {
+      let commandUri = Calls.getCommandUri("user/list");
+      return Calls.call("get", commandUri, dtoIn);
+    },
+    update(dtoIn) {
+      let commandUri = Calls.getCommandUri("user/update");
+      return Calls.call("post", commandUri, dtoIn);
+    },
+  },
+
+  RESERVATIONS: {
+    load(dtoIn) {
+      let commandUri = Calls.getCommandUri("reservation/listByCriteria");
+      return Calls.call("get", commandUri, dtoIn);
+    },
+    create(dtoIn) {
+      let commandUri = Calls.getCommandUri("reservation/create");
+      return Calls.call("post", commandUri, dtoIn);
+    },
+
+    update(dtoIn) {
+      let commandUri = Calls.getCommandUri("reservation/update");
+      return Calls.call("post", commandUri, dtoIn);
+    },
+
+    delete(dtoIn) {
+      let commandUri = Calls.getCommandUri("reservation/delete");
+      return Calls.call("post", commandUri, dtoIn);
+    },
+  },
+
+  PARKING_PLACES: {
+    load(dtoIn) {
+      let commandUri = Calls.getCommandUri("parkingPlace/list");
+      return Calls.call("get", commandUri, dtoIn);
+    },
+
+    create(dtoIn) {
+      let commandUri = Calls.getCommandUri("parkingPlace/create");
+      return Calls.call("post", commandUri, dtoIn);
+    },
+
+    update(dtoIn) {
+      let commandUri = Calls.getCommandUri("parkingPlace/update");
+      return Calls.call("post", commandUri, dtoIn);
+    },
+  },
+
   uuSubAppInstanceLoad(dtoIn) {
     let commandUri = Calls.getCommandUri("places/load");
     return Calls.call("get", commandUri, dtoIn);

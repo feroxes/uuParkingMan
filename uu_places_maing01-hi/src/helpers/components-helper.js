@@ -1,8 +1,8 @@
-import Plus4U5 from "uu_plus4u5g01";
+import { PersonItem } from "uu_plus4u5g02-elements";
 
 const ComponentsHelper = {
   getBusinessCart(uuIdentity) {
-    return <Plus4U5.Bricks.BusinessCard uuIdentity={uuIdentity} visual="inline" infoDetail="full" showUuIdentity />;
+    return <PersonItem uuIdentity={uuIdentity} size="xs" style={{ margin: "4px 0" }} />;
   },
 };
 
