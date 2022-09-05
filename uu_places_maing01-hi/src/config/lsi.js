@@ -67,12 +67,12 @@ const Lsi = {
   emptyPlace: { en: "Empty place", uk: "Вільне місце" },
   dayFrom: { en: "Day from", uk: "Початкова дата" },
   dayTo: { en: "Day to", uk: "Кінцева дата" },
-  undergroundPlaces: {
-    en: "Underground places",
+  undergroundParkingLots: {
+    en: "Underground parking lots",
     uk: "Підземні місця",
   },
-  surfacePlaces: {
-    en: "Surface places",
+  surfaceParkingLots: {
+    en: "Surface parking lots",
     uk: "Надземні місця",
   },
 };

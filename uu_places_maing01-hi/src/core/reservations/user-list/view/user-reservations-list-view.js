@@ -67,9 +67,11 @@ export const UserReservationsListView = createVisualComponent({
     return (
       <>
         <div className="uu5-common-padding-s">
-          <Text category="interface" segment="title" type="common">
-            <Lsi lsi={LsiData.undergroundPlaces} />
-          </Text>
+          <div style={{ marginBottom: "8px" }}>
+            <Text category="interface" segment="title" type="common">
+              <Lsi lsi={LsiData.undergroundParkingLots} />
+            </Text>
+          </div>
           <Uu5Tiles.ControllerProvider data={undergroundPlaces}>
             <Uu5Tiles.Grid tileMinWidth={200} tileMaxWidth={300} tileSpacing={8} rowSpacing={8}>
               <ParkingPlaceItem
@@ -85,9 +87,11 @@ export const UserReservationsListView = createVisualComponent({
           </Uu5Tiles.ControllerProvider>
         </div>
         <div className="uu5-common-padding-s">
-          <Text category="interface" segment="title" type="common">
-            <Lsi lsi={LsiData.surfacePlaces} />
-          </Text>
+          <div style={{ marginBottom: "8px" }}>
+            <Text category="interface" segment="title" type="common">
+              <Lsi lsi={LsiData.surfaceParkingLots} />
+            </Text>
+          </div>
           <Uu5Tiles.ControllerProvider data={surfacePlaces}>
             <Uu5Tiles.Grid tileMinWidth={200} tileMaxWidth={300} tileSpacing={8} rowSpacing={8}>
               <ParkingPlaceItem

@@ -1,6 +1,5 @@
 //@@viewOn:imports
-import UU5 from "uu5g04";
-import { createVisualComponent } from "uu5g04-hooks";
+import { createVisualComponent, PropTypes } from "uu5g05";
 import Config from "../../config/config.js";
 import one from "../../../../assets/numbers/1.png";
 import two from "../../../../assets/numbers/2.png";
@@ -16,26 +15,16 @@ import zero from "../../../../assets/numbers/0.png";
 //@@viewOff:imports
 
 //@@viewOn:css
-const Css = {
-  main: () => Config.Css.css`
-    display: flex;
-  `,
-};
-
 //@@viewOff:css
 
-const STATICS = {
-  //@@viewOn:statics
-  displayName: Config.TAG + "ParkingPlaceNumber",
-  //@@viewOff:statics
-};
-
 export const ParkingPlaceNumber = createVisualComponent({
-  ...STATICS,
+  //@@viewOn:statics
+  uu5Tag: Config.TAG + "ParkingPlaceNumber",
+  //@@viewOff:statics
 
   //@@viewOn:propTypes
   propTypes: {
-    number: UU5.PropTypes.string.isRequired,
+    number: PropTypes.string.isRequired,
   },
   //@@viewOff:propTypes
 
@@ -43,16 +32,16 @@ export const ParkingPlaceNumber = createVisualComponent({
   //@@viewOff:defaultProps
   render(props) {
     const numbers = {
-      "0": zero,
-      "1": one,
-      "2": two,
-      "3": three,
-      "4": four,
-      "5": five,
-      "6": six,
-      "7": seven,
-      "8": eight,
-      "9": nine,
+      0: zero,
+      1: one,
+      2: two,
+      3: three,
+      4: four,
+      5: five,
+      6: six,
+      7: seven,
+      8: eight,
+      9: nine,
     };
     //@@viewOn:hooks
     //@@viewOff:hooks
@@ -69,9 +58,9 @@ export const ParkingPlaceNumber = createVisualComponent({
     //@@viewOn:render
     const number = props.number.split("");
     return (
-      <div className={Css.main()}>
+      <div>
         {number.map((num, key) => {
-          return <UU5.Bricks.Image src={numbers[num]} key={key} width={40} height={60}/>;
+          return <img src={numbers[num]} key={key} width={40} height={60} />;
         })}
       </div>
     );

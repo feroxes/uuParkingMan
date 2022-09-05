@@ -1,6 +1,6 @@
 //@@viewOn:imports
 import { createVisualComponent, PropTypes, useSession, Lsi, useState } from "uu5g05";
-import { Modal, Button } from "uu5g05-elements";
+import { Modal, Tile, Icon } from "uu5g05-elements";
 import Config from "../../config/config.js";
 import ParkingPlaceNumber from "./parking-place-number.js";
 import ReservationHelper from "../../../../helpers/reservation-helper.js";
@@ -13,18 +13,24 @@ import LsiData from "../../../../config/lsi.js";
 //@@viewOn:css
 const CLASS_NAMES = {
   main: () => Config.Css.css`
-    border: 1px solid #2196F3;
-    height: 180px;
     display: flex;
-    justify-content:center;
+    justify-content: center;
     align-items: center;
     flex-direction: column;
-    padding: 16px 0;
+    margin-top: 16px;
   `,
-  reservedBy: () => Config.Css.css`
+  tileHeader: () => Config.Css.css`
+    width: 100%;
     display: flex;
-    flex-direction: column;
-    padding-top: 16px;
+    align-items: center;
+    justify-content: flex-end;
+  `,
+  footerPlaceholder: () => Config.Css.css`
+    height: 36px;
+    background-color: rgb(245, 245, 245);
+    border-color: transparent;
+    border-width: 1px;
+    border-style: hidden;
   `,
 };
 
@@ -82,7 +88,7 @@ export const ParkingPlaceItem = createVisualComponent({
     //@@viewOff:hooks
 
     //@@viewOn:private
-    function _isDisabled() {
+    function isUnavailable() {
       return (
         disabled || DateTimeHelper.isDateInPast(selectedDate) || (isParkingPlaceReserved && !isUserOwnerOfReservation)
       );
@@ -98,23 +104,35 @@ export const ParkingPlaceItem = createVisualComponent({
     //@@viewOn:render
     return (
       <div>
-        <Button
-          width="100%"
-          colorScheme="primary"
+        <Tile
           borderRadius="moderate"
-          className={CLASS_NAMES.main()}
-          disabled={_isDisabled()}
-          onClick={() => setOpen(true)}
-          iconNotification
-        >
-          <ParkingPlaceNumber number={data.data.number.toString()} />
-          {isParkingPlaceReserved && (
-            <div className={CLASS_NAMES.reservedBy()}>
-              <Lsi lsi={LsiData.reservedBy} />
-              {ComponentsHelper.getBusinessCart(reservedBy.data.uuIdentity)}
+          header={
+            <div className={CLASS_NAMES.tileHeader()}>
+              {isUnavailable() ? (
+                <Icon icon="mdi-lock" colorScheme="negative" />
+              ) : (
+                <Icon icon="fa-check" colorScheme="active" />
+              )}
             </div>
-          )}
-        </Button>
+          }
+          headerSignificance="distinct"
+          headerColorScheme="building"
+          footer={
+            isParkingPlaceReserved ? (
+              ComponentsHelper.getBusinessCart(reservedBy.data.uuIdentity)
+            ) : (
+              <div className={CLASS_NAMES.footerPlaceholder()} />
+            )
+          }
+          footerSignificance="distinct"
+          footerColorScheme="building"
+          onClick={isUnavailable() ? null : () => setOpen(true)}
+          height={190}
+        >
+          <div className={CLASS_NAMES.main()}>
+            <ParkingPlaceNumber number={data.data.number.toString()} />
+          </div>
+        </Tile>
         {open && (
           <Modal
             open
