@@ -66,7 +66,7 @@ export const InfoBlock = createVisualComponent({
     function _getChild() {
       if (reservation) {
         return <Lsi lsi={LsiData.yourParkingPlace} params={{ number: reservation.data.parkingPlace.number }} />;
-      } else if (!isReservationOpenedBySelectedDay) {
+      } else if (!isReservationOpenedBySelectedDay && placesDataObject.data) {
         const { dayOfStartReservations, hourOfStartReservations } = placesDataObject.data.reservationsConfig;
         const dayName = DateTimeHelper.getDayName(dayOfStartReservations - 1);
         return `${(<Lsi lsi={LsiData.notOpened} />)} ${dayName} at ${hourOfStartReservations}:00`;
