@@ -63,7 +63,7 @@ const Lsi = {
   noReservation: { en: "Today you don't have reservations.", uk: "Сьогодні у вас немає резервів" },
   notOpened: { en: "Reservation will be opened on", uk: "Резервація буде відкрита" },
   sendNotification: { en: "Send notification", uk: "Відправити повідомлення" },
-  reservedBy: { en: "Reserved by:", uk: "Зарезервовано:" },
+  reservedBy: { en: "Reserved by: ", uk: "Зарезервовано: " },
   emptyPlace: { en: "Empty place", uk: "Вільне місце" },
   dayFrom: { en: "Day from", uk: "Початкова дата" },
   dayTo: { en: "Day to", uk: "Кінцева дата" },

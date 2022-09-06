@@ -111,12 +111,13 @@ export const ParkingPlaceItem = createVisualComponent({
               {isUnavailable() ? (
                 <Icon icon="mdi-lock" colorScheme="negative" />
               ) : (
-                <Icon icon="fa-check" colorScheme="active" />
+                <Icon icon="mdi-check-outline" colorScheme="active" />
               )}
             </div>
           }
           headerSignificance="distinct"
           headerColorScheme="building"
+          significance={isUnavailable() ? "subdued" : "common"}
           footer={
             isParkingPlaceReserved ? (
               ComponentsHelper.getBusinessCart(reservedBy.data.uuIdentity)

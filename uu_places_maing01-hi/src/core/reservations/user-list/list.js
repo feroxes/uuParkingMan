@@ -1,5 +1,6 @@
 //@@viewOn:imports
-import { createVisualComponent, useState, useMemo } from "uu5g05";
+import { createVisualComponent, useState, useMemo, Lsi } from "uu5g05";
+import { Tabs } from "uu5g05-elements";
 import { useSubAppData } from "uu_plus4u5g02";
 import UuBookigyWorkplace from "uu_bookigy_workplaceg01-uu5";
 import Config from "../config/config.js";
@@ -9,8 +10,10 @@ import useParkingPlaces from "../../parking-places/context/use-parking-places.js
 import DataListStateResolver from "../../../common/data-list-state-resolver.js";
 import DataObjectStateResolver from "../../../common/data-object-state-resolver.js";
 import UserReservationsListView from "./view/user-reservations-list-view.js";
+import WeeklyOverviewView from "../weekly-overview/view/weekly-overview-view.js";
 import InfoBlock from "./view/info-block.js";
 import DateTimeHelper from "../../../helpers/date-time-helper.js";
+import LsiData from "../../../config/lsi.js";
 //@@viewOff:imports
 
 const CLASS_NAMES = {
@@ -52,7 +55,42 @@ export const List = createVisualComponent({
       return placesDataObject.data && DateTimeHelper.isReservationOpened(placesDataObject.data.reservationsConfig);
     }, [placesDataObject]);
     //@@viewOff:hooks
+
     //@@viewOn:private
+    function getItemList() {
+      return [
+        {
+          label: <Lsi lsi={LsiData.reservations} />,
+          icon: "mdi-car",
+          children: (
+            <UserReservationsListView
+              reservationsDataList={reservationsDataList}
+              usersDataList={usersDataList}
+              parkingPlacesDataList={parkingPlacesDataList}
+              handlerMap={reservationsDataList.handlerMap}
+              selectedDate={selectedDate}
+              isReservationOpenedBySelectedDay={isReservationOpenedBySelectedDay}
+              isReservationOpened={isReservationOpened}
+            />
+          ),
+        },
+        {
+          label: <Lsi lsi={LsiData.weeklyOverview} />,
+          icon: "mdi-calendar",
+          children: (
+            <WeeklyOverviewView
+              reservationsDataList={reservationsDataList}
+              usersDataList={usersDataList}
+              parkingPlacesDataList={parkingPlacesDataList}
+              selectedDate={selectedDate}
+              useLoggedInUser
+              isReservationOpenedBySelectedDay={isReservationOpenedBySelectedDay}
+              isReservationOpened={isReservationOpened}
+            />
+          ),
+        },
+      ];
+    }
     //@@viewOff:private
 
     //@@viewOn:interface
@@ -75,15 +113,7 @@ export const List = createVisualComponent({
                   isReservationOpenedBySelectedDay={isReservationOpenedBySelectedDay}
                   placesDataObject={placesDataObject.data}
                 />
-                <UserReservationsListView
-                  reservationsDataList={reservationsDataList}
-                  usersDataList={usersDataList}
-                  parkingPlacesDataList={parkingPlacesDataList}
-                  handlerMap={reservationsDataList.handlerMap}
-                  selectedDate={selectedDate}
-                  isReservationOpenedBySelectedDay={isReservationOpenedBySelectedDay}
-                  isReservationOpened={isReservationOpened}
-                />
+                <Tabs itemList={getItemList()} />
               </DataListStateResolver>
             </DataListStateResolver>
           </DataListStateResolver>
