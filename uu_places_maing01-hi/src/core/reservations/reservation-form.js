@@ -162,6 +162,12 @@ export const ReservationFrom = createVisualComponent({
         })
         .catch(({ message }) => addAlert({ message, priority: "error", durationMs: 3000 }));
     }
+    function getUserListValue() {
+      if (reservation) return reservation.userId;
+      else if (user) {
+        return user.data.id;
+      } else return null;
+    }
     //@@viewOff:private
 
     //@@viewOn:interface
@@ -174,7 +180,7 @@ export const ReservationFrom = createVisualComponent({
           name={Constants.Reservation.formNames.userId}
           label={<Lsi lsi={LsiData.user} />}
           required
-          initialValue={user ? user.data.id : null}
+          initialValue={getUserListValue()}
           readOnly={!!user}
           itemList={getUsersItemList()}
         />
