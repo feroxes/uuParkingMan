@@ -1,26 +1,31 @@
 //@@viewOn:imports
-import UU5 from "uu5g04";
-import { createVisualComponent, useLsi } from "uu5g04-hooks";
+import { createVisualComponent, PropTypes, Lsi } from "uu5g05";
+import { Form, FormText, SubmitButton, CancelButton } from "uu5g05-forms";
+import { useAlertBus } from "uu5g05-elements";
 import Config from "./config/config.js";
 import Constants from "../../helpers/constants.js";
-import { useContextAlert } from "../managers/alert-manager.js";
-import Lsi from "./users-lsi.js";
+import LsiData from "../../config/lsi.js";
 //@@viewOff:imports
 
 const STATICS = {
   //@@viewOn:statics
-  displayName: Config.TAG + "UserFrom",
-  nestingLevel: "bigBox",
+  uu5Tag: Config.TAG + "UserFrom",
   defaultType: "Car",
   //@@viewOff:statics
 };
 
 const CLASS_NAMES = {
-  main: () => Config.Css.css``,
   controls: () => Config.Css.css`
-    > *:last-child {
-      background-color: ${Constants.mainColor} !important;
-    }
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid #ccc;
+    display: flex;
+    justify-content: flex-end;
+  `,
+  grid: () => Config.Css.css`
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
   `,
 };
 
@@ -29,9 +34,9 @@ export const UserFrom = createVisualComponent({
 
   //@@viewOn:propTypes
   propTypes: {
-    user: UU5.PropTypes.object,
-    modal: UU5.PropTypes.object,
-    handlerMap: UU5.PropTypes.object,
+    user: PropTypes.object,
+    handlerMap: PropTypes.object,
+    onClose: PropTypes.func,
   },
   //@@viewOff:propTypes
 
@@ -39,40 +44,33 @@ export const UserFrom = createVisualComponent({
   //@@viewOff:defaultProps
 
   render(props) {
+    const { user, onClose } = props;
     //@@viewOn:hooks
-    const uuIdentityLsi = useLsi(Lsi.uuIdentity);
-    const typeLsi = useLsi(Lsi.type);
-    const brandLsi = useLsi(Lsi.brand);
-    const modelLsi = useLsi(Lsi.model);
-    const numberLsi = useLsi(Lsi.number);
-    const uuIdentityPlaceHolderLsi = useLsi(Lsi.userCreatePlaceHolders.uuIdentity);
-    const brandPlaceHolderLsi = useLsi(Lsi.userCreatePlaceHolders.brand);
-    const modelPlaceHolderLsi = useLsi(Lsi.userCreatePlaceHolders.model);
-    const numberPlaceHolderLsi = useLsi(Lsi.userCreatePlaceHolders.number);
-    const userInfoLsi = useLsi(Lsi.userInfo);
-    const transportInfoLsi = useLsi(Lsi.transportInfo);
-    const showAlert = useContextAlert();
+    const { addAlert } = useAlertBus();
     //@@viewOff:hooks
 
     //@@viewOn:private
-    function _handleOnSubmitClick(opt) {
+    function _handleOnSubmitClick({ data }) {
       if (props.user) {
         props.handlerMap
-          .update(_prepareDtoIn({ ...opt.values, id: props.user.id }))
+          .update(prepareDtoIn({ ...data.value, id: props.user.id }))
           .then(() => {
-            showAlert(<UU5.Bricks.Lsi lsi={Lsi.successMessage("updated")} />);
-            props.modal.close();
+            addAlert({ message: <Lsi lsi={LsiData.userSuccessfullyUpdated} />, priority: "success", durationMs: 3000 });
+            onClose();
           })
-          .catch((e) => showAlert(e.message, false));
+          .catch(({ message }) => addAlert({ message, priority: "error", durationMs: 3000 }));
       } else {
         props.handlerMap
-          .create(_prepareDtoIn(opt.values))
-          .then(() => showAlert(<UU5.Bricks.Lsi lsi={Lsi.successMessage("created")} />))
-          .catch((e) => showAlert(e.message, false));
+          .create(prepareDtoIn(data.value))
+          .then(() => {
+            addAlert({ message: <Lsi lsi={LsiData.userSuccessfullyCreated} />, priority: "success", durationMs: 3000 });
+            onClose();
+          })
+          .catch(({ message }) => addAlert({ message, priority: "error", durationMs: 3000 }));
       }
     }
 
-    function _prepareDtoIn(values) {
+    function prepareDtoIn(values) {
       return {
         uuIdentity: values.uuIdentity,
         transport: {
@@ -89,51 +87,49 @@ export const UserFrom = createVisualComponent({
     //@@viewOff:interface
 
     //@@viewOn:render
-    const attrs = UU5.Common.VisualComponent.getAttrs(props, CLASS_NAMES.main());
-    const { user } = props;
     return (
-      <UU5.Forms.Form
-        {...attrs}
-        className="uu5-common-center"
-        onCancel={props.modal.close}
-        onSave={_handleOnSubmitClick}
-      >
-        <UU5.Bricks.Header content={userInfoLsi} level={6} />
-        <UU5.Forms.Text
+      <Form onSubmit={_handleOnSubmitClick}>
+        <FormText
           name={Constants.Users.formNames.uuIdentity}
-          label={uuIdentityLsi}
+          label={LsiData.uuIdentity}
           required
-          placeholder={uuIdentityPlaceHolderLsi}
-          value={user && user.uuIdentity}
+          readOnly={!!user}
+          placeholder={LsiData.userCreatePlaceHolders.uuIdentity}
+          initialValue={user?.uuIdentity || ""}
         />
-        <UU5.Bricks.Line size="s" />
-        <UU5.Bricks.Header content={transportInfoLsi} level={6} />
-        <UU5.Forms.Text
-          name={Constants.Users.formNames.type}
-          label={typeLsi}
-          required
-          value={user ? user.transport.type : STATICS.defaultType}
-        />
-        <UU5.Forms.Text
-          name={Constants.Users.formNames.brand}
-          label={brandLsi}
-          placeholder={brandPlaceHolderLsi}
-          value={user && user.transport.brand}
-        />
-        <UU5.Forms.Text
-          name={Constants.Users.formNames.model}
-          label={modelLsi}
-          placeholder={modelPlaceHolderLsi}
-          value={user && user.transport.model}
-        />
-        <UU5.Forms.Text
-          name={Constants.Users.formNames.number}
-          label={numberLsi}
-          placeholder={numberPlaceHolderLsi}
-          value={user && user.transport.number}
-        />
-        <UU5.Forms.Controls className={CLASS_NAMES.controls()} />
-      </UU5.Forms.Form>
+        <div className={CLASS_NAMES.grid()}>
+          <FormText
+            name={Constants.Users.formNames.type}
+            label={LsiData.type}
+            required
+            initialValue={user ? user.transport.type : STATICS.defaultType}
+          />
+          <FormText
+            name={Constants.Users.formNames.brand}
+            label={LsiData.brand}
+            placeholder={LsiData.userCreatePlaceHolders.brand}
+            initialValue={user && user.transport.brand}
+          />
+        </div>
+        <div className={CLASS_NAMES.grid()}>
+          <FormText
+            name={Constants.Users.formNames.model}
+            label={LsiData.model}
+            placeholder={LsiData.userCreatePlaceHolders.model}
+            initialValue={user && user.transport.model}
+          />
+          <FormText
+            name={Constants.Users.formNames.number}
+            label={LsiData.number}
+            placeholder={LsiData.userCreatePlaceHolders.number}
+            initialValue={user && user.transport.number}
+          />
+        </div>
+        <div className={CLASS_NAMES.controls()}>
+          <SubmitButton style={{ marginRight: "8px" }} lsi={{ submit: user ? LsiData.update : LsiData.create }} />
+          <CancelButton onClick={onClose} />
+        </div>
+      </Form>
     );
     //@@viewOff:render
   },

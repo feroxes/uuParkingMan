@@ -165,7 +165,7 @@ export const ReservationsListView = createVisualComponent({
         <Uu5Tiles.InfoBar sortable={false} />
         <Uu5Tiles.List alternateRowBackground rowPadding="8px 16px" columns={getColumns()} />
         {open && (
-          <Modal open header={modalHeader} onClose={() => setOpen(false)}>
+          <Modal open header={modalHeader} onClose={() => setOpen(false)} closeOnOverlayClick>
             <ReservationFrom
               usersDataList={props.usersDataList}
               parkingPlacesDataList={props.parkingPlacesDataList}

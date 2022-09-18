@@ -83,8 +83,31 @@ const Lsi = {
   usersList: { en: "Users List", uk: "Список користувачів" },
   parkingPlaces: { en: "Parking Lots", uk: "Паркувальні місця" },
   settings: { en: "Settings", uk: "Налаштування" },
-  successMessage: (prop) => {
-    return { en: `Reservation successfully ${prop}` };
+  userSuccessfullyCreated: {
+    en: "User successfully created",
+    uk: "Користувач успішно створений",
+  },
+  userSuccessfullyUpdated: {
+    en: "User successfully updated",
+    uk: "Користувача успішно оновлено",
+  },
+  transport: { en: "Transport", uk: "Транспортний засіб" },
+  transportNumber: { en: "Transport number", uk: "Номерний знак" },
+  transportType: { en: "Transport type", uk: "Тип транспорту" },
+  createUser: { en: "Create new user", uk: "Створити нового користувача" },
+  userUpdate: { en: "Update user", uk: "Оновити користувача" },
+  userInfo: { en: "User info", uk: "Інформація про користувача" },
+  transportInfo: { en: "Transport info", uk: "Інформація про транспортний засіб" },
+  uuIdentity: { en: "uuIdentity" },
+  type: { en: "Type", uk: "Тип" },
+  model: { en: "Model", uk: "Модель" },
+  brand: { en: "Brand", uk: "Бренд" },
+  number: { en: "Number", uk: "Номер" },
+  userCreatePlaceHolders: {
+    uuIdentity: { en: "8517-626-1" },
+    model: { en: "i3" },
+    brand: { en: "BMW" },
+    number: { en: "AA1111OO" },
   },
 };
 

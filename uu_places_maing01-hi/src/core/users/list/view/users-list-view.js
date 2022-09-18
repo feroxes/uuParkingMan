@@ -1,14 +1,13 @@
 //@@viewOn:imports
-import UU5 from "uu5g04";
-import { createVisualComponent } from "uu5g04-hooks";
+import { createVisualComponent, PropTypes, useState, Lsi } from "uu5g05";
+import { Button, Dropdown, Modal } from "uu5g05-elements";
 import Uu5Tiles from "uu5tilesg02";
 import Config from "../../config/config.js";
 import Constants from "../../../../helpers/constants.js";
 import StringHelper from "../../../../helpers/string-helper.js";
 import UserFrom from "../../user-form.js";
-import { useContextModal } from "../../../managers/modal-manager.js";
 import ComponentsHelper from "../../../../helpers/components-helper.js";
-import Lsi from "../../users-lsi.js";
+import LsiData from "../../../../config/lsi.js";
 //@@viewOff:imports
 
 //@@viewOn:constants
@@ -18,23 +17,18 @@ const CLASS_NAMES = {
   createBtn: () => Config.Css.css`
     position: relative;
     left: 16px;
-    color: ${Constants.mainColor}
   `,
 };
 
-const STATICS = {
-  //@@viewOn:statics
-  displayName: Config.TAG + "UsersListView",
-  //@@viewOff:statics
-};
-
 export const UsersListView = createVisualComponent({
-  ...STATICS,
+  //@@viewOn:statics
+  uu5Tag: Config.TAG + "UsersListView",
+  //@@viewOff:statics
 
   //@@viewOn:propTypes
   propTypes: {
-    usersDataList: UU5.PropTypes.object,
-    handlerMap: UU5.PropTypes.object,
+    usersDataList: PropTypes.object,
+    handlerMap: PropTypes.object,
   },
   //@@viewOff:propTypes
 
@@ -46,10 +40,76 @@ export const UsersListView = createVisualComponent({
   //@@viewOff:defaultProps
   render(props) {
     //@@viewOn:hooks
-    const modal = useContextModal();
+    const [open, setOpen] = useState(false);
+    const [modalHeader, setModalHeader] = useState("");
+    const [modalContentProps, setModalContentProps] = useState({});
     //@@viewOff:hooks
 
     //@@viewOn:private
+    function getColumns(props) {
+      return [
+        {
+          key: Constants.Users.columnKeys.uuIdentity,
+          cell: (cellProps) => ComponentsHelper.getBusinessCart(cellProps.data.data.uuIdentity),
+          header: <Lsi lsi={LsiData.user} />,
+        },
+        {
+          cell: (cellProps) => `${cellProps.data.data.transport.brand} ${cellProps.data.data.transport.model}`,
+          header: <Lsi lsi={LsiData.transport} />,
+        },
+        {
+          cell: (cellProps) => cellProps.data.data.transport.number,
+          header: <Lsi lsi={LsiData.transportNumber} />,
+        },
+        {
+          cell: (cellProps) => StringHelper.capitalizeFirstLetter(cellProps.data.data.transport.type),
+          header: <Lsi lsi={LsiData.transportType} />,
+        },
+        {
+          cell: () => null,
+          header: (
+            <Button
+              icon="mdi-plus-circle"
+              colorScheme="primary"
+              onClick={() => {
+                setModalHeader(<Lsi lsi={LsiData.createUser} />);
+                setModalContentProps({ handlerMap: props.handlerMap });
+                setOpen(true);
+              }}
+              className={CLASS_NAMES.createBtn()}
+            />
+          ),
+          width: 1,
+          fixed: "right",
+          isControls: true,
+          visible: true,
+        },
+        {
+          key: "actions",
+          cell: (cellProps) => {
+            return (
+              <Dropdown
+                significance="subdued"
+                itemList={[
+                  {
+                    children: <Lsi lsi={LsiData.update} />,
+                    icon: "mdi-update",
+                    onClick: () => {
+                      setModalHeader(<Lsi lsi={LsiData.userUpdate} />);
+                      setModalContentProps({ handlerMap: cellProps.data.handlerMap, user: cellProps.data.data });
+                      setOpen(true);
+                    },
+                  },
+                ]}
+              />
+            );
+          },
+          fixed: "right",
+          width: 48,
+          cellPadding: "0 8px",
+        },
+      ];
+    }
     //@@viewOff:private
 
     //@@viewOn:handlers
@@ -62,7 +122,12 @@ export const UsersListView = createVisualComponent({
     return (
       <Uu5Tiles.ControllerProvider data={props.usersDataList.data}>
         <Uu5Tiles.InfoBar />
-        <Uu5Tiles.List alternateRowBackground rowPadding="8px 16px" columns={getColumns(props, modal)} />
+        <Uu5Tiles.List alternateRowBackground rowPadding="8px 16px" columns={getColumns(props)} />
+        {open && (
+          <Modal open onClose={() => setOpen(false)} header={modalHeader} closeOnOverlayClick>
+            <UserFrom onClose={() => setOpen(false)} {...modalContentProps} />
+          </Modal>
+        )}
       </Uu5Tiles.ControllerProvider>
     );
     //@@viewOff:render
@@ -70,80 +135,5 @@ export const UsersListView = createVisualComponent({
 });
 
 //@@viewOn: helpers
-function getColumns(props, modal) {
-  return [
-    {
-      key: Constants.Users.columnKeys.uuIdentity,
-      cell: (cellProps) => ComponentsHelper.getBusinessCart(cellProps.data.data.uuIdentity),
-      header: <UU5.Bricks.Lsi lsi={Lsi.user} />,
-    },
-    {
-      cell: (cellProps) => `${cellProps.data.data.transport.brand} ${cellProps.data.data.transport.model}`,
-      header: <UU5.Bricks.Lsi lsi={Lsi.transport} />,
-    },
-    {
-      cell: (cellProps) => cellProps.data.data.transport.number,
-      header: <UU5.Bricks.Lsi lsi={Lsi.transportNumber} />,
-    },
-    {
-      cell: (cellProps) => StringHelper.capitalizeFirstLetter(cellProps.data.data.transport.type),
-      header: <UU5.Bricks.Lsi lsi={Lsi.transportType} />,
-    },
-    {
-      cell: () => null,
-      header: (
-        <UU5.Bricks.Button
-          content={<UU5.Bricks.Icon icon="mdi-plus-circle" />}
-          bgStyle="filled"
-          onClick={() => onControlsBtnClick(props, modal)}
-          className={CLASS_NAMES.createBtn()}
-        />
-      ),
-      width: 1,
-      fixed: "right",
-      isControls: true,
-      visible: true,
-    },
-    {
-      key: "actions",
-      cell: (cellProps) => {
-        return (
-          <UU5.Bricks.Dropdown
-            fitMenuToViewport
-            popoverLocation="portal"
-            items={[
-              {
-                label: <UU5.Bricks.Lsi lsi={Lsi.update} />,
-                onClick: () => {
-                  modal.open({
-                    header: <UU5.Bricks.Lsi lsi={Lsi.userUpdate} />,
-                    content: (
-                      <UserFrom modal={modal} handlerMap={cellProps.data.handlerMap} user={cellProps.data.data} />
-                    ),
-                    size: "m",
-                  });
-                },
-              },
-            ]}
-            bgStyle="transparent"
-            iconHidden
-            label={<UU5.Bricks.Icon icon={"uu5-menu"} style={{ fontSize: "16px" }} />}
-          />
-        );
-      },
-      fixed: "right",
-      width: 48,
-      cellPadding: "0 16px",
-    },
-  ];
-}
-function onControlsBtnClick(props, modal) {
-  let modalContent = {
-    header: <UU5.Bricks.Lsi lsi={Lsi.createUser} />,
-    content: <UserFrom modal={modal} handlerMap={props.handlerMap} />,
-    size: "m",
-  };
-  modal.open(modalContent);
-}
 //@@viewOff: helpers
 export default UsersListView;
