@@ -17,5 +17,6 @@ export default {
   ROUTES: {
     ABOUT: "about",
     HOME: "home",
+    ADMIN: "admin",
   },
 };

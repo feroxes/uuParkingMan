@@ -171,7 +171,7 @@ export const WeeklyOverviewView = createVisualComponent({
           </UU5.Bricks.Table>
         </div>
         {open && (
-          <Modal open header={<Lsi lsi={LsiData.createReservation} />}>
+          <Modal open header={<Lsi lsi={LsiData.createReservation} />} onClose={() => setOpen(false)}>
             {modalContent}
           </Modal>
         )}

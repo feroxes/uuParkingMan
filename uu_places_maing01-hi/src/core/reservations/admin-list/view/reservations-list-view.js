@@ -1,16 +1,15 @@
 //@@viewOn:imports
-import UU5 from "uu5g04";
-import { createVisualComponent, useLsi, useRef, useState } from "uu5g04-hooks";
+import { createVisualComponent, PropTypes, useState, Lsi } from "uu5g05";
+import { Text, Button, Dropdown, Modal, Dialog, useAlertBus } from "uu5g05-elements";
+import { Checkbox } from "uu5g05-forms";
 import Uu5Tiles from "uu5tilesg02";
 import Config from "../../config/config.js";
 import Constants from "../../../../helpers/constants.js";
 import ReservationFrom from "../../reservation-form.js";
-import { useContextModal } from "../../../managers/modal-manager.js";
 import StringHelper from "../../../../helpers/string-helper.js";
 import DateTimeHelper from "../../../../helpers/date-time-helper.js";
 import ComponentsHelper from "../../../../helpers/components-helper.js";
-import Lsi from "../../reservations-lsi.js";
-
+import LsiData from "../../../../config/lsi.js";
 //@@viewOff:imports
 
 //@@viewOn:constants
@@ -20,25 +19,20 @@ const CLASS_NAMES = {
   createBtn: () => Config.Css.css`
     position: relative;
     left: 16px;
-    color: ${Constants.mainColor}
   `,
 };
 
-const STATICS = {
-  //@@viewOn:statics
-  displayName: Config.TAG + "ReservationsListView",
-  //@@viewOff:statics
-};
-
 export const ReservationsListView = createVisualComponent({
-  ...STATICS,
+  //@@viewOn:statics
+  uu5Tag: Config.TAG + "ReservationsListView",
+  //@@viewOff:statics
 
   //@@viewOn:propTypes
   propTypes: {
-    reservationsDataList: UU5.PropTypes.object,
-    usersDataList: UU5.PropTypes.array,
-    parkingPlacesDataList: UU5.PropTypes.array,
-    handlerMap: UU5.PropTypes.object,
+    reservationsDataList: PropTypes.object,
+    usersDataList: PropTypes.array,
+    parkingPlacesDataList: PropTypes.array,
+    handlerMap: PropTypes.object,
   },
   //@@viewOff:propTypes
 
@@ -49,39 +43,116 @@ export const ReservationsListView = createVisualComponent({
   },
   //@@viewOff:defaultProps
   render(props) {
+    const { reservationsDataList } = props;
     //@@viewOn:hooks
-    const modal = useContextModal();
-    const confirmModalHeaderLsi = useLsi(Lsi.reservationDelete);
-    const confirmModalContentLsi = useLsi(Lsi.reservationDeleteConfirmation);
-    const sendNotificationLsi = useLsi(Lsi.sendNotification);
-
-    const confirmModalRef = useRef();
-    const checkboxModalRef = useRef();
-
+    const [dialogOpen, setDialogOpen] = useState(false);
+    const [open, setOpen] = useState(false);
+    const [modalProps, setModalProps] = useState(null);
+    const [modalHeader, setModalHeader] = useState(null);
+    const [sendMessage, setSendMessage] = useState(false);
     const [reservationForDelete, setReservationForDelete] = useState(null);
+    const { addAlert } = useAlertBus();
     //@@viewOff:hooks
 
     //@@viewOn:private
-    function _getConfirmModalContent() {
-      return (
-        <div>
-          {confirmModalContentLsi}
-          <UU5.Forms.Checkbox
-            labelPosition="right"
-            colWidth="xs-12"
-            name={Constants.Reservation.formNames.sendMessage}
-            label={sendNotificationLsi}
-            ref_={checkboxModalRef}
-          />
-        </div>
-      );
+    function getColumns() {
+      return [
+        {
+          header: <Lsi lsi={LsiData.user} />,
+          cell: (cellProps) => ComponentsHelper.getBusinessCart(cellProps.data.data.user.uuIdentity),
+        },
+        {
+          header: <Lsi lsi={LsiData.parkingPlace} />,
+          cell: (cellProps) => {
+            return (
+              <Text tooltip={StringHelper.capitalizeFirstLetter(cellProps.data.data.parkingPlace.type)}>
+                {cellProps.data.data.parkingPlace.number}
+              </Text>
+            );
+          },
+        },
+        {
+          header: <Lsi lsi={LsiData.reservationDates} />,
+          cell: (cellProps) => {
+            const { dayFrom, dayTo } = cellProps.data.data;
+            return `${DateTimeHelper.formatDate(dayFrom, "DD.MM")} - ${DateTimeHelper.formatDate(dayTo, "DD.MM")}`;
+          },
+        },
+        {
+          header: <Lsi lsi={LsiData.reservationDuration} />,
+          cell: (cellProps) => {
+            const { dayFrom, dayTo } = cellProps.data.data;
+            return <Lsi lsi={LsiData.days} params={{ days: DateTimeHelper.getDiffDays(dayFrom, dayTo) }} />;
+          },
+        },
+        {
+          cell: () => null,
+          header: (
+            <Button
+              colorScheme="primary"
+              icon="mdi-plus-circle"
+              onClick={onControlsBtnClick}
+              className={CLASS_NAMES.createBtn()}
+            />
+          ),
+          width: 1,
+          fixed: "right",
+          isControls: true,
+          visible: true,
+        },
+        {
+          key: "actions",
+          cell: (cellProps) => {
+            return (
+              <Dropdown
+                significance="subdued"
+                itemList={[
+                  {
+                    children: <Lsi lsi={LsiData.update} />,
+                    icon: "mdi-update",
+                    disabled: DateTimeHelper.isDateInPast(cellProps.data.data.dayTo),
+                    onClick: () => {
+                      setModalHeader(<Lsi lsi={LsiData.reservationUpdate} />);
+                      setModalProps({ handlerMap: cellProps.data.handlerMap, reservation: cellProps.data.data });
+                      setOpen(true);
+                    },
+                  },
+                  {
+                    children: <Lsi lsi={LsiData.delete} />,
+                    icon: "mdi-delete",
+                    colorScheme: "negative",
+                    disabled: DateTimeHelper.isDateInPast(cellProps.data.data.dayTo),
+                    onClick: () => {
+                      setReservationForDelete(cellProps);
+                      setDialogOpen(true);
+                    },
+                  },
+                ]}
+              />
+            );
+          },
+          fixed: "right",
+          width: 48,
+          cellPadding: "0 8px",
+        },
+      ];
     }
     //@@viewOff:private
 
     //@@viewOn:handlers
+    function onControlsBtnClick() {
+      setModalHeader(<Lsi lsi={LsiData.createReservation} />);
+      setModalProps({ handlerMap: props.handlerMap, isAdminView: true });
+      setOpen(true);
+    }
+
     function _handleReservationDelete() {
-      const sendMessage = checkboxModalRef.current.getValue();
-      reservationForDelete.data.handlerMap.delete({ sendMessage });
+      reservationForDelete.data.handlerMap
+        .delete({ sendMessage })
+        .then(() => {
+          addAlert({ message: <Lsi lsi={LsiData.successMessageDeleted} />, priority: "success", durationMs: 3000 });
+        })
+        .catch(({ message }) => addAlert({ message, priority: "error", durationMs: 3000 }));
     }
     //@@viewOff:handlers
 
@@ -90,20 +161,50 @@ export const ReservationsListView = createVisualComponent({
 
     //@@viewOn:render
     return (
-      <Uu5Tiles.ControllerProvider data={props.reservationsDataList.data}>
+      <Uu5Tiles.ControllerProvider data={reservationsDataList.data}>
         <Uu5Tiles.InfoBar sortable={false} />
-        <Uu5Tiles.List
-          alternateRowBackground
-          rowPadding="8px 16px"
-          columns={getColumns(props, modal, confirmModalRef, setReservationForDelete)}
-        />
-        <UU5.Bricks.ConfirmModal
-          header={confirmModalHeaderLsi}
-          content={_getConfirmModalContent()}
-          onConfirm={_handleReservationDelete}
-          confirmButtonProps={{ colorSchema: "danger" }}
-          ref_={confirmModalRef}
-        />
+        <Uu5Tiles.List alternateRowBackground rowPadding="8px 16px" columns={getColumns()} />
+        {open && (
+          <Modal open header={modalHeader} onClose={() => setOpen(false)}>
+            <ReservationFrom
+              usersDataList={props.usersDataList}
+              parkingPlacesDataList={props.parkingPlacesDataList}
+              onClose={() => setOpen(false)}
+              {...modalProps}
+            />
+          </Modal>
+        )}
+        {dialogOpen && (
+          <Dialog
+            open
+            header={<Lsi lsi={LsiData.reservationDelete} />}
+            onClose={() => setDialogOpen(false)}
+            actionDirection="horizontal"
+            info={
+              <>
+                <Lsi lsi={LsiData.reservationDeleteConfirmation} />
+                <Checkbox
+                  style={{ margin: "0 56px" }}
+                  name={Constants.Reservation.formNames.sendMessage}
+                  label={LsiData.sendNotification}
+                  value={sendMessage}
+                  onChange={() => setSendMessage(!sendMessage)}
+                />
+              </>
+            }
+            actionList={[
+              {
+                children: <Lsi lsi={LsiData.delete} />,
+                colorScheme: "negative",
+                onClick: _handleReservationDelete,
+              },
+              {
+                children: <Lsi lsi={LsiData.cancel} />,
+                onClick: () => setDialogOpen(false),
+              },
+            ]}
+          ></Dialog>
+        )}
       </Uu5Tiles.ControllerProvider>
     );
     //@@viewOff:render
@@ -111,115 +212,5 @@ export const ReservationsListView = createVisualComponent({
 });
 
 //@@viewOn: helpers
-function getColumns(props, modal, confirmModalRef, setReservationForDelete) {
-  return [
-    {
-      header: <UU5.Bricks.Lsi lsi={Lsi.user} />,
-      cell: (cellProps) => ComponentsHelper.getBusinessCart(cellProps.data.data.user.uuIdentity),
-    },
-    {
-      header: <UU5.Bricks.Lsi lsi={Lsi.parkingPlace} />,
-      cell: (cellProps) => {
-        return (
-          <UU5.Bricks.Text
-            content={cellProps.data.data.parkingPlace.number}
-            tooltip={StringHelper.capitalizeFirstLetter(cellProps.data.data.parkingPlace.type)}
-          />
-        );
-      },
-    },
-    {
-      header: <UU5.Bricks.Lsi lsi={Lsi.reservationDates} />,
-      cell: (cellProps) => {
-        const { dayFrom, dayTo } = cellProps.data.data;
-        return `${DateTimeHelper.formatDate(dayFrom, "DD.MM")} - ${DateTimeHelper.formatDate(dayTo, "DD.MM")}`;
-      },
-    },
-    {
-      header: <UU5.Bricks.Lsi lsi={Lsi.reservationDuration} />,
-      cell: (cellProps) => {
-        const { dayFrom, dayTo } = cellProps.data.data;
-        return <UU5.Bricks.Lsi lsi={Lsi.days(DateTimeHelper.getDiffDays(dayFrom, dayTo))} />;
-      },
-    },
-    {
-      cell: () => null,
-      header: (
-        <UU5.Bricks.Button
-          content={<UU5.Bricks.Icon icon="mdi-plus-circle" />}
-          bgStyle="filled"
-          onClick={() => onControlsBtnClick(props, modal)}
-          className={CLASS_NAMES.createBtn()}
-        />
-      ),
-      width: 1,
-      fixed: "right",
-      isControls: true,
-      visible: true,
-    },
-    {
-      key: "actions",
-      cell: (cellProps) => {
-        return (
-          <UU5.Bricks.Dropdown
-            fitMenuToViewport
-            popoverLocation="portal"
-            items={[
-              {
-                label: <UU5.Bricks.Lsi lsi={Lsi.update} />,
-                disabled: DateTimeHelper.isDateInPast(cellProps.data.data.dayTo),
-                onClick: () => {
-                  modal.open({
-                    header: <UU5.Bricks.Lsi lsi={Lsi.reservationUpdate} />,
-                    content: (
-                      <ReservationFrom
-                        modal={modal}
-                        handlerMap={cellProps.data.handlerMap}
-                        usersDataList={props.usersDataList}
-                        parkingPlacesDataList={props.parkingPlacesDataList}
-                        reservation={cellProps.data.data}
-                      />
-                    ),
-                    size: "m",
-                  });
-                },
-              },
-              {
-                label: <UU5.Bricks.Lsi lsi={Lsi.delete} />,
-                disabled: DateTimeHelper.isDateInPast(cellProps.data.data.dayTo),
-                onClick: () => {
-                  setReservationForDelete(cellProps);
-                  confirmModalRef.current.open(cellProps);
-                },
-              },
-            ]}
-            bgStyle="transparent"
-            iconHidden
-            label={<UU5.Bricks.Icon icon={"uu5-menu"} style={{ fontSize: "16px" }} />}
-          />
-        );
-      },
-      fixed: "right",
-      width: 48,
-      cellPadding: "0 16px",
-    },
-  ];
-}
-function onControlsBtnClick(props, modal) {
-  let modalContent = {
-    header: <UU5.Bricks.Lsi lsi={Lsi.createReservation} />,
-    content: (
-      <ReservationFrom
-        modal={modal}
-        handlerMap={props.handlerMap}
-        usersDataList={props.usersDataList}
-        parkingPlacesDataList={props.parkingPlacesDataList}
-        isAdminView
-      />
-    ),
-    size: "m",
-  };
-  modal.open(modalContent);
-}
 //@@viewOff: helpers
 export default ReservationsListView;

@@ -1,32 +1,23 @@
 //@@viewOn:imports
-import UU5 from "uu5g04";
-import "uu5g04-bricks";
-import { createVisualComponent, useLsi } from "uu5g04-hooks";
-import "uu_plus4u5g01-app";
-import UsersListContextResolver from "../core/users/context/list-context-resolver.js";
-import ParkingPlacesContextResolver from "../core/parking-places/context/list-context-resolver.js";
-import ReservationsContextResolver from "../core/reservations/context/list-context-resolver.js";
+import { createVisualComponent, Lsi } from "uu5g05";
+import { Tabs } from "uu5g05-elements";
+import RouteBar from "../core/route-bar.js";
+import UsersProvider from "../core/users/users-provider.js";
+import ParkingPlacesProvider from "../core/parking-places/parking-places-provider.js";
+import ReservationsProvider from "../core/reservations/reservations-provider.js";
 import UsersList from "../core/users/list/list.js";
 import ParkingPlacesList from "../core/parking-places/list/list.js";
 import ReservationsList from "../core/reservations/admin-list/list.js";
 import WeeklyOverview from "../core/reservations/weekly-overview/weekly-overview.js";
-import SettingsForm from "../core/settings/form/form.js";
+import Settings from "../core/settings/form/form.js";
 import Config from "./config/config.js";
-import Lsi from "./routes-lsi.js";
+import LsiData from "../config/lsi.js";
 //@@viewOff:imports
 
-const STATICS = {
-  //@@viewOn:statics
-  displayName: Config.TAG + "Admin",
-  //@@viewOff:statics
-};
-
-const CLASS_NAMES = {
-  main: () => Config.Css.css``,
-};
-
 export const Admin = createVisualComponent({
-  ...STATICS,
+  //@@viewOn:statics
+  uu5Tag: Config.TAG + "Admin",
+  //@@viewOff:statics
 
   //@@viewOn:propTypes
   //@@viewOff:propTypes
@@ -34,46 +25,54 @@ export const Admin = createVisualComponent({
   //@@viewOn:defaultProps
   //@@viewOff:defaultProps
 
-  render(props) {
-    const usersListLsi = useLsi(Lsi.Admin.usersList);
-    const parkingPlacesLsi = useLsi(Lsi.Admin.parkingPlaces);
-    const reservationsLsi = useLsi(Lsi.Admin.reservations);
-    const weeklyOverviewLsi = useLsi(Lsi.Admin.weeklyOverview);
-    const settingsLsi = useLsi(Lsi.Admin.settings);
+  render() {
     //@@viewOn:private
+    function getItemList() {
+      return [
+        {
+          label: <Lsi lsi={LsiData.reservations} />,
+          icon: "mdi-calendar",
+          children: <ReservationsList />,
+        },
+        {
+          label: <Lsi lsi={LsiData.weeklyOverview} />,
+          icon: "mdi-calendar",
+          children: <WeeklyOverview isAdminView />,
+        },
+        {
+          label: <Lsi lsi={LsiData.usersList} />,
+          icon: "mdi-account-box-outline",
+          children: <UsersList />,
+        },
+        {
+          label: <Lsi lsi={LsiData.parkingPlaces} />,
+          icon: "mdi-car-brake-parking",
+          children: <ParkingPlacesList />,
+        },
+        {
+          label: <Lsi lsi={LsiData.settings} />,
+          icon: "mdi-cogs",
+          children: <Settings />,
+        },
+      ];
+    }
     //@@viewOff:private
 
     //@@viewOn:interface
     //@@viewOff:interface
 
     //@@viewOn:render
-    const attrs = UU5.Common.VisualComponent.getAttrs(props, CLASS_NAMES.main());
     return (
-      <UU5.Bricks.Section {...attrs}>
-        <UsersListContextResolver>
-          <ParkingPlacesContextResolver>
-            <ReservationsContextResolver>
-              <UU5.Bricks.Tabs>
-                <UU5.Bricks.Tabs.Item header={reservationsLsi}>
-                  <ReservationsList />
-                </UU5.Bricks.Tabs.Item>
-                <UU5.Bricks.Tabs.Item header={weeklyOverviewLsi}>
-                  <WeeklyOverview isAdminView />
-                </UU5.Bricks.Tabs.Item>
-                <UU5.Bricks.Tabs.Item header={usersListLsi}>
-                  <UsersList />
-                </UU5.Bricks.Tabs.Item>
-                <UU5.Bricks.Tabs.Item header={parkingPlacesLsi}>
-                  <ParkingPlacesList />
-                </UU5.Bricks.Tabs.Item>
-                <UU5.Bricks.Tabs.Item header={settingsLsi}>
-                  <SettingsForm />
-                </UU5.Bricks.Tabs.Item>
-              </UU5.Bricks.Tabs>
-            </ReservationsContextResolver>
-          </ParkingPlacesContextResolver>
-        </UsersListContextResolver>
-      </UU5.Bricks.Section>
+      <div>
+        <RouteBar />
+        <UsersProvider>
+          <ParkingPlacesProvider>
+            <ReservationsProvider>
+              <Tabs itemList={getItemList()} />
+            </ReservationsProvider>
+          </ParkingPlacesProvider>
+        </UsersProvider>
+      </div>
     );
   },
   //@@viewOff:render

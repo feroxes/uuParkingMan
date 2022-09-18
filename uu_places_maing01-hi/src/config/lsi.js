@@ -8,6 +8,10 @@ const Lsi = {
       en: "Home",
       uk: "Домашня",
     },
+    admin: {
+      en: "Admin",
+      uk: "Адмінка",
+    },
   },
   about: {
     header: {
@@ -30,8 +34,9 @@ const Lsi = {
     en: "Are you sure?",
     uk: "Ви впевнені?",
   },
-  days: (days) => {
-    return { en: `${days} days` };
+  days: {
+    en: "${days} days",
+    uk: "${days} днів",
   },
 
   create: { en: "Create", uk: "Створити" },
@@ -62,7 +67,7 @@ const Lsi = {
   yourParkingPlace: { en: "Your parking place: ${number}", uk: "Ваше паркувальне місце: ${number}" },
   noReservation: { en: "Today you don't have reservations.", uk: "Сьогодні у вас немає резервів" },
   notOpened: { en: "Reservation will be opened on", uk: "Резервація буде відкрита" },
-  sendNotification: { en: "Send notification", uk: "Відправити повідомлення" },
+  sendNotification: { en: "Send notification", uk: "Відправити повідомлення про звільнене місце" },
   reservedBy: { en: "Reserved by: ", uk: "Зарезервовано: " },
   emptyPlace: { en: "Empty place", uk: "Вільне місце" },
   dayFrom: { en: "Day from", uk: "Початкова дата" },
@@ -74,6 +79,12 @@ const Lsi = {
   surfaceParkingLots: {
     en: "Surface parking lots",
     uk: "Надземні місця",
+  },
+  usersList: { en: "Users List", uk: "Список користувачів" },
+  parkingPlaces: { en: "Parking Lots", uk: "Паркувальні місця" },
+  settings: { en: "Settings", uk: "Налаштування" },
+  successMessage: (prop) => {
+    return { en: `Reservation successfully ${prop}` };
   },
 };
 

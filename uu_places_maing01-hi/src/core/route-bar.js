@@ -1,7 +1,7 @@
 //@@viewOn:imports
 import { createVisualComponent, Lsi, useRoute } from "uu5g05";
 import Plus4U5App from "uu_plus4u5g02-app";
-
+import { useSubAppData } from "uu_plus4u5g02";
 import Config from "./config/config.js";
 import LSI from "../config/lsi.js";
 //@@viewOff:imports
@@ -30,12 +30,17 @@ const RouteBar = createVisualComponent({
 
   render(props) {
     //@@viewOn:private
+    const { data: uuPlaces } = useSubAppData();
     const [, setRoute] = useRoute();
 
-    const appActionList = [
+    let appActionList = [
       { children: <Lsi lsi={LSI.menu.home} />, onClick: () => setRoute("home") },
       { children: <Lsi lsi={LSI.menu.about} />, onClick: () => setRoute("about") },
     ];
+
+    if (uuPlaces.isAuthorizedForAdmin) {
+      appActionList = [{ children: <Lsi lsi={LSI.menu.admin} />, onClick: () => setRoute("admin") }, ...appActionList];
+    }
     //@@viewOff:private
 
     //@@viewOn:interface

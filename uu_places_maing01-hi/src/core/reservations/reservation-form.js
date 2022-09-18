@@ -4,7 +4,6 @@ import { createVisualComponent, PropTypes, Lsi, useState } from "uu5g05";
 import { useAlertBus, Dialog } from "uu5g05-elements";
 import Config from "./config/config.js";
 import Constants from "../../helpers/constants.js";
-import { useContextAlert } from "../managers/alert-manager.js";
 import ComponentsHelper from "../../helpers/components-helper.js";
 import DateTimeHelper from "../../helpers/date-time-helper.js";
 import LsiData from "../../config/lsi.js";
@@ -75,7 +74,6 @@ export const ReservationFrom = createVisualComponent({
     //@@viewOn:hooks
     const { addAlert } = useAlertBus();
     const [open, setOpen] = useState(false);
-    const showAlert = useContextAlert();
     //@@viewOff:hooks
 
     //@@viewOn:private
@@ -95,7 +93,7 @@ export const ReservationFrom = createVisualComponent({
             addAlert({ message: <Lsi lsi={LsiData.successMessageCreated} />, priority: "success", durationMs: 3000 });
             onClose();
           })
-          .catch((e) => showAlert(e.message, false));
+          .catch(({ message }) => addAlert({ message, priority: "error", durationMs: 3000 }));
       }
     }
 

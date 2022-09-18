@@ -1,5 +1,5 @@
 //@@viewOn:imports
-import { createVisualComponent, useSession, Utils } from "uu5g05";
+import { createVisualComponent, Utils } from "uu5g05";
 import { useSubAppData } from "uu_plus4u5g02";
 import Plus4U5App from "uu_plus4u5g02-app";
 import Config from "../config/config";
@@ -7,6 +7,7 @@ import Config from "../config/config";
 
 const About = Utils.Component.lazy(() => import("../routes/about.js"));
 const Reservations = Utils.Component.lazy(() => import("../routes/reservations.js"));
+const Admin = Utils.Component.lazy(() => import("../routes/admin.js"));
 
 export const SpaView = createVisualComponent({
   //@@viewOn:statics
@@ -24,7 +25,6 @@ export const SpaView = createVisualComponent({
   render() {
     //@@viewOn:hooks
     const { data: uuPlaces } = useSubAppData();
-    const session = useSession();
     //@@viewOff:hooks
 
     //@@viewOn:private
@@ -37,6 +37,10 @@ export const SpaView = createVisualComponent({
       "": { redirect: Config.ROUTES.HOME },
       "*": { redirect: Config.ROUTES.HOME },
     };
+
+    if (uuPlaces?.isAuthorizedForAdmin) {
+      routeMap[Config.ROUTES.ADMIN] = () => <Admin />;
+    }
 
     return (
       <Plus4U5App.Spa>
