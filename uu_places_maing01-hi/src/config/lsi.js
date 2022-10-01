@@ -128,6 +128,11 @@ const Lsi = {
   sendMessageFormHeader: { en: "Send message to telegram", uk: "Відправити повідомлення в телеграм" },
   successAppUpdate: { en: "Application has been successfully updated", uk: "Застосунок успішно оновлено" },
   successMessageSend: { en: "Message has been successfully sent", uk: "Повідомлення успішно відправлено" },
+  userDelete: { en: "Delete user", uk: "Видалити користувача" },
+  successMessageUserDeleted: {
+    en: "User successfully deleted",
+    uk: "Користувач успішно видалено",
+  },
 };
 
 export default Lsi;

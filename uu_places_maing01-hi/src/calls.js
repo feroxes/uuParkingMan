@@ -100,6 +100,10 @@ let Calls = {
       let commandUri = Calls.getCommandUri("user/update");
       return Calls.call("post", commandUri, dtoIn);
     },
+    delete(dtoIn) {
+      let commandUri = Calls.getCommandUri("user/delete");
+      return Calls.call("get", commandUri, dtoIn);
+    },
     getUserProfile(dtoIn) {
       let commandUri = Calls.getCommandUri("user/getUserProfile");
       return Calls.call("get", commandUri, dtoIn);

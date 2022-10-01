@@ -203,7 +203,7 @@ export const ReservationsListView = createVisualComponent({
                 onClick: () => setDialogOpen(false),
               },
             ]}
-          ></Dialog>
+          />
         )}
       </Uu5Tiles.ControllerProvider>
     );

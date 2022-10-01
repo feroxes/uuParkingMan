@@ -32,6 +32,7 @@ export const UsersProvider = createComponent({
           const req = await handleUpdate(dtoIn);
           return { ...usersDataList.data, ...req };
         },
+        delete: handleDelete,
       },
     });
 
@@ -48,6 +49,11 @@ export const UsersProvider = createComponent({
     function handleUpdate(criteria) {
       const dtoIn = { ...criteria };
       return Calls.USERS.update(dtoIn, baseUri);
+    }
+
+    function handleDelete(criteria) {
+      const dtoIn = { ...criteria };
+      return Calls.USERS.delete(dtoIn, baseUri);
     }
 
     const value = useMemo(() => usersDataList, [usersDataList]);
