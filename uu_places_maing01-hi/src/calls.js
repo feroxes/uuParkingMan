@@ -100,6 +100,10 @@ let Calls = {
       let commandUri = Calls.getCommandUri("user/update");
       return Calls.call("post", commandUri, dtoIn);
     },
+    getUserProfile(dtoIn) {
+      let commandUri = Calls.getCommandUri("user/getUserProfile");
+      return Calls.call("get", commandUri, dtoIn);
+    },
   },
 
   RESERVATIONS: {
@@ -140,74 +144,21 @@ let Calls = {
     },
   },
 
-  uuSubAppInstanceLoad(dtoIn) {
-    let commandUri = Calls.getCommandUri("places/load");
-    return Calls.call("get", commandUri, dtoIn);
-  },
+  PLACES: {
+    uuSubAppInstanceLoad(dtoIn) {
+      let commandUri = Calls.getCommandUri("places/load");
+      return Calls.call("get", commandUri, dtoIn);
+    },
 
-  placesUpdate(dtoIn) {
-    let commandUri = Calls.getCommandUri("places/update");
-    return Calls.call("post", commandUri, dtoIn);
-  },
+    placesUpdate(dtoIn) {
+      let commandUri = Calls.getCommandUri("places/update");
+      return Calls.call("post", commandUri, dtoIn);
+    },
 
-  sendMessage(dtoIn) {
-    let commandUri = Calls.getCommandUri("places/sendMessage");
-    return Calls.call("post", commandUri, dtoIn);
-  },
-
-  usersList(dtoIn) {
-    let commandUri = Calls.getCommandUri("user/list");
-    return Calls.call("get", commandUri, dtoIn);
-  },
-
-  getUserProfile(dtoIn) {
-    let commandUri = Calls.getCommandUri("user/getUserProfile");
-    return Calls.call("get", commandUri, dtoIn);
-  },
-
-  userCreate(dtoIn) {
-    let commandUri = Calls.getCommandUri("user/create");
-    return Calls.call("post", commandUri, dtoIn);
-  },
-
-  userUpdate(dtoIn) {
-    let commandUri = Calls.getCommandUri("user/update");
-    return Calls.call("post", commandUri, dtoIn);
-  },
-
-  parkingPlaceList(dtoIn) {
-    let commandUri = Calls.getCommandUri("parkingPlace/list");
-    return Calls.call("get", commandUri, dtoIn);
-  },
-
-  parkingPlaceCreate(dtoIn) {
-    let commandUri = Calls.getCommandUri("parkingPlace/create");
-    return Calls.call("post", commandUri, dtoIn);
-  },
-
-  parkingPlaceUpdate(dtoIn) {
-    let commandUri = Calls.getCommandUri("parkingPlace/update");
-    return Calls.call("post", commandUri, dtoIn);
-  },
-
-  reservationsList(dtoIn) {
-    let commandUri = Calls.getCommandUri("reservation/listByCriteria");
-    return Calls.call("get", commandUri, dtoIn);
-  },
-
-  reservationsCreate(dtoIn) {
-    let commandUri = Calls.getCommandUri("reservation/create");
-    return Calls.call("post", commandUri, dtoIn);
-  },
-
-  reservationsUpdate(dtoIn) {
-    let commandUri = Calls.getCommandUri("reservation/update");
-    return Calls.call("post", commandUri, dtoIn);
-  },
-
-  reservationsDelete(dtoIn) {
-    let commandUri = Calls.getCommandUri("reservation/delete");
-    return Calls.call("post", commandUri, dtoIn);
+    sendMessage(dtoIn) {
+      let commandUri = Calls.getCommandUri("places/sendMessage");
+      return Calls.call("post", commandUri, dtoIn);
+    },
   },
 };
 

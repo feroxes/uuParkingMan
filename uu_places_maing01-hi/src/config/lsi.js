@@ -121,6 +121,13 @@ const Lsi = {
     en: "Parking place successfully updated",
     uk: "Парко місце успішно оновлено",
   },
+  dayOfStartReservations: { en: "Day of reservation start", uk: "Дата старту можливості резервації" },
+  hourOfStartReservations: { en: "Hour of reservation start", uk: "Годиина старту можливості резервації" },
+  message: { en: "Message", uk: "Повідомлення" },
+  formHeader: { en: "Reservations configuration", uk: "Налаштування резервування" },
+  sendMessageFormHeader: { en: "Send message to telegram", uk: "Відправити повідомлення в телеграм" },
+  successAppUpdate: { en: "Application has been successfully updated", uk: "Застосунок успішно оновлено" },
+  successMessageSend: { en: "Message has been successfully sent", uk: "Повідомлення успішно відправлено" },
 };
 
 export default Lsi;

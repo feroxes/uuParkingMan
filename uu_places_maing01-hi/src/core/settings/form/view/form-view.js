@@ -1,42 +1,33 @@
 //@@viewOn:imports
-import UU5 from "uu5g04";
-import { createVisualComponent, useLsi, useCall } from "uu5g04-hooks";
+import { createVisualComponent, PropTypes, useCall, Lsi } from "uu5g05";
+import { Text, useAlertBus } from "uu5g05-elements";
+import { Form, FormSelect, FormTextArea, SubmitButton } from "uu5g05-forms";
 import Config from "../../config/config.js";
 import Constants from "../../../../helpers/constants.js";
-import Lsi from "../../lsi.js";
 import DateTimeHelper from "../../../../helpers/date-time-helper.js";
-import { useContextAlert } from "../../../managers/alert-manager.js";
+import LsiData from "../../../../config/lsi.js";
 import Calls from "calls";
 //@@viewOff:imports
 
 //@@viewOn:constants
 //@@viewOff:constants
 
-const Css = {
-  main: () => Config.Css.css`
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
+const CLASS_NAMES = {
+  grid: () => Config.Css.css`
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
   `,
-  form: () => Config.Css.css`
-    width: 500px;
-  `,
-};
-
-const STATICS = {
-  //@@viewOn:statics
-  displayName: Config.TAG + "FormView",
-  //@@viewOff:statics
 };
 
 export const FormView = createVisualComponent({
-  ...STATICS,
+  //@@viewOn:statics
+  uu5Tag: Config.TAG + "FormView",
+  //@@viewOff:statics
 
   //@@viewOn:propTypes
   propTypes: {
-    placesDataObject: UU5.PropTypes.object,
+    placesDataObject: PropTypes.object,
   },
   //@@viewOff:propTypes
 
@@ -44,59 +35,53 @@ export const FormView = createVisualComponent({
   defaultProps: {},
   //@@viewOff:defaultProps
   render(props) {
+    const { placesDataObject } = props;
+    const { reservationsConfig } = placesDataObject.data;
     //@@viewOn:hooks
-    const dayOfStartReservationsLsi = useLsi(Lsi.dayOfStartReservations);
-    const hourOfStartReservationsLsi = useLsi(Lsi.hourOfStartReservations);
-    const messageLsi = useLsi(Lsi.message);
-    const formHeaderLsi = useLsi(Lsi.formHeader);
-    const sendMessageFormHeaderLsi = useLsi(Lsi.sendMessageFormHeader);
-    const successLsi = useLsi(Lsi.success);
-    const successMessageSendLsi = useLsi(Lsi.successMessageSend);
-    const showAlert = useContextAlert();
-
-    const { call } = useCall(Calls.sendMessage);
+    const { addAlert } = useAlertBus();
+    const placesUpdate = useCall(Calls.PLACES.placesUpdate);
+    const sendMessage = useCall(Calls.PLACES.sendMessage);
     //@@viewOff:hooks
+
     //@@viewOn:private
-    function _getSelectDaysValues() {
+    function getSelectDaysValues() {
       const weekDays = [...DateTimeHelper.getWeekDays().slice(1), DateTimeHelper.getWeekDays()[0]];
       return weekDays.map((day, key) => {
-        return <UU5.Forms.Select.Option value={(key + 1).toString()} content={day} key={key} />;
+        return { value: (key + 1).toString(), children: day };
       });
     }
-    function _getSelectHoursValues() {
+
+    function getSelectHoursValues() {
       const hours = Array.from({ length: 24 }, (_, i) => i + 1);
-      return hours.map((hour, key) => {
-        return <UU5.Forms.Select.Option value={hour.toString()} key={key} />;
+      return hours.map((hour) => {
+        return { value: hour.toString(), children: hour };
       });
     }
-    function _getFormValues() {
-      const { reservationsConfig } = props.placesDataObject.data;
-      if (reservationsConfig) {
-        return {
-          dayOfStartReservations: reservationsConfig.dayOfStartReservations.toString(),
-          hourOfStartReservations: reservationsConfig.hourOfStartReservations.toString(),
-        };
-      } else return null;
-    }
-    function _handleOnSubmitClick(opt) {
-      const { dayOfStartReservations, hourOfStartReservations } = opt.values;
+
+    function handleOnSubmitClick({ data }) {
+      const { dayOfStartReservations, hourOfStartReservations } = data.value;
       const dtoIn = {
         reservationsConfig: {
           dayOfStartReservations: Number(dayOfStartReservations),
           hourOfStartReservations: Number(hourOfStartReservations),
         },
       };
-      props.placesDataObject.handlerMap
-        .update(dtoIn)
-        .then(() => showAlert(successLsi))
-        .catch((e) => showAlert(e.message, false));
+      placesUpdate
+        .call(dtoIn)
+        .then(() =>
+          addAlert({ message: <Lsi lsi={LsiData.successAppUpdate} />, priority: "success", durationMs: 3000 })
+        )
+        .catch(({ message }) => addAlert({ message, priority: "error", durationMs: 3000 }));
     }
-    function _handleOnSendMessageClick(opt) {
-      const { message } = opt.values;
 
-      call({ message })
-        .then(() => showAlert(successMessageSendLsi))
-        .catch((e) => showAlert(e.message, false));
+    function handleOnSendMessageClick({ data }) {
+      const { message } = data.value;
+      sendMessage
+        .call({ message })
+        .then(() =>
+          addAlert({ message: <Lsi lsi={LsiData.successMessageSend} />, priority: "success", durationMs: 3000 })
+        )
+        .catch(({ message }) => addAlert({ message, priority: "error", durationMs: 3000 }));
     }
     //@@viewOff:private
 
@@ -108,33 +93,43 @@ export const FormView = createVisualComponent({
 
     //@@viewOn:render
     return (
-      <div className={Css.main()}>
-        <UU5.Forms.Form
-          onSave={_handleOnSubmitClick}
-          header={formHeaderLsi}
-          values={_getFormValues()}
-          className={Css.form()}
-        >
-          <UU5.Forms.Select
-            name={Constants.Settings.formNames.dayOfStartReservations}
-            label={dayOfStartReservationsLsi}
+      <div>
+        <Form onSubmit={handleOnSubmitClick} className="uu5-common-padding-s">
+          <Text category="interface" segment="title" type="common">
+            <Lsi lsi={LsiData.formHeader} />
+          </Text>
+          <div className={CLASS_NAMES.grid()}>
+            <FormSelect
+              name={Constants.Settings.formNames.dayOfStartReservations}
+              label={<Lsi lsi={LsiData.dayOfStartReservations} />}
+              required
+              initialValue={reservationsConfig?.dayOfStartReservations.toString()}
+              itemList={getSelectDaysValues()}
+            />
+            <FormSelect
+              name={Constants.Settings.formNames.hourOfStartReservations}
+              label={<Lsi lsi={LsiData.hourOfStartReservations} />}
+              required
+              initialValue={reservationsConfig?.hourOfStartReservations.toString()}
+              itemList={getSelectHoursValues()}
+            />
+          </div>
+          <div className="uu5-common-center uu5-common-padding-s">
+            <SubmitButton />
+          </div>
+        </Form>
+        <Form onSubmit={handleOnSendMessageClick} className="uu5-common-padding-s">
+          <Text category="interface" segment="title" type="common">
+            <Lsi lsi={LsiData.sendMessageFormHeader} />
+          </Text>
+          <FormTextArea
+            name={Constants.Settings.formNames.message}
+            label={<Lsi lsi={LsiData.message} />}
+            spellCheck
             required
-          >
-            {_getSelectDaysValues()}
-          </UU5.Forms.Select>
-          <UU5.Forms.Select
-            name={Constants.Settings.formNames.hourOfStartReservations}
-            label={hourOfStartReservationsLsi}
-            required
-          >
-            {_getSelectHoursValues()}
-          </UU5.Forms.Select>
-          <UU5.Forms.Controls />
-        </UU5.Forms.Form>
-        <UU5.Forms.Form onSave={_handleOnSendMessageClick} header={sendMessageFormHeaderLsi} className={Css.form()}>
-          <UU5.Forms.TextArea name={Constants.Settings.formNames.message} label={messageLsi} required />
-          <UU5.Forms.Controls />
-        </UU5.Forms.Form>
+          />
+          <SubmitButton style={{ marginTop: "8px" }} />
+        </Form>
       </div>
     );
     //@@viewOff:render
