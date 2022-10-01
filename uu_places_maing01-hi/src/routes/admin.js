@@ -1,5 +1,5 @@
 //@@viewOn:imports
-import { createVisualComponent, Lsi } from "uu5g05";
+import { createVisualComponent, Lsi, useState, useRoute, useEffect } from "uu5g05";
 import { Tabs } from "uu5g05-elements";
 import RouteBar from "../core/route-bar.js";
 import UsersProvider from "../core/users/users-provider.js";
@@ -26,6 +26,17 @@ export const Admin = createVisualComponent({
   //@@viewOff:defaultProps
 
   render() {
+    //@@viewOn:hooks
+    const [activeCode, setActiveCode] = useState("users");
+    const [route, setRoute] = useRoute();
+
+    useEffect(() => {
+      if (route.params?.activeCode) {
+        setActiveCode(route.params.activeCode);
+      }
+    }, []);
+    //@@viewOff:hooks
+
     //@@viewOn:private
     function getItemList() {
       return [
@@ -33,26 +44,31 @@ export const Admin = createVisualComponent({
           label: <Lsi lsi={LsiData.usersList} />,
           icon: "mdi-account-box-outline",
           children: <UsersList />,
+          code: "users",
         },
         {
           label: <Lsi lsi={LsiData.reservations} />,
           icon: "mdi-calendar",
           children: <ReservationsList />,
+          code: "reservations",
         },
         {
           label: <Lsi lsi={LsiData.weeklyOverview} />,
           icon: "mdi-calendar",
           children: <WeeklyOverview isAdminView />,
+          code: "weeklyOverview",
         },
         {
           label: <Lsi lsi={LsiData.parkingPlaces} />,
           icon: "mdi-car-brake-parking",
           children: <ParkingPlacesList />,
+          code: "parkingLots",
         },
         {
           label: <Lsi lsi={LsiData.settings} />,
           icon: "mdi-cogs",
           children: <Settings />,
+          code: "settings",
         },
       ];
     }
@@ -68,7 +84,14 @@ export const Admin = createVisualComponent({
         <UsersProvider>
           <ParkingPlacesProvider>
             <ReservationsProvider>
-              <Tabs itemList={getItemList()} />
+              <Tabs
+                itemList={getItemList()}
+                activeCode={activeCode}
+                onChange={({ activeCode }) => {
+                  setActiveCode(activeCode);
+                  setRoute("admin", { activeCode });
+                }}
+              />
             </ReservationsProvider>
           </ParkingPlacesProvider>
         </UsersProvider>
