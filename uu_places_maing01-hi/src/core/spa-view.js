@@ -1,5 +1,6 @@
 //@@viewOn:imports
-import { createVisualComponent, Utils } from "uu5g05";
+import { createVisualComponent, Utils, useSession } from "uu5g05";
+import { Unauthenticated } from "uu_plus4u5g02-elements";
 import { useSubAppData } from "uu_plus4u5g02";
 import Plus4U5App from "uu_plus4u5g02-app";
 import Config from "../config/config";
@@ -25,6 +26,7 @@ export const SpaView = createVisualComponent({
   render() {
     //@@viewOn:hooks
     const { data: uuPlaces } = useSubAppData();
+    const session = useSession();
     //@@viewOff:hooks
 
     //@@viewOn:private
@@ -32,7 +34,7 @@ export const SpaView = createVisualComponent({
 
     //@@viewOn:render
     const routeMap = {
-      [Config.ROUTES.HOME]: () => <Reservations />,
+      [Config.ROUTES.HOME]: () => (session.state === "notAuthenticated" ? <Unauthenticated /> : <Reservations />),
       [Config.ROUTES.ABOUT]: () => <About />,
       "": { redirect: Config.ROUTES.HOME },
       "*": { redirect: Config.ROUTES.HOME },
