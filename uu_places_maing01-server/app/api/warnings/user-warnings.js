@@ -13,6 +13,9 @@ const Warnings = {
   getUserProfileUnsupportedKeys: {
     code: `${Errors.GetUserProfile.UC_CODE}unsupportedKeys`,
   },
+  deleteUserUnsupportedKeys: {
+    code: `${Errors.Delete.UC_CODE}unsupportedKeys`,
+  },
 };
 
 module.exports = Warnings;

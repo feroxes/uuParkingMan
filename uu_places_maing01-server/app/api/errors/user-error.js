@@ -96,7 +96,34 @@ const GetUserProfile = {
       this.message = "User does not authorized.";
     }
   },
+};
 
+const Delete = {
+  UC_CODE: `${USER_ERROR_PREFIX}getUserProfile/`,
+
+  InvalidDtoIn: class extends PlacesMainUseCaseError {
+    constructor() {
+      super(...arguments);
+      this.code = `${Delete.UC_CODE}invalidDtoIn`;
+      this.message = "DtoIn is not valid.";
+    }
+  },
+
+  UserDoesNotExist: class extends PlacesMainUseCaseError {
+    constructor() {
+      super(...arguments);
+      this.code = `${Delete.UC_CODE}userDoesNotExist`;
+      this.message = "User does not exist.";
+    }
+  },
+
+  UserDeleteFailed: class extends PlacesMainUseCaseError {
+    constructor() {
+      super(...arguments);
+      this.code = `${Delete.UC_CODE}userDeleteFailed`;
+      this.message = "User delete failed.";
+    }
+  },
 };
 
 module.exports = {
@@ -104,4 +131,5 @@ module.exports = {
   Update,
   List,
   Create,
+  Delete,
 };

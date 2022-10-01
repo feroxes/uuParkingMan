@@ -3,6 +3,7 @@ const CreateAbl = require("../../abl/user/create-abl.js");
 const ListAbl = require("../../abl/user/list-abl.js");
 const UpdateAbl = require("../../abl/user/update-abl.js");
 const GetUserProfileAbl = require("../../abl/user/get-user-profile-abl.js");
+const DeleteAbl = require("../../abl/user/delete-abl.js");
 
 class UserController {
   getUserProfile(ucEnv) {
@@ -21,6 +22,9 @@ class UserController {
   }
   update(ucEnv) {
     return UpdateAbl.update(ucEnv.getUri().getAwid(), ucEnv.getDtoIn());
+  }
+  delete(ucEnv) {
+    return DeleteAbl.delete(ucEnv.getUri().getAwid(), ucEnv.getDtoIn());
   }
 }
 

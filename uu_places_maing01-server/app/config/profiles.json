@@ -33,6 +33,10 @@
         "sysStateList": ["active"],
         "profileList": ["Users","Authorities"]
       },
+      "user/delete": {
+        "sysStateList": ["active"],
+        "profileList": ["Authorities"]
+      },
       "parkingPlace/create": {
         "sysStateList": ["active"],
         "profileList": ["Authorities"]

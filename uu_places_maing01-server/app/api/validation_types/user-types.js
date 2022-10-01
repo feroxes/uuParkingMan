@@ -25,3 +25,7 @@ const userUpdateDtoInType = shape({
 const getUserProfileDtoInType = shape({
   uuIdentity: uuIdentity().isRequired(),
 });
+
+const deleteUserProfileDtoInType = shape({
+  id: id().isRequired(),
+});

@@ -66,6 +66,11 @@
         "httpMethod": "POST",
         "type": "CMD"
       },
+      "user/delete": {
+        "realization": "api/controllers/UserController.delete",
+        "httpMethod": "GET",
+        "type": "CMD"
+      },
       "parkingPlace/update": {
         "realization": "api/controllers/ParkingPlaceController.update",
         "httpMethod": "POST",
