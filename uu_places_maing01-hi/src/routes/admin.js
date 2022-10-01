@@ -41,12 +41,6 @@ export const Admin = createVisualComponent({
     function getItemList() {
       return [
         {
-          label: <Lsi lsi={LsiData.usersList} />,
-          icon: "mdi-account-box-outline",
-          children: <UsersList />,
-          code: "users",
-        },
-        {
           label: <Lsi lsi={LsiData.reservations} />,
           icon: "mdi-calendar",
           children: <ReservationsList />,
@@ -57,6 +51,12 @@ export const Admin = createVisualComponent({
           icon: "mdi-calendar",
           children: <WeeklyOverview isAdminView />,
           code: "weeklyOverview",
+        },
+        {
+          label: <Lsi lsi={LsiData.usersList} />,
+          icon: "mdi-account-box-outline",
+          children: <UsersList />,
+          code: "users",
         },
         {
           label: <Lsi lsi={LsiData.parkingPlaces} />,

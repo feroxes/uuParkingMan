@@ -8,9 +8,7 @@
   "spec": "uu5-app; uu_appg01_devkit@4.2.2",
   "dependencies": {
     "moment": "^2.29.4",
-    "systemjs": "0.19.47",
     "uu_bookigy_workplaceg01-uu5": "^1.14.3",
-    "uu_contentkitg01": "^2.20.3",
     "uu_plus4u5g01": "^4.27.3",
     "uu_plus4u5g02": "^1.9.3",
     "uu_plus4u5g02-app": "^1.9.3",
