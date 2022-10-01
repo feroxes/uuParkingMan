@@ -1,36 +1,37 @@
 //@@viewOn:imports
-import UU5 from "uu5g04";
-import { createVisualComponent, useLsi } from "uu5g04-hooks";
+import { Form, FormSelect, FormNumber, SubmitButton, CancelButton } from "uu5g05-forms";
+import { createVisualComponent, PropTypes, Lsi } from "uu5g05";
+import { useAlertBus } from "uu5g05-elements";
 import Config from "./config/config.js";
 import Constants from "../../helpers/constants.js";
-import { useContextAlert } from "../managers/alert-manager.js";
-import Lsi from "./parking-places-lsi.js";
+import LsiData from "../../config/lsi.js";
 //@@viewOff:imports
 
-const STATICS = {
-  //@@viewOn:statics
-  displayName: Config.TAG + "ParkingPlaceFrom",
-  nestingLevel: "bigBox",
-  //@@viewOff:statics
-};
-
 const CLASS_NAMES = {
-  main: () => Config.Css.css``,
+  grid: () => Config.Css.css`
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  `,
   controls: () => Config.Css.css`
-    > *:last-child {
-      background-color: ${Constants.mainColor} !important;
-    }
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid #ccc;
+    display: flex;
+    justify-content: flex-end;
   `,
 };
 
 export const ParkingPlaceFrom = createVisualComponent({
-  ...STATICS,
+  //@@viewOn:statics
+  uu5Tag: Config.TAG + "ParkingPlaceFrom",
+  //@@viewOff:statics
 
   //@@viewOn:propTypes
   propTypes: {
-    parkingPlace: UU5.PropTypes.object,
-    modal: UU5.PropTypes.object,
-    handlerMap: UU5.PropTypes.object,
+    parkingPlace: PropTypes.object,
+    handlerMap: PropTypes.object,
+    onClose: PropTypes.func,
   },
   //@@viewOff:propTypes
 
@@ -38,28 +39,42 @@ export const ParkingPlaceFrom = createVisualComponent({
   //@@viewOff:defaultProps
 
   render(props) {
+    const { parkingPlace, handlerMap, onClose } = props;
     //@@viewOn:hooks
-    const typeLsi = useLsi(Lsi.type);
-    const numberLsi = useLsi(Lsi.number);
-    const showAlert = useContextAlert();
+    const { addAlert } = useAlertBus();
     //@@viewOff:hooks
 
     //@@viewOn:private
-    function _handleOnSubmitClick(opt) {
-      if (props.parkingPlace) {
-        props.handlerMap
-          .update({ ...opt.values, id: props.parkingPlace.id })
+    function handleOnSubmitClick({ data }) {
+      if (parkingPlace) {
+        handlerMap
+          .update({ ...data.value, id: parkingPlace.id })
           .then(() => {
-            showAlert(<UU5.Bricks.Lsi lsi={Lsi.successMessage("updated")} />);
-            props.modal.close();
+            addAlert({
+              message: <Lsi lsi={LsiData.parkingPlaceSuccessfullyUpdated} />,
+              priority: "success",
+              durationMs: 3000,
+            });
+            onClose();
           })
-          .catch((e) => showAlert(e.message, false));
+          .catch(({ message }) => addAlert({ message, priority: "error", durationMs: 3000 }));
       } else {
-        props.handlerMap
-          .create(opt.values)
-          .then(() => showAlert(<UU5.Bricks.Lsi lsi={Lsi.successMessage("created")} />))
-          .catch((e) => showAlert(e.message, false));
+        handlerMap
+          .create(data.value)
+          .then(() =>
+            addAlert({
+              message: <Lsi lsi={LsiData.parkingPlaceSuccessfullyCreated} />,
+              priority: "success",
+              durationMs: 3000,
+            })
+          )
+          .catch(({ message }) => addAlert({ message, priority: "error", durationMs: 3000 }));
       }
+    }
+    function getTypeItemList() {
+      return Constants.ParkingPlace.types.map((type) => {
+        return { value: type.value, children: type.content };
+      });
     }
     //@@viewOff:private
 
@@ -67,29 +82,32 @@ export const ParkingPlaceFrom = createVisualComponent({
     //@@viewOff:interface
 
     //@@viewOn:render
-    const attrs = UU5.Common.VisualComponent.getAttrs(props, CLASS_NAMES.main());
-    const { parkingPlace } = props;
     return (
-      <UU5.Forms.Form {...attrs} onCancel={props.modal.close} onSave={_handleOnSubmitClick}>
-        <UU5.Forms.Select
-          name={Constants.ParkingPlace.formNames.type}
-          label={typeLsi}
-          required
-          value={parkingPlace && parkingPlace.type}
-        >
-          {Constants.ParkingPlace.types.map((type, key) => {
-            return <UU5.Forms.Select.Option value={type.value} content={type.content} key={key} />;
-          })}
-        </UU5.Forms.Select>
-        <UU5.Forms.Number
-          buttonHidden
-          name={Constants.ParkingPlace.formNames.number}
-          label={numberLsi}
-          required
-          value={parkingPlace && parkingPlace.number}
-        />
-        <UU5.Forms.Controls className={CLASS_NAMES.controls()} />
-      </UU5.Forms.Form>
+      <Form onSubmit={handleOnSubmitClick}>
+        <div className={CLASS_NAMES.grid()}>
+          <FormSelect
+            name={Constants.ParkingPlace.formNames.type}
+            label={<Lsi lsi={LsiData.type} />}
+            required
+            initialValue={parkingPlace && parkingPlace.type}
+            itemList={getTypeItemList()}
+          />
+          <FormNumber
+            min={1}
+            name={Constants.ParkingPlace.formNames.number}
+            label={<Lsi lsi={LsiData.number} />}
+            required
+            initialValue={parkingPlace && parkingPlace.number}
+          />
+        </div>
+        <div className={CLASS_NAMES.controls()}>
+          <SubmitButton
+            style={{ marginRight: "8px" }}
+            lsi={{ submit: parkingPlace ? LsiData.update : LsiData.create }}
+          />
+          <CancelButton onClick={onClose} />
+        </div>
+      </Form>
     );
     //@@viewOff:render
   },

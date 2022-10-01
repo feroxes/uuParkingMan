@@ -39,22 +39,20 @@ export const List = createVisualComponent({
 
     //@@viewOn:render
     return (
-      <div>
-        <DataObjectStateResolver dataObject={placesDataObject}>
-          <DataListStateResolver dataList={reservationsDataList}>
-            <DataListStateResolver dataList={usersDataList}>
-              <DataListStateResolver dataList={parkingPlacesDataList}>
-                <ReservationsListView
-                  reservationsDataList={reservationsDataList}
-                  usersDataList={usersDataList.data}
-                  parkingPlacesDataList={parkingPlacesDataList.data}
-                  handlerMap={reservationsDataList.handlerMap}
-                />
-              </DataListStateResolver>
+      <DataObjectStateResolver dataObject={placesDataObject}>
+        <DataListStateResolver dataList={reservationsDataList}>
+          <DataListStateResolver dataList={usersDataList}>
+            <DataListStateResolver dataList={parkingPlacesDataList}>
+              <ReservationsListView
+                reservationsDataList={reservationsDataList}
+                usersDataList={usersDataList.data}
+                parkingPlacesDataList={parkingPlacesDataList.data}
+                handlerMap={reservationsDataList.handlerMap}
+              />
             </DataListStateResolver>
           </DataListStateResolver>
-        </DataObjectStateResolver>
-      </div>
+        </DataListStateResolver>
+      </DataObjectStateResolver>
     );
     //@@viewOff:render
   },

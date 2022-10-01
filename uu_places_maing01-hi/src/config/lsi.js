@@ -109,6 +109,18 @@ const Lsi = {
     brand: { en: "BMW" },
     number: { en: "AA1111OO" },
   },
+  underground: { en: "Underground", uk: "Підземне" },
+  surface: { en: "Surface", uk: "Надземне" },
+  createParkingPlace: { en: "Create Parking Place", uk: "Створити парко місце" },
+  parkingPlaceUpdate: { en: "Parking Place Update", uk: "Оновити парко місце" },
+  parkingPlaceSuccessfullyCreated: {
+    en: "Parking place successfully created",
+    uk: "Парко місцеуспішно створено",
+  },
+  parkingPlaceSuccessfullyUpdated: {
+    en: "Parking place successfully updated",
+    uk: "Парко місце успішно оновлено",
+  },
 };
 
 export default Lsi;
