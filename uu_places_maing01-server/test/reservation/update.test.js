@@ -244,11 +244,32 @@ describe("Testing the reservation/update uuCmd...", () => {
     }
   });
 
+  test("Test 7.2 - parkingPlaceIsBlockedForReservation", async () => {
+    const reservation = await prepareBasic(Constants.defaultDuration);
+    const dtoIn = {
+      id: reservation.id,
+      parkingPlaceId: reservation.parkingPlaceId,
+      dayTo: moment()
+        .add(Constants.defaultDuration + 1, "days")
+        .format(DateTimeHelper.getDefaultDateFormat()),
+      revision: reservation.sys.rev,
+    };
+    await ParkingPlaceHelper.parkingPlaceUpdate({ id: dtoIn.parkingPlaceId, isBlocked: true });
+    const expectedError = ErrorAssets.parkingPlaceIsBlockedForReservation(CMD);
+
+    expect.assertions(ValidateHelper.assertionsCount.error);
+    try {
+      await ReservationTestHelper.reservationUpdate(dtoIn);
+    } catch (e) {
+      ValidateHelper.validateError(e, expectedError);
+    }
+  });
+
   test("Test 8.1 - dateCouldNotBeInPast (dayFrom)", async () => {
     const reservation = await prepareBasic(Constants.defaultDuration);
     const dtoIn = {
       id: reservation.id,
-      dayFrom: Constants.dayInPast,
+      dayTo: Constants.dayInPast,
       revision: reservation.sys.rev,
     };
     const expectedError = ErrorAssets.dateCouldNotBeInPast(CMD);

@@ -29,6 +29,10 @@ const ErrorAssets = {
     return { code: `${cmd}/parkingPlaceDoesNotExist`, message: "Parking place does not exist." };
   },
 
+  parkingPlaceIsBlockedForReservation(cmd) {
+    return { code: `${cmd}/parkingPlaceIsBlockedForReservation`, message: "Parking place is blocked for reservation." };
+  },
+
   dateCouldNotBeInPast(cmd) {
     return { code: `${cmd}/dateCouldNotBeInPast`, message: "Date could not be in the past." };
   },

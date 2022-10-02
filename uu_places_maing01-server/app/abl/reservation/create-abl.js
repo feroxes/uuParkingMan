@@ -45,6 +45,11 @@ class CreateAbl {
       throw new Errors.ParkingPlaceDoesNotExist({ uuAppErrorMap }, { parkingPlaceId: dtoIn.parkingPlaceId });
     }
 
+    // 4.2
+    if (parkingPlace.isBlocked) {
+      throw new Errors.ParkingPlaceIsBlockedForReservation({ uuAppErrorMap }, { parkingPlaceId: dtoIn.parkingPlaceId });
+    }
+
     // HDS 5
     if (DayTimeHelper.isDateInPast(dtoIn.dayFrom) || DayTimeHelper.isDateInPast(dtoIn.dayTo)) {
       // 5.1

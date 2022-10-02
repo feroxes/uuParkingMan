@@ -94,6 +94,13 @@ class UpdateAbl {
       if (!parkingPlace) {
         throw new Errors.ParkingPlaceDoesNotExist({ uuAppErrorMap }, { parkingPlaceId: dtoIn.parkingPlaceId });
       }
+      // 7.3
+      if (parkingPlace.isBlocked) {
+        throw new Errors.ParkingPlaceIsBlockedForReservation(
+          { uuAppErrorMap },
+          { parkingPlaceId: dtoIn.parkingPlaceId }
+        );
+      }
     }
 
     // HDS 8

@@ -30,6 +30,14 @@ const Create = {
     }
   },
 
+  ParkingPlaceIsBlockedForReservation: class extends PlacesMainUseCaseError {
+    constructor() {
+      super(...arguments);
+      this.code = `${Create.UC_CODE}parkingPlaceIsBlockedForReservation`;
+      this.message = "Parking place is blocked for reservation.";
+    }
+  },
+
   DateCouldNotBeInPast: class extends PlacesMainUseCaseError {
     constructor() {
       super(...arguments);
@@ -135,6 +143,14 @@ const Update = {
       super(...arguments);
       this.code = `${Update.UC_CODE}parkingPlaceDoesNotExist`;
       this.message = "Parking place does not exist.";
+    }
+  },
+
+  ParkingPlaceIsBlockedForReservation: class extends PlacesMainUseCaseError {
+    constructor() {
+      super(...arguments);
+      this.code = `${Update.UC_CODE}parkingPlaceIsBlockedForReservation`;
+      this.message = "Parking place is blocked for reservation.";
     }
   },
 
