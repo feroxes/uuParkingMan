@@ -34,6 +34,7 @@ export const ReservationsProvider = createComponent({
         },
         delete: handleDelete,
       },
+      pageSize: 10000,
     });
 
     function handleLoad(criteria) {
