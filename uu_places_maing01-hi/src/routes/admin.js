@@ -27,7 +27,7 @@ export const Admin = createVisualComponent({
 
   render() {
     //@@viewOn:hooks
-    const [activeCode, setActiveCode] = useState("users");
+    const [activeCode, setActiveCode] = useState("reservations");
     const [route, setRoute] = useRoute();
 
     useEffect(() => {
