@@ -90,7 +90,10 @@ export const ParkingPlaceItem = createVisualComponent({
     //@@viewOn:private
     function isUnavailable() {
       return (
-        disabled || DateTimeHelper.isDateInPast(selectedDate) || (isParkingPlaceReserved && !isUserOwnerOfReservation)
+        disabled ||
+        DateTimeHelper.isDateInPast(selectedDate) ||
+        (isParkingPlaceReserved && !isUserOwnerOfReservation) ||
+        data.data.isBlocked
       );
     }
     //@@viewOff:private

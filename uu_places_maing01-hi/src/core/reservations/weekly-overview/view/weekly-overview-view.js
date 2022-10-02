@@ -99,12 +99,12 @@ export const WeeklyOverviewView = createVisualComponent({
     }
 
     function _getReservationAvailability(isParkingPlaceReserved, isDateInPast, reservation, parkingPlace) {
-      if (isParkingPlaceReserved) {
+      if (isParkingPlaceReserved || parkingPlace.data.isBlocked) {
         return (
           <>
             <Button colorScheme="negative" borderRadius="full" icon="mdi-lock" />
             {Constants.space}
-            {ComponentsHelper.getBusinessCart(reservation.data.user.uuIdentity)}
+            {reservation && ComponentsHelper.getBusinessCart(reservation.data.user.uuIdentity)}
           </>
         );
       } else {

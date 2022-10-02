@@ -1,6 +1,6 @@
 //@@viewOn:imports
 import { createVisualComponent, PropTypes, Lsi, useState } from "uu5g05";
-import { Button, Dropdown, Modal } from "uu5g05-elements";
+import { Button, Dropdown, Modal, Tag, useAlertBus } from "uu5g05-elements";
 import Uu5Tiles from "uu5tilesg02";
 import Config from "../../config/config.js";
 import ParkingPlaceFrom from "../../parking-place-form.js";
@@ -41,6 +41,7 @@ export const ParkingPlacesListView = createVisualComponent({
     const [open, setOpen] = useState(false);
     const [modalProps, setModalProps] = useState(null);
     const [modalHeader, setModalHeader] = useState(null);
+    const { addAlert } = useAlertBus();
     //@@viewOff:hooks
 
     //@@viewOn:private
@@ -48,6 +49,17 @@ export const ParkingPlacesListView = createVisualComponent({
       return [
         { cell: (cellProps) => cellProps.data.data.number, header: <Lsi lsi={LsiData.number} /> },
         { cell: (cellProps) => <Lsi lsi={LsiData[cellProps.data.data.type]} />, header: <Lsi lsi={LsiData.type} /> },
+        {
+          cell: (cellProps) => {
+            const { isBlocked } = cellProps.data.data;
+            return (
+              <Tag size="m" colorScheme={isBlocked ? "problem" : "active"}>
+                <Lsi lsi={isBlocked ? LsiData.blocked : LsiData.free} />
+              </Tag>
+            );
+          },
+          header: <Lsi lsi={LsiData.status} />,
+        },
         {
           cell: () => null,
           header: (
@@ -65,6 +77,7 @@ export const ParkingPlacesListView = createVisualComponent({
         {
           key: "actions",
           cell: (cellProps) => {
+            const { isBlocked } = cellProps.data.data;
             return (
               <Dropdown
                 significance="subdued"
@@ -78,6 +91,11 @@ export const ParkingPlacesListView = createVisualComponent({
                       setOpen(true);
                     },
                   },
+                  {
+                    children: <Lsi lsi={isBlocked ? LsiData.unBlock : LsiData.block} />,
+                    icon: isBlocked ? "mdi-lock-open" : "mdi-lock",
+                    onClick: () => handleOnParkingPlaceBlock(cellProps.data),
+                  },
                 ]}
               />
             );
@@ -87,6 +105,20 @@ export const ParkingPlacesListView = createVisualComponent({
           cellPadding: "0 16px",
         },
       ];
+    }
+
+    function handleOnParkingPlaceBlock(parkingLot) {
+      const { isBlocked, id } = parkingLot.data;
+      parkingLot.handlerMap
+        .update({ id, isBlocked: !isBlocked })
+        .then(() => {
+          addAlert({
+            message: <Lsi lsi={isBlocked ? LsiData.successfullyUnblocked : LsiData.successfullyBlocked} />,
+            priority: "success",
+            durationMs: 3000,
+          });
+        })
+        .catch(({ message }) => addAlert({ message, priority: "error", durationMs: 3000 }));
     }
 
     function onControlsBtnClick() {
