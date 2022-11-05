@@ -18,12 +18,12 @@
           "max": 1
         },
         "appPackUri": "ues:DEV0188-BT:UU.PLACES.MAING01/APPBOX-0.4.0-dev:UU.PLACES.MAING01/CMD-PACK",
-        "runtimeStack": "UU.APPG01/APPSERVER_NODEJS_STACK-1.6"
+        "runtimeStack": "UU.APPG01/APPSERVER_NODEJS_STACK-2.0"
       }
     },
     "uuAppObjectStoreMap": {
       "OSID_1": {
-        "technology": "MongoDB-4.0",
+        "technology": "MongoDB-5.0",
         "size": 0.25,
         "backup": false,
         "alias": "primary"
@@ -31,23 +31,20 @@
     },
     "uuConfigMap": {
       "log_level": "DEBUG",
-      "asid_license_owner_list": [
-        "27-4578-1"
-      ]
+      "asid_license_owner_list": ["7490-4829-1"]
     }
   },
   "uuSubAppInstance": {
-    "asid": "db2f964a012d4635991dc178ab3e57db",
-    "asidOwner": "27-4578-1",
+    "asid": "79647f1a25f33d7c6d4bee95654109fe",
+    "asidOwner": "7490-4829-1",
     "awidList": [
       {
-        "awid": "71730b0ed99a4716ba69b654422b626c",
-        "awidOwner": "27-4579-1"
+        "awid": "108c55810919d2575d975bb0123403b0"
       }
     ],
     "uuAppObjectStoreMap": {
       "OSID_1": {
-        "osid": "a3fb372516ae432f96b70b57e87f0ed1"
+        "osid": "3e995b926b2c410096aa30e195a8c89f"
       }
     }
   }
