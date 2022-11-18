@@ -112,6 +112,7 @@ const Lsi = {
   brand: { en: "Brand", uk: "Бренд" },
   number: { en: "Number", uk: "Номер" },
   ownerUuIdentity: { en: "Owner uuIdentity", uk: "uuIdentity власника" },
+  owner: { en: "Owner", uk: "Власника" },
   userCreatePlaceHolders: {
     uuIdentity: { en: "8517-626-1" },
     model: { en: "i3" },

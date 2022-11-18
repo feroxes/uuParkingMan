@@ -65,7 +65,7 @@ export const ParkingPlacesListView = createVisualComponent({
             const { ownerUuIdentity } = cellProps.data.data;
             return ownerUuIdentity ? ComponentsHelper.getBusinessCart(ownerUuIdentity) : null;
           },
-          header: <Lsi lsi={LsiData.ownerUuIdentity} />,
+          header: <Lsi lsi={LsiData.owner} />,
         },
         {
           cell: () => null,
