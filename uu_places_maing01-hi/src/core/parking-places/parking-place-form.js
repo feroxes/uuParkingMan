@@ -1,5 +1,5 @@
 //@@viewOn:imports
-import { Form, FormSelect, FormNumber, SubmitButton, CancelButton } from "uu5g05-forms";
+import { Form, FormSelect, FormNumber, SubmitButton, FormText, CancelButton } from "uu5g05-forms";
 import { createVisualComponent, PropTypes, Lsi } from "uu5g05";
 import { useAlertBus } from "uu5g05-elements";
 import Config from "./config/config.js";
@@ -48,7 +48,7 @@ export const ParkingPlaceFrom = createVisualComponent({
     function handleOnSubmitClick({ data }) {
       if (parkingPlace) {
         handlerMap
-          .update({ ...data.value, id: parkingPlace.id })
+          .update({ ...data.value, id: parkingPlace.id, ownerUuIdentity: data.value.ownerUuIdentity || null })
           .then(() => {
             addAlert({
               message: <Lsi lsi={LsiData.parkingPlaceSuccessfullyUpdated} />,
@@ -98,6 +98,14 @@ export const ParkingPlaceFrom = createVisualComponent({
             label={<Lsi lsi={LsiData.number} />}
             required
             initialValue={parkingPlace && parkingPlace.number}
+          />
+        </div>
+        <div className={CLASS_NAMES.grid()}>
+          <FormText
+            name={Constants.ParkingPlace.formNames.ownerUuIdentity}
+            label={<Lsi lsi={LsiData.ownerUuIdentity} />}
+            initialValue={parkingPlace && parkingPlace.ownerUuIdentity}
+            placeholder="8517-626-1"
           />
         </div>
         <div className={CLASS_NAMES.controls()}>

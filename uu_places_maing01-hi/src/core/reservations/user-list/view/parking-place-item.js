@@ -1,6 +1,6 @@
 //@@viewOn:imports
 import { createVisualComponent, PropTypes, useSession, Lsi, useState } from "uu5g05";
-import { Modal, Tile, Icon } from "uu5g05-elements";
+import { Modal, Tile, Icon, Text } from "uu5g05-elements";
 import Config from "../../config/config.js";
 import ParkingPlaceNumber from "./parking-place-number.js";
 import ReservationHelper from "../../../../helpers/reservation-helper.js";
@@ -8,6 +8,7 @@ import ComponentsHelper from "../../../../helpers/components-helper.js";
 import DateTimeHelper from "../../../../helpers/date-time-helper.js";
 import ReservationFrom from "../../reservation-form.js";
 import LsiData from "../../../../config/lsi.js";
+import Constants from "../../../../helpers/constants.js";
 //@@viewOff:imports
 
 //@@viewOn:css
@@ -19,14 +20,15 @@ const CLASS_NAMES = {
     flex-direction: column;
     margin-top: 16px;
   `,
-  tileHeader: () => Config.Css.css`
+  tileHeader: (ownerUuIdentity) => Config.Css.css`
     width: 100%;
     display: flex;
     align-items: center;
-    justify-content: flex-end;
+    height: 20px;
+    justify-content: ${ownerUuIdentity ? "space-between" : "flex-end"};
   `,
   footerPlaceholder: () => Config.Css.css`
-    height: 36px;
+    height: 30px;
     background-color: rgb(245, 245, 245);
     border-color: transparent;
     border-width: 1px;
@@ -96,6 +98,26 @@ export const ParkingPlaceItem = createVisualComponent({
         data.data.isBlocked
       );
     }
+
+    function getTileHeader() {
+      const { ownerUuIdentity } = data.data;
+      return (
+        <div className={CLASS_NAMES.tileHeader(ownerUuIdentity)}>
+          <>
+            {ownerUuIdentity && (
+              <div>
+                {ComponentsHelper.getBusinessCart(ownerUuIdentity, "xxs", "0")}
+                <Icon icon="mdi-crown" colorScheme="yellow" size="m" />
+              </div>
+            )}
+            <Icon
+              icon={isUnavailable() ? "mdi-lock" : "mdi-check-outline"}
+              colorScheme={isUnavailable() ? "negative" : "active"}
+            />
+          </>
+        </div>
+      );
+    }
     //@@viewOff:private
 
     //@@viewOn:handlers
@@ -109,21 +131,19 @@ export const ParkingPlaceItem = createVisualComponent({
       <div>
         <Tile
           borderRadius="moderate"
-          header={
-            <div className={CLASS_NAMES.tileHeader()}>
-              {isUnavailable() ? (
-                <Icon icon="mdi-lock" colorScheme="negative" />
-              ) : (
-                <Icon icon="mdi-check-outline" colorScheme="active" />
-              )}
-            </div>
-          }
+          header={getTileHeader()}
           headerSignificance="distinct"
           headerColorScheme="building"
           significance={isUnavailable() ? "subdued" : "common"}
           footer={
             isParkingPlaceReserved ? (
-              ComponentsHelper.getBusinessCart(reservedBy.data.uuIdentity)
+              <div style={{ display: "flex", alignItems: "center" }}>
+                {ComponentsHelper.getBusinessCart(reservedBy.data.uuIdentity, "xxs")}
+                {Constants.space}
+                <Text category="interface" segment="interactive" type="xsmall">
+                  <Lsi lsi={LsiData.reserved} />
+                </Text>
+              </div>
             ) : (
               <div className={CLASS_NAMES.footerPlaceholder()} />
             )

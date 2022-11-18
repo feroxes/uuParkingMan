@@ -45,6 +45,7 @@ const Lsi = {
   cancel: { en: "Cancel", uk: "Відмінити" },
   createReservation: { en: "Create reservation", uk: "Створити резерв" },
   reservationUpdate: { en: "Reservation update", uk: "Оновити резерв" },
+  reserved: { en: "(reserved)", uk: "(заброньовано)" },
   reservationDelete: { en: "Reservation delete", uk: "Видалити резерв" },
   reservationDeleteConfirmation: {
     en: "Are you sure you want to delete this reservation?",
@@ -110,6 +111,7 @@ const Lsi = {
   model: { en: "Model", uk: "Модель" },
   brand: { en: "Brand", uk: "Бренд" },
   number: { en: "Number", uk: "Номер" },
+  ownerUuIdentity: { en: "Owner uuIdentity", uk: "uuIdentity власника" },
   userCreatePlaceHolders: {
     uuIdentity: { en: "8517-626-1" },
     model: { en: "i3" },

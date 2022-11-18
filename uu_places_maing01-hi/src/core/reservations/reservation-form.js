@@ -203,7 +203,11 @@ export const ReservationFrom = createVisualComponent({
             name="dayTo"
             min={getDateFrom()}
             max={getDateTo()}
-            {...(reservation && { initialValue: DateTimeHelper.formatDate(reservation.dayTo, STATICS.dateFormat) })}
+            initialValue={
+              reservation
+                ? DateTimeHelper.formatDate(reservation.dayTo, STATICS.dateFormat)
+                : DateTimeHelper.formatDate(selectedDate, STATICS.dateFormat)
+            }
           />
         </div>
         <div className={CLASS_NAMES.grid()}>

@@ -4,8 +4,8 @@ import { Button, Dropdown, Modal, Tag, useAlertBus } from "uu5g05-elements";
 import Uu5Tiles from "uu5tilesg02";
 import Config from "../../config/config.js";
 import ParkingPlaceFrom from "../../parking-place-form.js";
+import ComponentsHelper from "../../../../helpers/components-helper.js";
 import LsiData from "../../../../config/lsi.js";
-
 //@@viewOff:imports
 
 //@@viewOn:constants
@@ -59,6 +59,13 @@ export const ParkingPlacesListView = createVisualComponent({
             );
           },
           header: <Lsi lsi={LsiData.status} />,
+        },
+        {
+          cell: (cellProps) => {
+            const { ownerUuIdentity } = cellProps.data.data;
+            return ownerUuIdentity ? ComponentsHelper.getBusinessCart(ownerUuIdentity) : null;
+          },
+          header: <Lsi lsi={LsiData.ownerUuIdentity} />,
         },
         {
           cell: () => null,
