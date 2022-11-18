@@ -2,7 +2,6 @@
 const { Validator } = require("uu_appg01_server").Validation;
 const { DaoFactory } = require("uu_appg01_server").ObjectStore;
 const { ValidationHelper } = require("uu_appg01_server").AppServer;
-const { UriBuilder } = require("uu_appg01_server").Uri;
 const Errors = require("../../api/errors/reservation-error.js").Delete;
 const Warnings = require("../../api/warnings/reservation-warnings.js");
 const Notifier = require("../../components/notifier.js");
@@ -18,7 +17,7 @@ class DeleteAbl {
     this.parkingPlaceDao = DaoFactory.getDao(Constants.Schemas.PARKING_PLACE);
   }
 
-  async delete(awid, dtoIn, authorizationResult, uri, uuAppErrorMap = {}) {
+  async delete(uri, awid, dtoIn, authorizationResult, uuAppErrorMap = {}) {
     // HDS 1, 1.2, 1.2.1, 1.3, 1.3.1
     const validationResult = this.validator.validate("reservationDeleteDtoInType", dtoIn);
     uuAppErrorMap = ValidationHelper.processValidationResult(
@@ -65,7 +64,7 @@ class DeleteAbl {
       const { dayFrom, dayTo } = reservation;
       const timeSlot = DateTimeHelper.getTimeSlotForNotification(dayFrom, dayTo);
       const notifierDtoIn = {
-        message: NotifyHelper.getEmptyPlaceMessage(parkingPlace.number, timeSlot),
+        message: NotifyHelper.getEmptyPlaceMessage(parkingPlace.number, timeSlot, uri),
         error: Errors,
         uuAppErrorMap,
       };
