@@ -1,6 +1,6 @@
 {
   "name": "uu_places_maing01-server",
-  "version": "0.5.0-dev",
+  "version": "0.6.0-dev",
   "description": "",
   "license": "License Commercial",
   "spec": "nodejs-app; uu_appg01_devkit@4.2.2",
@@ -36,6 +36,7 @@
     "uuCloudDeployList": "uu_appg01_devkit uuCloudDeployList",
     "uuCloudSwap": "uu_appg01_devkit uuCloudSwap",
     "uuCloudLogStoreExport": "uu_appg01_devkit uuCloudLogStoreExport",
+    "uuLogStoreExport": "uu_appg01_devkit uuLogStoreExport",
     "uuCmdCreate": "uu_appg01_devkit uuCmdCreate",
     "uuAppDevKitUpgrade": "uu_appg01_devkit uuAppDevKitUpgrade"
   },
